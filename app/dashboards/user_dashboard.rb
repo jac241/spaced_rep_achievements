@@ -17,12 +17,12 @@ class UserDashboard < Administrate::BaseDashboard
     reset_password_token: Field::String,
     reset_password_sent_at: Field::DateTime,
     remember_created_at: Field::DateTime,
-    first_name: Field::String,
-    last_name: Field::String,
+    username: Field::String,
     announcements_last_read_at: Field::DateTime,
     admin: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    token: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -48,12 +48,12 @@ class UserDashboard < Administrate::BaseDashboard
   reset_password_token
   reset_password_sent_at
   remember_created_at
-  first_name
-  last_name
+  username
   announcements_last_read_at
   admin
   created_at
   updated_at
+  token
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -67,10 +67,10 @@ class UserDashboard < Administrate::BaseDashboard
   reset_password_token
   reset_password_sent_at
   remember_created_at
-  first_name
-  last_name
+  username
   announcements_last_read_at
   admin
+  token
   ].freeze
 
   # COLLECTION_FILTERS

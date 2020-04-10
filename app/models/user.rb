@@ -5,7 +5,12 @@ class User < ApplicationRecord
   has_secure_token
 
   validates :username, presence: true, uniqueness: true
+  validates :token, uniqueness: true
 
   has_many :notifications, foreign_key: :recipient_id
   has_many :services
+
+  def generate_unique_secure_token
+    SecureRandom.base58(64)
+  end
 end

@@ -6,12 +6,11 @@
 
 {{ if eq $scheme "http" }}
 server {
-  listen      [::]:80;
-  listen      80;
-  server_name spaced_rep_achievements.dokku-s-1vcpu-1gb-nyc1-01;
-  access_log  /var/log/nginx/spaced_rep_achievements-access.log;
-  error_log   /var/log/nginx/spaced_rep_achievements-error.log;
-
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }};
+  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
 {{ if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
   return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri;
 {{ else }}
@@ -33,21 +32,6 @@ server {
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header X-Forwarded-Port $server_port;
     proxy_set_header X-Request-Start $msec;
-  }
-  location /cable {
-    #proxy_pass http://ccb.creative.gs/cable;
-    proxy_pass  http://spaced_rep_achievements-8080;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $http_host;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-    proxy_read_timeout 90000s;
-
-    proxy_redirect off;
   }
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
 
@@ -106,21 +90,6 @@ server {
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header X-Forwarded-Port $server_port;
     proxy_set_header X-Request-Start $msec;
-  }
- location /cable {
-    #proxy_pass http://ccb.creative.gs/cable;
-    proxy_pass  http://{{ .APP }}/cable;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $http_host;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-    proxy_read_timeout 90000s;
-
-    proxy_redirect off;
   }
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
 

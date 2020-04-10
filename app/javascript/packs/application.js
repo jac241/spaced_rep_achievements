@@ -21,4 +21,5 @@ $(document).on("turbolinks:load", () => {
 
 $(document).on("turbolinks:before-cache", () => {
   $('#navbarMain').removeClass('show');
+  $('.alert').toggle();
 })

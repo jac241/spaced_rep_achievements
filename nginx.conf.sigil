@@ -6,11 +6,12 @@
 
 {{ if eq $scheme "http" }}
 server {
-  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
-  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }};
-  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
-  access_log  {{ $.NGINX_ACCESS_LOG_PATH }};
-  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+  listen      [::]:80;
+  listen      80;
+  server_name spaced_rep_achievements.dokku-s-1vcpu-1gb-nyc1-01;
+  access_log  /var/log/nginx/spaced_rep_achievements-access.log;
+  error_log   /var/log/nginx/spaced_rep_achievements-error.log;
+
 {{ if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
   return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri;
 {{ else }}

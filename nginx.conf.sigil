@@ -35,7 +35,7 @@ server {
   }
   location /cable {
     #proxy_pass http://ccb.creative.gs/cable;
-    proxy_pass  http://{{ .APP }}/cable;
+    proxy_pass  http://spaced_rep_achievements-8080;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";

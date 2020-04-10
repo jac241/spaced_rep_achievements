@@ -1,4 +1,4 @@
-#ping:
-  #cron: "*/5 * * * * *"
-  #class: "PingJob"
-  #queue: default
+ping:
+  cron: "* 1 * * * *"
+  class: "PingJob"
+  queue: default

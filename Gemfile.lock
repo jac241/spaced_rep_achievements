@@ -88,13 +88,6 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    anycable (0.6.5)
-      anyway_config (>= 1.4.2)
-      grpc (~> 1.17)
-    anycable-rails (0.6.5)
-      anycable (~> 0.6.0)
-      rails (>= 5)
-    anyway_config (1.4.4)
     autoprefixer-rails (9.7.5)
       execjs
     bcrypt (3.1.13)
@@ -148,12 +141,6 @@ GEM
       raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    google-protobuf (3.11.4)
-    googleapis-common-protos-types (1.0.4)
-      google-protobuf (~> 3.0)
-    grpc (1.28.0)
-      google-protobuf (~> 3.11)
-      googleapis-common-protos-types (~> 1.0)
     hashie (4.1.0)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
@@ -360,7 +347,6 @@ PLATFORMS
 
 DEPENDENCIES
   administrate!
-  anycable-rails
   bootsnap (>= 1.4.2)
   bootstrap (~> 4.3, >= 4.3.1)
   byebug

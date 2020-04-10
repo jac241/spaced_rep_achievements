@@ -88,6 +88,13 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    anycable (0.6.5)
+      anyway_config (>= 1.4.2)
+      grpc (~> 1.17)
+    anycable-rails (0.6.5)
+      anycable (~> 0.6.0)
+      rails (>= 5)
+    anyway_config (1.4.4)
     autoprefixer-rails (9.7.5)
       execjs
     bcrypt (3.1.13)
@@ -110,6 +117,7 @@ GEM
       xpath (~> 3.2)
     childprocess (3.0.0)
     chronic (0.10.2)
+    coderay (1.1.2)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
     crass (1.0.6)
@@ -125,6 +133,8 @@ GEM
       devise (>= 4.7.0)
       railties (>= 5.2.0)
     erubi (1.9.0)
+    et-orbi (1.2.4)
+      tzinfo
     execjs (2.7.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
@@ -133,8 +143,17 @@ GEM
       sassc (>= 1.11)
     friendly_id (5.3.0)
       activerecord (>= 4.0.0)
+    fugit (1.3.3)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    google-protobuf (3.11.4)
+    googleapis-common-protos-types (1.0.4)
+      google-protobuf (~> 3.0)
+    grpc (1.28.0)
+      google-protobuf (~> 3.11)
+      googleapis-common-protos-types (~> 1.0)
     hashie (4.1.0)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
@@ -212,9 +231,18 @@ GEM
     orm_adapter (0.5.0)
     pg (1.2.3)
     popper_js (1.16.0)
+    pry (0.13.0)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     public_suffix (4.0.3)
     puma (4.3.3)
       nio4r (~> 2.0)
+    raabro (1.1.6)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -278,8 +306,12 @@ GEM
       rack (~> 2.0)
       rack-protection (>= 2.0.0)
       redis (>= 4.1.0)
+    sidekiq-cron (1.2.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
     sitemap_generator (6.1.0)
       builder (~> 3.0)
+    slop (3.6.0)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -328,6 +360,7 @@ PLATFORMS
 
 DEPENDENCIES
   administrate!
+  anycable-rails
   bootsnap (>= 1.4.2)
   bootstrap (~> 4.3, >= 4.3.1)
   byebug
@@ -346,11 +379,15 @@ DEPENDENCIES
   omniauth-github (~> 1.3)
   omniauth-twitter (~> 1.4)
   pg (>= 0.18, < 2.0)
+  pry-rails
+  pry-remote
   puma (~> 4.1)
   rails (~> 6.0.2, >= 6.0.2.2)
+  redis (~> 4.0)
   sass-rails (>= 6)
   selenium-webdriver
   sidekiq (~> 6.0, >= 6.0.3)
+  sidekiq-cron
   sitemap_generator (~> 6.0, >= 6.0.1)
   spring
   spring-watcher-listen (~> 2.0.0)

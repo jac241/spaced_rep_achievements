@@ -1,0 +1,4 @@
+ping:
+  cron: "*/5 * * * * *"
+  class: "PingJob"
+  queue: default

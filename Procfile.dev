@@ -1,3 +1,5 @@
-web: bundle exec rails server
+web: bundle exec rails server --binding=0.0.0.0
 worker: bundle exec sidekiq
 webpack: bundle exec bin/webpack-dev-server
+anycable_rpc: ANYCABLE_DEBUG=1 bundle exec anycable
+anycable_go: anycable-go --host=localhost --port=3334

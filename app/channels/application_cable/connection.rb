@@ -9,7 +9,7 @@ module ApplicationCable
 
       unless self.current_user
         if request.params[:user_token]
-          self.token_user = User.first
+          self.token_user = User.find_by_token(request.params[:user_token])
         end
       end
     end

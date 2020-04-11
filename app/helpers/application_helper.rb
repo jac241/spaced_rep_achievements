@@ -7,4 +7,13 @@ module ApplicationHelper
       notice: "alert-info"
     }.stringify_keys[flash_type.to_s] || flash_type.to_s
   end
+
+  def current_user_meta_tag
+    if user_signed_in?
+      tag.meta name: 'user-context', data: {
+        id: current_user.id,
+        token: current_user.token,
+      }
+    end
+  end
 end

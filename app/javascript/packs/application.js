@@ -13,6 +13,7 @@ window.Rails = Rails
 
 import 'bootstrap'
 import 'data-confirm-modal'
+import "controllers"
 
 $(document).on("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
@@ -23,3 +24,4 @@ $(document).on("turbolinks:before-cache", () => {
   $('#navbarMain').removeClass('show');
   $('.alert').toggle();
 })
+

@@ -1,10 +1,13 @@
-// $navbar-default-bg: #312312;
-// $light-orange: #ff8c00;
-// $navbar-default-color: $light-orange;
+//$navbar-default-bg: #312312;
+//$light-orange: #ff8c00;
+//$navbar-default-color: $light-orange;
+
+$font-family-base: 'Source Sans', sans-serif;
 
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "bootstrap";
+
 @import "jumpstart/sticky-footer";
 @import "jumpstart/announcements";
 

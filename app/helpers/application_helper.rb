@@ -16,4 +16,8 @@ module ApplicationHelper
       }
     end
   end
+
+  def home_page?
+    current_page?(controller: 'home', action: 'index') rescue false
+  end
 end

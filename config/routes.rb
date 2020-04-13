@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   get '/privacy', to: 'home#privacy'
   get '/terms', to: 'home#terms'
 
+  namespace :api do
+    namespace :v1 do
+      resources :syncs
+    end
+  end
+
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end

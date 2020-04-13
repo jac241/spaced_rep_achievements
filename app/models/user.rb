@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :notifications, foreign_key: :recipient_id
   has_many :services
 
+  has_many :syncs
+
   def generate_unique_secure_token
     SecureRandom.base58(64)
   end

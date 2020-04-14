@@ -10,11 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_13_023736) do
+ActiveRecord::Schema.define(version: 2020_04_14_011247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "achievements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "sync_id"
+    t.integer "client_db_id", null: false
+    t.string "client_medal_id", null: false
+    t.bigint "client_deck_id", null: false
+    t.datetime "client_earned_at", null: false
+    t.uuid "client_uuid", null: false
+    t.uuid "medal_id"
+    t.index ["client_uuid", "client_db_id"], name: "index_achievements_on_client_uuid_and_client_db_id", unique: true
+    t.index ["medal_id"], name: "index_achievements_on_medal_id"
+    t.index ["sync_id"], name: "index_achievements_on_sync_id"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -46,6 +59,13 @@ ActiveRecord::Schema.define(version: 2020_04_13_023736) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "families", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -55,6 +75,15 @@ ActiveRecord::Schema.define(version: 2020_04_13_023736) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "medals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "client_medal_id", null: false
+    t.integer "rank", null: false
+    t.integer "score", null: false
+    t.uuid "family_id"
+    t.index ["family_id"], name: "index_medals_on_family_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -108,7 +137,10 @@ ActiveRecord::Schema.define(version: 2020_04_13_023736) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "achievements", "medals"
+  add_foreign_key "achievements", "syncs"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "medals", "families"
   add_foreign_key "services", "users"
   add_foreign_key "syncs", "users"
 end

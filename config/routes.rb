@@ -4,6 +4,9 @@ require 'sidekiq/cron/web'
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   namespace :admin do
+    resources :achievements
+    resources :medals
+    resources :families
     resources :users
     resources :announcements
     resources :notifications

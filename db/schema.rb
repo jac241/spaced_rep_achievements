@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_14_011247) do
+ActiveRecord::Schema.define(version: 2020_04_15_002214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_011247) do
     t.integer "rank", null: false
     t.integer "score", null: false
     t.uuid "family_id"
+    t.string "call"
     t.index ["family_id"], name: "index_medals_on_family_id"
   end
 

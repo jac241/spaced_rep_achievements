@@ -23,8 +23,9 @@ class MedalDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  image
+  name
   family
+  client_medal_id
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

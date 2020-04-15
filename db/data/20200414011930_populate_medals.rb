@@ -72,6 +72,7 @@ class PopulateMedals < ActiveRecord::Migration[6.0]
   end
 
   def down
-    raise ActiveRecord::IrreversibleMigration
+    Medal.delete_all
+    Family.delete_all
   end
 end

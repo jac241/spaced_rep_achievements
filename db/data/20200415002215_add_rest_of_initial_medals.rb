@@ -75,7 +75,7 @@ class AddRestOfInitialMedals < ActiveRecord::Migration[6.0]
         score: 4,
       },
       {
-        client_medal_id: "mw2_predator_missle",
+        client_medal_id: "mw2_predator_missile",
         name: "Predator Missle",
         call: "Predator missile ready for launch",
         family: mw2,
@@ -150,7 +150,7 @@ class AddRestOfInitialMedals < ActiveRecord::Migration[6.0]
         score: 4,
       },
       {
-        client_medal_id: "halo_5_triple_kill",
+        client_medal_id: "halo_5_triple_Kill", # intentional
         name: "Triple Kill",
         family: h5,
         rank: 3,
@@ -209,49 +209,49 @@ class AddRestOfInitialMedals < ActiveRecord::Migration[6.0]
 
     [
       {
-        client_medal_id: "Killing Spree",
+        client_medal_id: "halo_5_killing_spree",
         name: "Killing Spree",
         family: h5,
         rank: 5,
         score: 5,
       },
       {
-        client_medal_id: "Killing Frenzy",
+        client_medal_id: "halo_5_killing_frenzy",
         name: "Killing Frenzy",
         family: h5,
         rank: 10,
         score: 10,
       },
       {
-        client_medal_id: "Running Riot",
+        client_medal_id: "halo_5_running_riot",
         name: "Running Riot",
         family: h5,
         rank: 15,
         score: 15,
       },
       {
-        client_medal_id: "Rampage",
+        client_medal_id: "halo_5_rampage",
         name: "Rampage",
         family: h5,
         rank: 20,
         score: 20,
       },
       {
-        client_medal_id: "Untouchable",
+        client_medal_id: "halo_5_untouchable",
         name: "Untouchable",
         family: h5,
         rank: 25,
         score: 25,
       },
       {
-        client_medal_id: "Invincible",
+        client_medal_id: "halo_5_invincible",
         name: "Invincible",
         family: h5,
         rank: 30,
         score: 30,
       },
       {
-        client_medal_id: "halo_5_unfrigginbelievable",
+        client_medal_id: "halo_5_unfriggenbelievable",
         name: "Unfriggenbelievable",
         family: h5,
         rank: 40,
@@ -268,6 +268,6 @@ class AddRestOfInitialMedals < ActiveRecord::Migration[6.0]
   end
 
   def down
-    raise ActiveRecord::IrreversibleMigration
+    Medal.delete_all
   end
 end

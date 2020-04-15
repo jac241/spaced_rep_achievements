@@ -25,12 +25,22 @@ class SynchronizeClientJob < ApplicationJob
 
   def prepare_attrs(achievement_attrs:, client_uuid:)
     {
+      medal_id: all_medal_ids_by_client_medal_id[achievement_attrs["medal_id"]],
       client_uuid: client_uuid,
       client_db_id: achievement_attrs["id_"],
       client_medal_id: achievement_attrs["medal_id"],
       client_deck_id: achievement_attrs["deck_id"],
       client_earned_at: achievement_attrs["created_at"],
     }
+  end
+
+  # actually care about speed cuz server only has 1 CPU...
+  def all_medal_ids_by_client_medal_id
+    @all_medal_ids_by_client_medal_id ||=
+      Medal.select(:id, :client_medal_id).all
+        .each_with_object({}) do |medal, hash|
+          hash[medal.client_medal_id] = medal.id
+        end
   end
 end
 

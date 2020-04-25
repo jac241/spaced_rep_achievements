@@ -24,10 +24,15 @@ Rails.application.routes.draw do
     end
   end
 
+  authenticated :user do
+    root to: 'leaderboards#show', as: :authenticated_root, id: 'halo-3'
+  end
+
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  resources :leaderboards
 
   resources :notifications, only: [:index]
   resources :announcements, only: [:index]

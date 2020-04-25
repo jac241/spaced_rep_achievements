@@ -1,8 +1,8 @@
 class CalculateLeadersService
   include FlexibleService
 
-  def call(family_name:, count:, timeframe:)
-    family = Family.find_by_name(family_name)
+  def call(family_slug:, count:, timeframe:)
+    family = Family.friendly.find(family_slug)
 
     return success(
       :found,

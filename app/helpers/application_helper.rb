@@ -18,6 +18,7 @@ module ApplicationHelper
   end
 
   def home_page?
+    # FIXME why doesn't this always work???
     current_page?(controller: 'home', action: 'index') rescue false
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_15_002214) do
+ActiveRecord::Schema.define(version: 2020_04_23_002117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -24,9 +24,13 @@ ActiveRecord::Schema.define(version: 2020_04_15_002214) do
     t.datetime "client_earned_at", null: false
     t.uuid "client_uuid", null: false
     t.uuid "medal_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["client_uuid", "client_db_id"], name: "index_achievements_on_client_uuid_and_client_db_id", unique: true
     t.index ["medal_id"], name: "index_achievements_on_medal_id"
     t.index ["sync_id"], name: "index_achievements_on_sync_id"
+    t.index ["user_id"], name: "index_achievements_on_user_id"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -84,6 +88,8 @@ ActiveRecord::Schema.define(version: 2020_04_15_002214) do
     t.integer "score", null: false
     t.uuid "family_id"
     t.string "call"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["family_id"], name: "index_medals_on_family_id"
   end
 
@@ -140,6 +146,7 @@ ActiveRecord::Schema.define(version: 2020_04_15_002214) do
 
   add_foreign_key "achievements", "medals"
   add_foreign_key "achievements", "syncs"
+  add_foreign_key "achievements", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "medals", "families"
   add_foreign_key "services", "users"

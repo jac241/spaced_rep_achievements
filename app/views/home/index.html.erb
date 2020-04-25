@@ -16,6 +16,7 @@
   </div>
 </section>
 <section class="text-center">
-  <h1>Top 10 for Halo 3</h1>
-  <img src="https://ui-avatars.com/api/?name=John+Doe"></img>
+  <div class="container">
+    <%= render "achievements/leaderboard", locals: { leaderboard: @leaderboard } %>
+  </div>
 </section>

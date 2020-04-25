@@ -80,3 +80,6 @@ gem 'whenever', require: false
 gem 'activerecord-import'
 gem 'data_migrate'
 gem 'image_processing', '~> 1.2'
+gem 'scenic'
+gem 'draper'
+gem 'haml-rails'

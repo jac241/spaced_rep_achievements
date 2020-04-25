@@ -1,0 +1,14 @@
+%h1= @leaderboard.title
+%table.table
+  %thead
+    %tr
+      %th{scope: "col"} Rank
+      %th{scope: "col"} Username
+      %th{scope: "col"} Score
+  %tbody
+    - @leaderboard.each do |leader|
+      %tr
+        %th{scope: "row"}= leader.family_rank
+        %td= leader.username
+        %td= leader.total_score
+

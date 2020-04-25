@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :services
 
   has_many :syncs
+  has_many :achievements
 
   def generate_unique_secure_token
     SecureRandom.base58(64)

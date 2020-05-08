@@ -17,3 +17,4 @@ class User < ApplicationRecord
     SecureRandom.base58(64)
   end
 end
+

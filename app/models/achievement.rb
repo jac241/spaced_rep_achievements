@@ -9,6 +9,7 @@ class Achievement < ApplicationRecord
         family_name,
         user_id,
         total_score,
+        achievements_count,
         rank() OVER (PARTITION BY family_name ORDER BY total_score DESC) as family_rank
       }
     ).from(
@@ -16,7 +17,8 @@ class Achievement < ApplicationRecord
         %{
           achievements.user_id as user_id,
           families.name as family_name,
-          SUM(medals.score) as total_score
+          SUM(medals.score) as total_score,
+          COUNT(*) as achievements_count
          }
       ).joins(medal: :family)
         .where("achievements.client_earned_at > ?", since)

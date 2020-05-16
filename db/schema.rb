@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_25_104922) do
+ActiveRecord::Schema.define(version: 2020_05_16_120239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_04_25_104922) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["client_earned_at"], name: "index_achievements_on_client_earned_at"
     t.index ["client_uuid", "client_db_id"], name: "index_achievements_on_client_uuid_and_client_db_id", unique: true
     t.index ["medal_id"], name: "index_achievements_on_medal_id"
     t.index ["sync_id"], name: "index_achievements_on_sync_id"

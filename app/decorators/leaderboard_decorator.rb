@@ -4,6 +4,6 @@ class LeaderboardDecorator < Draper::CollectionDecorator
   end
 
   def title
-    "Top 10 for Halo 3: past month"
+    "Top 10 for #{context[:family].name}: past month"
   end
 end

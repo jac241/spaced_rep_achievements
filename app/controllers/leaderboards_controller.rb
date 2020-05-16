@@ -11,7 +11,8 @@ class LeaderboardsController < ApplicationController
     result.on(:found) do |result|
       @leaderboard = LeaderboardDecorator.new(
         result.leaders, context: {
-          family: result.family
+          family: result.family,
+          timeframe: :month
         })
       @families = result.all_families
       @timeframes = Leaderboards.timeframes

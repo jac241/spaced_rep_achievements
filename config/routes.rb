@@ -25,7 +25,11 @@ Rails.application.routes.draw do
   end
 
   authenticated :user do
-    root to: 'leaderboards#show', as: :authenticated_root, id: 'halo-3'
+    resources :families, path: :games do
+      resources :leaderboards
+    end
+
+    root to: 'leaderboards#show', as: :authenticated_root, family_id: 'halo-3', id: 'monthly'
   end
 
   authenticate :user, lambda { |u| u.admin? } do

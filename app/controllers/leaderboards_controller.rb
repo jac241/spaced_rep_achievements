@@ -3,7 +3,7 @@ class LeaderboardsController < ApplicationController
 
   def show
     result = CalculateLeadersService.call(
-      family_slug: params[:id],
+      family_slug: params[:family_id],
       count: 10,
       timeframe: :month
     )
@@ -13,6 +13,8 @@ class LeaderboardsController < ApplicationController
         result.leaders, context: {
           family: result.family
         })
+      @families = result.all_families
+      @timeframes = Leaderboards.timeframes
     end
   end
 end

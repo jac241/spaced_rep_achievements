@@ -1,2 +1,5 @@
 .container
+  - @families.each do |family|
+    = link_to family.name, family_leaderboard_path(family, 'monthly')
+
   = render "achievements/leaderboard", locals: { leaderboard: @leaderboard }

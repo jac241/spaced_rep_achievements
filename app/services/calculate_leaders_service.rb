@@ -8,7 +8,8 @@ class CalculateLeadersService
       :found,
       OpenStruct.new(
         leaders: Achievement.leaders_for(family: family, since: Time.now - 1.month),
-        family: family
+        family: family,
+        all_families: Family.all
       )
     )
   end

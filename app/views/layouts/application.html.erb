@@ -8,13 +8,7 @@
     <%= render 'shared/navbar' %>
     <%= render 'shared/notices' %>
 
-    <% if home_page? %>
-      <%= yield %>
-    <% else %>
-      <div class='container'>
-        <%= yield %>
-      </div>
-    <% end %>
+    <%= yield %>
 
     <%= render 'shared/footer' %>
   </body>

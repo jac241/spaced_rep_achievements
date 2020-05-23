@@ -19,7 +19,7 @@ module ApplicationHelper
 
   def home_page?
     # FIXME why doesn't this always work???
-    current_page?(controller: 'home', action: 'index') rescue false
+    params[:controller] == "home" && params[:action] == "index"
   end
 
   def nav_link_classes(link_object:, active_object:)

@@ -2,7 +2,7 @@ class Leaderboard
   attr_reader :leaders, :family, :timeframe
 
   def self.timeframes
-    [:daily, :monthly, :weekly]
+    [:daily, :weekly, :monthly]
   end
 
   def initialize(leaders:, family:, timeframe:)

@@ -1,9 +1,9 @@
 .container
   %h1 Leaderboards
 
-  %h5 Games
 
   .leaderboard-navigation
+    %h5 Games
     %nav.nav.nav-pills
       - @families.each do |family|
         = link_to family.name,

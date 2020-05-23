@@ -6,12 +6,8 @@ class HomeController < ApplicationController
       timeframe: :day
     )
 
-    result.on(:found) do |result|
-      @leaderboard = LeaderboardDecorator.new(
-        result.leaders, context: {
-          family: result.family
-        }
-      )
+    result.on(:found) do |leaderboard|
+      @leaderboard = LeaderboardDecorator.new(leaderboard)
     end
   end
 

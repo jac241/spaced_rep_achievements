@@ -1,14 +1,15 @@
-%h2= @leaderboard.title
-%table.table
-  %thead
-    %tr
-      %th{scope: "col"} Rank
-      %th{scope: "col"} Username
-      %th{scope: "col"} Score
-  %tbody
-    - @leaderboard.leaders.each do |leader|
+#leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
+  %h2= @leaderboard.title
+  %table.table
+    %thead
       %tr
-        %th{scope: "row"}= leader.family_rank
-        %td= leader.username
-        %td= leader.total_score
+        %th{scope: "col"} Rank
+        %th{scope: "col"} Username
+        %th{scope: "col"} Score
+    %tbody
+      - @leaderboard.leaders.each do |leader|
+        %tr
+          %th{scope: "row"}= leader.family_rank
+          %td= leader.username
+          %td= leader.total_score
 

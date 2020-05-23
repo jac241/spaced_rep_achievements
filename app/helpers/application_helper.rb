@@ -21,4 +21,15 @@ module ApplicationHelper
     # FIXME why doesn't this always work???
     current_page?(controller: 'home', action: 'index') rescue false
   end
+
+  def nav_link_classes(link_object:, active_object:)
+    classes = ["nav-link"]
+
+    if link_object == active_object
+      classes << "active"
+    end
+
+    classes
+  end
+
 end

@@ -5,17 +5,13 @@ class LeaderboardsController < ApplicationController
     result = CalculateLeadersService.call(
       family_slug: params[:family_id],
       count: 10,
-      timeframe: :month
+      timeframe: params[:id]
     )
 
-    result.on(:found) do |result|
-      @leaderboard = LeaderboardDecorator.new(
-        result.leaders, context: {
-          family: result.family,
-          timeframe: :month
-        })
-      @families = result.all_families
-      @timeframes = Leaderboards.timeframes
+    result.on(:found) do |leaderboard|
+      @leaderboard = LeaderboardDecorator.new(leaderboard)
+      @families = Family.all
+      @timeframes = Leaderboard.timeframes
     end
   end
 end

@@ -6,7 +6,7 @@
       %th{scope: "col"} Username
       %th{scope: "col"} Score
   %tbody
-    - @leaderboard.each do |leader|
+    - @leaderboard.leaders.each do |leader|
       %tr
         %th{scope: "row"}= leader.family_rank
         %td= leader.username

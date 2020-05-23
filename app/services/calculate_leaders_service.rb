@@ -6,11 +6,27 @@ class CalculateLeadersService
 
     return success(
       :found,
-      OpenStruct.new(
-        leaders: Achievement.leaders_for(family: family, since: Time.now - 1.month),
+      Leaderboard.new(
+        leaders: Achievement.leaders_for(
+          family: family,
+          since: starting_date(timeframe),
+        ),
         family: family,
-        all_families: Family.all
+        timeframe: timeframe,
       )
     )
+  end
+
+  private
+
+  def starting_date(timeframe)
+    case timeframe
+    when 'monthly'
+      Time.now - 1.month
+    when 'weekly'
+      Time.now - 1.week
+    when 'daily'
+      Time.now - 1.day
+    end
   end
 end

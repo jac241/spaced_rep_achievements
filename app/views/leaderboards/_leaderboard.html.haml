@@ -1,24 +1,25 @@
-#leaderboard
-  .leaderboard-header.row
-    .col-10
-      %h2= leaderboard.title
-    .col
-      %span#leaderboard_connection_status.badge.badge-danger{ data: { target: "live-leaderboards.status" } }
-        LIVE
-      %p
-        %small
-          Last updated at 
-          = Time.now.strftime("%k:%M:%S")
-  %table#leaderboard_table.table
-    %thead
-      %tr
-        %th{scope: "col"} Rank
-        %th{scope: "col"} Username
-        %th{scope: "col"} Score
-    %tbody
-      - leaderboard.leaders.each do |leader|
+- cache leaderboard, force: local_assigns.fetch(:bust_cache, false) do
+  #leaderboard
+    .leaderboard-header.row
+      .col-10
+        %h2= leaderboard.title
+      .col
+        %span#leaderboard_connection_status.badge.badge-danger{ data: { target: "live-leaderboards.status" } }
+          LIVE
+        %p
+          %small
+            Last updated at 
+            = Time.now.strftime("%k:%M:%S")
+    %table#leaderboard_table.table
+      %thead
         %tr
-          %th{scope: "row"}= leader.family_rank
-          %td= leader.username
-          %td= leader.total_score
+          %th{scope: "col"} Rank
+          %th{scope: "col"} Username
+          %th{scope: "col"} Score
+      %tbody
+        - leaderboard.leaders.each do |leader|
+          %tr
+            %th{scope: "row"}= leader.family_rank
+            %td= leader.username
+            %td= leader.total_score
 

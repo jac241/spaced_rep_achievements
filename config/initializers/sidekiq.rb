@@ -6,4 +6,4 @@ Sidekiq.configure_server do |config|
   end
 end
 
-Sidekiq.options[:poll_interval] = 10
+Sidekiq.options[:poll_interval] = 5

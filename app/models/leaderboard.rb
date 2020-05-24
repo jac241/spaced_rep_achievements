@@ -26,6 +26,10 @@ class Leaderboard
     "#{family.slug}:#{timeframe}"
   end
 
+  def cache_key
+    "#{family.slug}/#{timeframe}"
+  end
+
   private
 
   def self.starting_date(timeframe)

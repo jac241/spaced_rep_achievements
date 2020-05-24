@@ -9,9 +9,12 @@ class UpdateLeaderboardsJob < ApplicationJob
         LiveLeaderboardsChannel.broadcast_to(
           leaderboard.channel,
           {
-            html: ApplicationController.render(
+            html: LeaderboardsController.render(
               partial: 'leaderboards/leaderboard',
-              locals: { leaderboard: LeaderboardDecorator.new(leaderboard) }
+              locals: {
+                leaderboard: LeaderboardDecorator.new(leaderboard),
+                bust_cache: true,
+              }
             )
           }
         )

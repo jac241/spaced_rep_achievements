@@ -6,10 +6,6 @@ class LeaderboardDecorator < ApplicationDecorator
     "Top #{10} for #{object.family.name}: past #{timeframe_for_title}"
   end
 
-  def channel
-    "#{family.slug}:#{timeframe}"
-  end
-
   private
 
   def timeframe_for_title

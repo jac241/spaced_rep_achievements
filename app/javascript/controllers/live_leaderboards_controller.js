@@ -8,7 +8,7 @@ export default class extends Controller {
     this.subscription = consumer.subscriptions.create(
       {
         channel: "LiveLeaderboardsChannel",
-        leaderboard: this.data.get("leaderboard"),
+        leaderboard: `live_leaderboards:${this.data.get("leaderboard")}`,
       },
       {
         connected: () => {

@@ -1,13 +1,21 @@
-#leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
-  %h2= @leaderboard.title
-  %table.table
+#leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: leaderboard.channel } }
+  .leaderboard-header.row
+    .col-10
+      %h2= leaderboard.title
+    .col
+      %span#leaderboard_connection_status.badge.badge-danger LIVE
+      %p
+        %small
+          Last updated at 
+          = Time.now.to_s(:time)
+  %table#leaderboard_table.table
     %thead
       %tr
         %th{scope: "col"} Rank
         %th{scope: "col"} Username
         %th{scope: "col"} Score
     %tbody
-      - @leaderboard.leaders.each do |leader|
+      - leaderboard.leaders.each do |leader|
         %tr
           %th{scope: "row"}= leader.family_rank
           %td= leader.username

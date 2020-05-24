@@ -17,4 +17,4 @@
           family_leaderboard_path(@leaderboard.family, timeframe),
           class: nav_link_classes(link_object: timeframe.to_s, active_object: @leaderboard.timeframe)
 
-  = render "leaderboard", locals: { leaderboard: @leaderboard }
+  = render partial: "leaderboard", locals: { leaderboard: @leaderboard }

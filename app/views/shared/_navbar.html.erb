@@ -32,10 +32,6 @@
               <%= current_user.username %>
             <% end %>
             <div id="nav-account-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-dropdown">
-              <div class="dropdown-item" data-controller="sync">
-                <i class="fas fa-sync"></i>
-                <span data-target="sync.span"></span>
-              </div>
               <% if current_user.admin? %>
                 <%= link_to "Admin Area", admin_root_path, class: "dropdown-item" %>
               <% end %>

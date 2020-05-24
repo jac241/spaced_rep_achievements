@@ -9,7 +9,7 @@ class LeaderboardDecorator < ApplicationDecorator
   private
 
   def timeframe_for_title
-    case object.timeframe
+    case object.timeframe.to_s
     when 'daily'
       'day'
     when 'weekly'

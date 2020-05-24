@@ -21,8 +21,8 @@ export default class extends Controller {
         },
 
         received: (data) => {
-          // Called when there's incoming data on the websocket for this channel
           console.log(data)
+          this.replaceLeaderboardHtml(data.html)
         }
       }
     )
@@ -31,5 +31,9 @@ export default class extends Controller {
   disconnect() {
     this.subscription.unsubscribe()
     console.log("live leaderboard unsubscribed: " + this.data.get("leaderboard"))
+  }
+
+  replaceLeaderboardHtml(html) {
+    this.element.innerHTML = html
   }
 }

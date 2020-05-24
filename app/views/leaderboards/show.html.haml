@@ -17,4 +17,5 @@
           family_leaderboard_path(@leaderboard.family, timeframe),
           class: nav_link_classes(link_object: timeframe.to_s, active_object: @leaderboard.timeframe)
 
-  = render partial: "leaderboard", locals: { leaderboard: @leaderboard }
+  #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
+    = render partial: "leaderboard", locals: { leaderboard: @leaderboard }

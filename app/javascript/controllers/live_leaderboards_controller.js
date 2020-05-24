@@ -5,11 +5,15 @@ import $ from "jquery"
 export default class extends Controller {
   static targets = [ "status" ]
 
+  initialize() {
+    this.leaderboard = this.data.get("leaderboard")
+  }
+
   connect() {
     this.subscription = consumer.subscriptions.create(
       {
         channel: "LiveLeaderboardsChannel",
-        leaderboard: `live_leaderboards:${this.data.get("leaderboard")}`,
+        leaderboard: `live_leaderboards:${this.leaderboard}`,
       },
       {
         connected: () => {
@@ -34,8 +38,7 @@ export default class extends Controller {
 
   disconnect() {
     this.subscription.unsubscribe()
-    console.log("live leaderboard unsubscribed: " + this.data.get("leaderboard"))
-    this.hideLiveStatus()
+    console.log("live leaderboard unsubscribed: " + this.leaderboard)
   }
 
   replaceLeaderboardHtml(html) {

@@ -20,20 +20,34 @@ export default class extends Controller {
     }
   }
 
-  initialize() {
+  connect() {
     this.leaderboard = this.data.get("leaderboard")
+
+    if (this.leaderboard === localStorage.getItem('lastLeaderboard')) {
+      // Previous subscription is getting cancelled, need to wait so it doesn't
+      // cancel ours. Brittle race condition but I don't see another way right
+      // now...
+      console.log('Waiting to connect!')
+      setTimeout(() => {
+        this.subscription = this.createSubscription(this.leaderboard)
+        localStorage.setItem('lastLeaderboard', this.leaderboard)
+      }, 1500)
+    } else {
+      this.subscription = this.createSubscription(this.leaderboard)
+      localStorage.setItem('lastLeaderboard', this.leaderboard)
+    }
   }
 
-  connect() {
-    this.subscription = consumer.subscriptions.create(
+  createSubscription(leaderboard) {
+    return consumer.subscriptions.create(
       {
         channel: "LiveLeaderboardsChannel",
-        leaderboard: `live_leaderboards:${this.leaderboard}`,
+        leaderboard: `live_leaderboards:${leaderboard}`,
       },
       {
         connected: () => {
           // Called when the subscription is ready for use on the server
-          console.log("live leaderboard connected: " + this.data.get("leaderboard"))
+          console.log("live leaderboard connected: " + leaderboard)
           this.showStatus('live')
         },
 

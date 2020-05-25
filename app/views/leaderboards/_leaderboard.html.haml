@@ -1,12 +1,12 @@
 - cache leaderboard, force: local_assigns.fetch(:bust_cache, false) do
   #leaderboard
     .leaderboard-header.row
-      .col-10
-        %h2= leaderboard.title
-      .col
+      .col-8
+        %h3= leaderboard.title
+      .col.text-right
         %span#leaderboard_connection_status.badge.badge-secondary{ data: { target: "live-leaderboards.status" } }
           Connecting...
-        %p
+        %p#leaderboard_last_updated_time
           %small
             Last updated at 
             = Time.now.strftime("%k:%M:%S")

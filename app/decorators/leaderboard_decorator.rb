@@ -3,7 +3,7 @@ class LeaderboardDecorator < ApplicationDecorator
   decorates_association :leaders, with: LeaderDecorator
 
   def title
-    "Top #{10} for #{object.family.name}: past #{timeframe_for_title}"
+    "Top #{object.family.name} reviewers #{timeframe_for_title}"
   end
 
   private
@@ -11,11 +11,11 @@ class LeaderboardDecorator < ApplicationDecorator
   def timeframe_for_title
     case object.timeframe.to_s
     when 'daily'
-      'day'
+      'today'
     when 'weekly'
-      'week'
+      'this week'
     when 'monthly'
-      'month'
+      'this month'
     end
   end
 end

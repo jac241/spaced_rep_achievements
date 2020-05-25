@@ -5,6 +5,21 @@ import $ from "jquery"
 export default class extends Controller {
   static targets = [ "status" ]
 
+  statuses = {
+    connecting: {
+      class: "badge-secondary",
+      text: "Connecting...",
+    },
+    live: {
+      class: "badge-danger",
+      text: "LIVE",
+    },
+    disconnected: {
+      class: "badge-dark",
+      text: "Disconnected",
+    }
+  }
+
   initialize() {
     this.leaderboard = this.data.get("leaderboard")
   }
@@ -19,37 +34,42 @@ export default class extends Controller {
         connected: () => {
           // Called when the subscription is ready for use on the server
           console.log("live leaderboard connected: " + this.data.get("leaderboard"))
-          this.showLiveStatus()
+          this.showStatus('live')
         },
 
         disconnected: () => {
           // Called when the subscription has been terminated by the server
-          this.hideLiveStatus()
+          this.showStatus('disconnected')
         },
 
         received: (data) => {
-          console.log(data)
+          console.log('new leaderboard data')
+
           this.replaceLeaderboardHtml(data.html)
-          this.showLiveStatus()
+          this.showStatus('live')
         }
       }
     )
   }
 
   disconnect() {
-    this.subscription.unsubscribe()
     console.log("live leaderboard unsubscribed: " + this.leaderboard)
+    this.subscription.unsubscribe()
   }
 
   replaceLeaderboardHtml(html) {
     this.element.innerHTML = html
   }
 
-  showLiveStatus() {
-    $(this.statusTarget).show()
-  }
+  showStatus(status_name) {
+    this.statusTarget.textContent = this.statuses[status_name].text;
 
-  hideLiveStatus() {
-    $(this.statusTarget).hide()
+    for (let [status, properties] of Object.entries(this.statuses)) {
+      if (this.statusTarget.classList.contains(properties.class)) {
+        this.statusTarget.classList.remove(properties.class)
+      }
+    }
+
+    this.statusTarget.classList.add(this.statuses[status_name].class);
   }
 }

@@ -8,15 +8,6 @@ module ApplicationHelper
     }.stringify_keys[flash_type.to_s] || flash_type.to_s
   end
 
-  def current_user_meta_tag
-    if user_signed_in?
-      tag.meta name: 'user-context', data: {
-        id: current_user.id,
-        token: current_user.token,
-      }
-    end
-  end
-
   def home_page?
     # FIXME why doesn't this always work???
     params[:controller] == "home" && params[:action] == "index"

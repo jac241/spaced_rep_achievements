@@ -22,7 +22,6 @@ class UserDashboard < Administrate::BaseDashboard
     admin: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    token: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -53,7 +52,6 @@ class UserDashboard < Administrate::BaseDashboard
   admin
   created_at
   updated_at
-  token
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -70,7 +68,6 @@ class UserDashboard < Administrate::BaseDashboard
   username
   announcements_last_read_at
   admin
-  token
   ].freeze
 
   # COLLECTION_FILTERS

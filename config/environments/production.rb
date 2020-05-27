@@ -113,6 +113,10 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_caching = false
+
   ActionMailer::Base.smtp_settings = {
     :user_name => Rails.application.credentials.sendgrid[:user_name],
     :password => Rails.application.credentials.sendgrid[:password],
@@ -120,6 +124,7 @@ Rails.application.configure do
     :address => 'smtp.sendgrid.net',
     :port => 465,
     :authentication => :plain,
-    :enable_starttls_auto => true
+    :enable_starttls_auto => true,
+    :tls => true,
   }
 end

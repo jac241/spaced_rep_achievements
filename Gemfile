@@ -83,3 +83,5 @@ gem 'scenic'
 gem 'draper'
 gem 'haml-rails'
 gem 'devise_token_auth'
+gem 'sendgrid-actionmailer'
+

@@ -6,7 +6,6 @@ class User < ApplicationRecord
     :rememberable, :validatable, :omniauthable, :confirmable
 
   validates :username, presence: true, uniqueness: true
-  validates :token, uniqueness: true
 
   has_many :notifications, foreign_key: :recipient_id
   has_many :services

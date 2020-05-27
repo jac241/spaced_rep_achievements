@@ -316,6 +316,7 @@ GEM
     ruby-vips (2.0.17)
       ffi (~> 1.9)
     ruby_dep (1.5.0)
+    ruby_http_client (3.5.0)
     ruby_parser (3.10.1)
       sexp_processor (~> 4.9)
     rubyzip (2.3.0)
@@ -336,6 +337,11 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    sendgrid-actionmailer (3.0.2)
+      mail (~> 2.7)
+      sendgrid-ruby (~> 6.0)
+    sendgrid-ruby (6.2.1)
+      ruby_http_client (~> 3.4)
     sexp_processor (4.10.0)
     sidekiq (6.0.6)
       connection_pool (>= 2.2.2)
@@ -429,6 +435,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   scenic
   selenium-webdriver
+  sendgrid-actionmailer
   sidekiq (~> 6.0, >= 6.0.3)
   sidekiq-cron
   sitemap_generator (~> 6.0, >= 6.0.1)

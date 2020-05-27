@@ -4,7 +4,7 @@ class User < ApplicationRecord
   #include DeviseTokenAuth::Concerns::User
   devise :masqueradable, :database_authenticatable, :registerable, :recoverable,
     :rememberable, :validatable, :omniauthable #, :confirmable
-  before_save :skip_confirmation! # need for devise token auth
+  #before_save :skip_confirmation! # need for devise token auth
 
   validates :username, presence: true, uniqueness: true
   validates :token, uniqueness: true

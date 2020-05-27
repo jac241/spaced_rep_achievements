@@ -1,5 +1,5 @@
 class Achievement < ApplicationRecord
-  belongs_to :sync
+  belongs_to :sync, optional: true
   belongs_to :medal
   belongs_to :user
 

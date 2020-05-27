@@ -18,12 +18,6 @@ Rails.application.routes.draw do
   get '/privacy', to: 'home#privacy'
   get '/terms', to: 'home#terms'
 
-  namespace :api do
-    namespace :v1 do
-      resources :syncs
-    end
-  end
-
   authenticated :user do
     resources :families, path: :games do
       resources :leaderboards
@@ -40,7 +34,17 @@ Rails.application.routes.draw do
 
   resources :notifications, only: [:index]
   resources :announcements, only: [:index]
+
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+
+  namespace :api do
+    namespace :v1 do
+      resources :syncs
+
+      mount_devise_token_auth_for 'User', at: 'auth'
+    end
+  end
+
   root to: 'home#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

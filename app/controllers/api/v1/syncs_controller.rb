@@ -11,6 +11,10 @@ module Api
         results.on(:invalid_params) { |sync| render json: sync.errors, status: :unprocessible_entity }
       end
 
+      def index
+        render json: current_user.syncs
+      end
+
       private
 
       def create_params

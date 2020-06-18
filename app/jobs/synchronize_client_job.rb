@@ -23,7 +23,13 @@ class SynchronizeClientJob < ApplicationJob
       # reviewing will just be temporary
       benchmark 'Write achievements to database' do
         ApplicationRecord.logger.silence do
-          sync.achievements.import!(achievements, on_duplicate_key_ignore: true)
+          sync.achievements.import!(
+            achievements,
+            on_duplicate_key_update: {
+              conflict_target: [:client_uuid, :client_db_id],
+              columns: [:sync_id]
+            }
+          )
         end
       end
       sync.achievements_file.purge

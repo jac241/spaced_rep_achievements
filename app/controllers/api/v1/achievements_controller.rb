@@ -1,6 +1,8 @@
 module Api
   module V1
     class AchievementsController < ApiController
+      before_action :authenticate_user!
+
       def create
         result = CreateAchievementService.call(
           create_params: create_params,

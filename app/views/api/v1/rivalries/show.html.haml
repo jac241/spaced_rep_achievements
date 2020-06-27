@@ -1,0 +1,13 @@
+%table#rivalry
+  - if @rivalry.user_ranked?
+    %td#rivalry_user
+      Score: 
+      = @rivalry.user_score
+      %br
+      Your Rank: 
+      = @rivalry.user_rank
+
+  - if @rivalry.rival
+    %td#rivalry_rival
+      Target: 
+      = "#{@rivalry.rival.username} - #{@rivalry.rival_score}"

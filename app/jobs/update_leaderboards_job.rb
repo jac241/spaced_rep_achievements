@@ -4,7 +4,11 @@ class UpdateLeaderboardsJob < ApplicationJob
   def perform
     Family.all.each do |family|
       Leaderboard.timeframes.each do |timeframe|
-        leaderboard = Leaderboard.calculate(family: family, timeframe: timeframe)
+        leaderboard = Leaderboard.calculate(
+          family: family,
+          timeframe: timeframe,
+          force_cache: true
+        )
 
         LiveLeaderboardsChannel.broadcast_to(
           leaderboard.channel,

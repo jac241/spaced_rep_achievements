@@ -1,5 +1,4 @@
 class Leaderboard
-  include ActiveModel::Serialization
   attr_accessor :leaders, :family, :timeframe
 
   def self.timeframes
@@ -11,11 +10,12 @@ class Leaderboard
       instance_cache_key(family, timeframe),
       force: force_cache
     ) do
+      Rails.logger.info("Calculating leaders...")
       new(
         leaders: Achievement.leaders_for(
           family: family,
           since: starting_date(timeframe),
-        ),
+        ).to_a,
         family: family,
         timeframe: timeframe
       )

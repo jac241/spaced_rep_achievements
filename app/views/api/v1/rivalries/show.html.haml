@@ -1,13 +1,15 @@
 %table#rivalry
-  - if @rivalry.user_ranked?
-    %td#rivalry_user
+  %td#rivalry_user
+    - if @rivalry.user_ranked?
       Score: 
       = @rivalry.user_score
       %br
       Your Rank: 
       = @rivalry.user_rank
+    - else
+      Start reviewing to become ranked!
 
   - if @rivalry.rival
     %td#rivalry_rival
-      Target: 
+      Rival: 
       = "#{@rivalry.rival.username} - #{@rivalry.rival_score}"

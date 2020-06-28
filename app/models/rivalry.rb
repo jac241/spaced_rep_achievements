@@ -35,6 +35,12 @@ class Rivalry
   def rival_entry
     if user_index && user_index > 0
       leaderboard.leaders[user_index - 1]
+    elsif user_not_ranked_yet?
+      leaderboard.leaders[-1]
     end
+  end
+
+  def user_not_ranked_yet?
+    user_index.nil? && leaderboard.leaders.present?
   end
 end

@@ -1,4 +1,6 @@
 class Leaderboard
+  MAX_COUNT = 1000
+
   attr_accessor :leaders, :family, :timeframe
 
   def self.timeframes
@@ -34,6 +36,14 @@ class Leaderboard
 
   def cache_key
     "#{family.slug}/#{timeframe}"
+  end
+
+  def first(count)
+    self.class.new(
+      leaders: leaders.to_a.first(count),
+      family: family,
+      timeframe: timeframe,
+    )
   end
 
   private

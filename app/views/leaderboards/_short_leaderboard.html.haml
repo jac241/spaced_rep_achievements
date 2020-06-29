@@ -1,0 +1,5 @@
+#leaderboard
+  .leaderboard-header.row
+    .col-12
+      %h3= leaderboard.count_limited_title(@leaderboard_entries_count)
+  = render partial: "leaderboards/table", locals: { leaderboard: leaderboard }

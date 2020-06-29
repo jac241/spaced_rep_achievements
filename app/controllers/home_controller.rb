@@ -1,9 +1,11 @@
 class HomeController < ApplicationController
   def index
+    @leaderboard_entries_count = 10
+
     result = CalculateLeadersService.call(
       family_slug: "halo-3",
-      count: 10,
-      timeframe: :day
+      count: @leaderboard_entries_count,
+      timeframe: :daily
     )
 
     result.on(:found) do |leaderboard|

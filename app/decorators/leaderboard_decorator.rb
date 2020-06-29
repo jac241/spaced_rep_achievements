@@ -6,6 +6,10 @@ class LeaderboardDecorator < ApplicationDecorator
     "Top #{object.family.name} reviewers #{timeframe_for_title}"
   end
 
+  def count_limited_title(count)
+    "Top #{count} #{object.family.name} reviewers #{timeframe_for_title}"
+  end
+
   private
 
   def timeframe_for_title

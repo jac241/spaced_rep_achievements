@@ -7,7 +7,7 @@ class LeaderboardDecorator < ApplicationDecorator
   end
 
   def count_limited_title(count)
-    "Top #{count} #{object.family.name} reviewers #{timeframe_for_title}"
+    "Top #{[count, leaders.size].min} #{object.family.name} reviewers #{timeframe_for_title}"
   end
 
   private

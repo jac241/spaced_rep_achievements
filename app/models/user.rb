@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :notifications, foreign_key: :recipient_id
   has_many :services
 
-  has_many :syncs
-  has_many :achievements
+  has_many :syncs, dependent: :destroy
+  has_many :achievements, dependent: :destroy
 end
 

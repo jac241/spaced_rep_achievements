@@ -19,6 +19,9 @@ class HomeController < ApplicationController
   def privacy
   end
 
+  def connect
+  end
+
   private
 
   def game

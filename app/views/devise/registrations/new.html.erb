@@ -12,6 +12,11 @@
 
         <div class="form-group">
           <%= f.email_field :email, autofocus: false, class: 'form-control', placeholder: "Email Address" %>
+          <small id="email_help" class="form-text text-muted">
+            We require your email to enable you to reset your password if you forget it.
+            We'll never share your email with anyone else or send you email unrelated
+            to app functionality (i.e. no newsletters or sales emails).
+          </small>
         </div>
 
         <div class="form-group">
@@ -20,6 +25,14 @@
 
         <div class="form-group">
           <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control', placeholder: 'Confirm Password' %>
+          <small id="email_help" class="form-text text-muted">
+            Your password is protected using industry standard encryption
+            (<a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt</a>). This
+            encryption is implemented via the popular
+            <a href="https://rubygems.org/gems/devise/versions/4.7.2">Devise</a>
+            library (76,000,000+ downloads) for Ruby on Rails, the web framework
+            this site is built with.
+          </small>
         </div>
 
         <div class="form-group">

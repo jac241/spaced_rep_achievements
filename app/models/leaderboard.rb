@@ -19,7 +19,7 @@ class Leaderboard
           since: starting_date(timeframe),
         ).to_a,
         family: family,
-        timeframe: timeframe
+        timeframe: timeframe,
       )
     end
   end

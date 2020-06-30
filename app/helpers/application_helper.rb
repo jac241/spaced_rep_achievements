@@ -26,4 +26,8 @@ module ApplicationHelper
   def small_medal_image_url(image_variant)
     rails_representation_path(image_variant.processed)
   end
+
+  def medal_image_path(medal)
+    image_path("medals/#{medal.family.slug}/#{medal.name.parameterize}.png")
+  end
 end

@@ -1,4 +1,4 @@
-class LeaderDecorator < ApplicationDecorator
+class EntryDecorator < ApplicationDecorator
   delegate_all
 
   def username

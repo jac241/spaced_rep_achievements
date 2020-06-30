@@ -4,10 +4,21 @@
       %th{scope: "col"} Rank
       %th{scope: "col"} Username
       %th{scope: "col"} Score
+      -#%th{scope: "col"} Top Scoring Medals
   %tbody
-    - leaderboard.leaders.each do |leader|
+    - leaderboard.entries.each do |entry|
       %tr
-        %th{scope: "row"}= leader.family_rank
-        %td= leader.username
-        %td= leader.total_score
+        %th{scope: "row"}= entry.family_rank
+        %td= entry.username
+        %td= entry.total_score
+        -#%td
+          -#- entry.top_medals_for_user.each do |top_medal|
+            -#- if top_medal.medal.image.present?
+              -#-#= image_tag small_medal_image_url(top_medal.medal.image.variant(resize_to_limit: [28, 28])), title: top_medal.medal.name
+              -#-#= image_tag rails_blob_path(top_medal.medal.image), title: top_medal.medal.name
+              -#= image_tag top_medal.medal.image, title: top_medal.medal.name
+            -#- else
+              -#= "#{top_medal.medal.name} -"
+            -#= top_medal.achievements_count
+
 

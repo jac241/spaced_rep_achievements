@@ -22,6 +22,10 @@ class Rivalry
     rival_entry.total_score
   end
 
+  def top_3_medals_for_user
+    leaderboard.entries[user_index].top_medals_for_user.first(3)
+  end
+
   private
 
   def user_entry

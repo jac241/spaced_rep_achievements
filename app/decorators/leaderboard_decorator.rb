@@ -1,6 +1,6 @@
 class LeaderboardDecorator < ApplicationDecorator
   delegate_all
-  decorates_association :leaders, with: LeaderDecorator
+  decorates_association :entries, with: EntryDecorator
 
   def title
     "Top #{object.family.name} reviewers #{timeframe_for_title}"

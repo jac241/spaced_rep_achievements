@@ -23,4 +23,7 @@ module ApplicationHelper
     classes
   end
 
+  def small_medal_image_url(image_variant)
+    rails_representation_path(image_variant.processed)
+  end
 end

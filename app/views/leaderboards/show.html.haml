@@ -17,5 +17,11 @@
           family_leaderboard_path(@leaderboard.family, timeframe),
           class: nav_link_classes(link_object: timeframe.to_s, active_object: @leaderboard.timeframe.to_s)
 
+  - if current_user.admin?
+    %p
+      - Medal.where(family: Family.first).select{ |m| m.image.present? }.each do |medal|
+        = medal.name
+        = image_tag rails_blob_path(medal.image), title: medal.name
+        = image_tag small_medal_image_url(medal.image.variant(resize_to_limit: [28, 28])), title: medal.name
   #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
     = render partial: "leaderboard", locals: { leaderboard: @leaderboard }

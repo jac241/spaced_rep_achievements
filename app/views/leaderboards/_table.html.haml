@@ -12,8 +12,10 @@
         %td= entry.username
         %td= entry.total_score
         %td
-          - entry.top_medals_for_user.each do |top_medal|
-            = top_medal.achievements_count
-            = image_tag medal_image_path(top_medal.medal), title: top_medal.medal.name, size: 28
+          - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.each do |top_medal|
+            %span
+              = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
+              x
+              = top_medal.achievements_count
 
 

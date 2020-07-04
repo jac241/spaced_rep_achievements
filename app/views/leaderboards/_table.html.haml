@@ -11,9 +11,9 @@
         %th{scope: "row"}= entry.family_rank
         %td= entry.username
         %td= entry.total_score
-        %td
+        %td.top-medals
           - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.each do |top_medal|
-            %span
+            %div.ml-1
               = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
               x
               = top_medal.achievements_count

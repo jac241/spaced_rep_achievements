@@ -1,1 +1,8 @@
 :concurrency: 2
+
+:queues:
+  - default
+  - sync
+
+:limits:
+  sync: 1

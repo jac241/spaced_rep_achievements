@@ -91,4 +91,5 @@ gem 'draper'
 gem 'haml-rails'
 gem 'devise_token_auth'
 gem 'sendgrid-actionmailer'
+gem 'sidekiq-limit_fetch'
 

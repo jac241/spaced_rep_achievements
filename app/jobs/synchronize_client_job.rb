@@ -1,7 +1,7 @@
 class SynchronizeClientJob < ApplicationJob
   include ActiveSupport::Benchmarkable
 
-  queue_as :default
+  queue_as :sync
 
   def perform(sync)
     client_uuid = sync.client_uuid # don't want to call this 20,000 times...

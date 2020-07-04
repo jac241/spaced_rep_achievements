@@ -59,6 +59,8 @@ class Leaderboard
         entry_for_user: entry_for_user,
         top_medals_for_user: top_medals_by_user_id[entry_for_user.user_id],
       )
+    end.tap do |entries|
+      Rails.logger.info("#{entries.size} leaderboard entries for #{family.slug}:#{timeframe.to_s}")
     end
   end
 

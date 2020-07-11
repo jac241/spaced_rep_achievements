@@ -22,6 +22,9 @@ class HomeController < ApplicationController
   def connect
   end
 
+  def chase_mode
+  end
+
   private
 
   def game

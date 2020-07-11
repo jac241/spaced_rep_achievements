@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get '/privacy', to: 'home#privacy'
   get '/terms', to: 'home#terms'
   get '/connect', to: 'home#connect'
+  get '/chase-mode', to: 'home#chase_mode'
 
   authenticated :user do
     resources :families, path: :games do

@@ -1,9 +1,9 @@
 RailsPerformance.setup do |config|
   config.redis    = Redis::Namespace.new("#{Rails.env}-rails-performance", redis: Redis.new)
-  config.duration = 2.hours
+  config.duration = 30.minutes
 
   config.debug    = false # currently not used>
-  config.enabled  = false
+  config.enabled  = true
 
   # protect your Performance Dashboard with HTTP BASIC password
   #config.http_basic_authentication_enabled   = false

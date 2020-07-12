@@ -10,4 +10,5 @@
           %small
             Last updated at 
             = Time.now.strftime("%k:%M:%S")
+            UTC
     = render partial: "table", locals: { leaderboard: leaderboard }

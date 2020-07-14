@@ -3,7 +3,7 @@ RailsPerformance.setup do |config|
   config.duration = 30.minutes
 
   config.debug    = false # currently not used>
-  config.enabled  = true
+  config.enabled  = false
 
   # protect your Performance Dashboard with HTTP BASIC password
   #config.http_basic_authentication_enabled   = false

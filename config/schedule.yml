@@ -1,4 +1,4 @@
 ping:
-  cron: "*/15 * * * * *"
+  cron: "*/20 * * * * *"
   class: "UpdateLeaderboardsJob"
   queue: default

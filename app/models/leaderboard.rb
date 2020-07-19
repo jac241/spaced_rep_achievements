@@ -12,7 +12,7 @@ class Leaderboard
       instance_cache_key(family, timeframe),
       force: force_cache
     ) do
-      ApplicationRecord.transaction do
+      ApplicationRecord.transaction(isolation: :repeatable_read) do
         Rails.logger.info("Calculating leaders...")
         since_datetime = starting_date(timeframe)
         new(

@@ -12,20 +12,22 @@ class Leaderboard
       instance_cache_key(family, timeframe),
       force: force_cache
     ) do
-      Rails.logger.info("Calculating leaders...")
-      since_datetime = starting_date(timeframe)
-      new(
-        leaders: Achievement.leaders_for(
+      ApplicationRecord.transaction do
+        Rails.logger.info("Calculating leaders...")
+        since_datetime = starting_date(timeframe)
+        new(
+          leaders: Achievement.leaders_for(
+            family: family,
+            since: since_datetime,
+          ).to_a,
           family: family,
-          since: since_datetime,
-        ).to_a,
-        family: family,
-        timeframe: timeframe,
-        top_medals: Achievement.top_medals_for(
-          family: family,
-          since: since_datetime,
-        ).to_a
-      )
+          timeframe: timeframe,
+          top_medals: Achievement.top_medals_for(
+            family: family,
+            since: since_datetime,
+          ).to_a
+        )
+      end
     end
   end
 

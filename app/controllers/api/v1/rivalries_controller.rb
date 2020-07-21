@@ -11,10 +11,6 @@ module Api
 
         result.on(:found) do |rivalry|
           @rivalry = rivalry
-
-          respond_to do |format|
-            format.html
-          end
         end
       end
     end

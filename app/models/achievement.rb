@@ -3,6 +3,10 @@ class Achievement < ApplicationRecord
   belongs_to :medal
   belongs_to :user
 
+  def family
+    medal.family
+  end
+
   scope :leaders_for, -> (family:, since:) do
     Achievement.select(
       %{

@@ -74,6 +74,45 @@ class Leaderboard
     delegate :achievements_count, :medal, to: :entry_for_user
   end
 
+  class Details
+    DEFAULT_FAMILY = 'halo-3'
+    DEFAULT_TIMEFRAME = :daily
+
+    attr_reader :family_slug, :timeframe
+
+    def self.from(maybe_achievement:)
+      if maybe_achievement.present?
+        new(
+          family_slug: maybe_achievement.family.slug,
+          timeframe: achievments_timeframe(maybe_achievement),
+        )
+      else
+        new(
+          family_slug: DEFAULT_FAMILY,
+          timeframe: DEFAULT_TIMEFRAME,
+        )
+      end
+    end
+
+    def self.achievments_timeframe(achievement)
+      earned_at = achievement.client_earned_at
+      if earned_at > 1.day.ago
+        :daily
+      elsif earned_at > 1.week.ago
+        :weekly
+      elsif earned_at > 1.month.ago
+        :monthly
+      else
+        :daily
+      end
+    end
+
+    def initialize(family_slug:, timeframe:)
+      @family_slug = family_slug
+      @timeframe = timeframe
+    end
+  end
+
   private
 
   def self.starting_date(timeframe)

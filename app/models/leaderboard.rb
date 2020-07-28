@@ -78,12 +78,12 @@ class Leaderboard
     DEFAULT_FAMILY = 'halo-3'
     DEFAULT_TIMEFRAME = :daily
 
-    attr_reader :family_slug, :timeframe
+    attr_reader :family, :timeframe
 
     def self.from(maybe_achievement:)
       if maybe_achievement.present?
         new(
-          family_slug: maybe_achievement.family.slug,
+          family: maybe_achievement.family,
           timeframe: achievments_timeframe(maybe_achievement),
         )
       else
@@ -107,8 +107,8 @@ class Leaderboard
       end
     end
 
-    def initialize(family_slug:, timeframe:)
-      @family_slug = family_slug
+    def initialize(family:, timeframe:)
+      @family = family
       @timeframe = timeframe
     end
   end

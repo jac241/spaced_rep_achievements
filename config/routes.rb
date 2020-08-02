@@ -21,10 +21,6 @@ Rails.application.routes.draw do
   get '/chase-mode', to: 'home#chase_mode'
 
   authenticated :user do
-    resources :families, path: :games do
-      resources :leaderboards
-    end
-
     root to: 'leaderboards#show', as: :authenticated_root
   end
 
@@ -33,6 +29,10 @@ Rails.application.routes.draw do
   end
 
   resources :leaderboards
+  resources :families, path: :games do
+    resources :leaderboards
+  end
+
 
   #resources :notifications, only: [:index]
   #resources :announcements, only: [:index]

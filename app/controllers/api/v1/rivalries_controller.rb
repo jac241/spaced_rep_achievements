@@ -1,11 +1,11 @@
 module Api
   module V1
     class RivalriesController < ApiController
-      before_action :authenticate_user!
+      before_action :auth_by_token!
 
       def show
         result = FindRivalryService.call(
-          user: current_user,
+          user: current_token_user,
           family_slug: params[:id]
         )
 

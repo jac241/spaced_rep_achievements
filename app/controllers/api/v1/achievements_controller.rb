@@ -1,12 +1,12 @@
 module Api
   module V1
     class AchievementsController < ApiController
-      before_action :authenticate_user!
+      before_action :auth_by_token!
 
       def create
         result = CreateAchievementService.call(
           create_params: create_params,
-          user: current_user
+          user: current_token_user
         )
 
         result.on(:created) do |achievement|

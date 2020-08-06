@@ -1,12 +1,12 @@
 module Api
   module V1
     class SyncsController < ApiController
-      before_action :authenticate_user!
+      before_action :auth_by_token!
 
       def create
         # save json file, launch jorb
         results = SynchronizeClientService.call(
-          user: current_user, sync_params: create_params
+          user: current_token_user, sync_params: create_params
         )
 
         results.on(:created) { |sync| render json: sync, status: :created }
@@ -14,7 +14,7 @@ module Api
       end
 
       def index
-        render json: current_user.syncs.order(created_at: :asc).last(5)
+        render json: current_token_user.syncs.order(created_at: :asc).last(5)
       end
 
       private

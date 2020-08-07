@@ -20,7 +20,7 @@ module Api
           Rails.logger.info "set user uid: #{user.uid}"
           Rails.logger.info "set user email: #{user.email}"
           if request.headers["uid"] != user.uid
-            Rails.logger.critical "WRONG USER LOADED!"
+            Rails.logger.info "WRONG USER LOADED!"
           end
         end
       end
@@ -33,7 +33,7 @@ module Api
         update_auth_header()
         Rails.logger.info "RESPONSE HEADERS uid: #{response.headers["uid"]}"
         if request.headers["uid"] != response.headers["uid"]
-          Rails.logger.critical "WRONG USER RETURNED!"
+          Rails.logger.info "WRONG USER RETURNED!"
         end
       end
     end

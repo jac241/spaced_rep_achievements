@@ -1,7 +1,7 @@
 require_relative 'boot'
 
 require 'rails/all'
-
+require_relative '../lib/middleware/uid_logging_middleware'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -22,5 +22,7 @@ module SpacedRepAcheivements
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     config.application_name = "Anki Achievements"
+
+    config.middleware.insert_before(Warden::Manager, UidLoggingMiddleware)
   end
 end

@@ -23,6 +23,6 @@ module SpacedRepAcheivements
     # the framework and any gems in your application.
     config.application_name = "Anki Achievements"
 
-    config.middleware.insert_before(Warden::Manager, UidLoggingMiddleware)
+    config.middleware.insert_after(Rails::Rack::Logger, UidLoggingMiddleware)
   end
 end

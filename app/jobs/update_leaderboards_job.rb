@@ -1,28 +1,15 @@
 class UpdateLeaderboardsJob < ApplicationJob
   queue_as :default
 
-  def perform
+  def perform(timeframe)
     Family.all.each do |family|
-      Leaderboard.timeframes.each do |timeframe|
-        leaderboard = Leaderboard.calculate(
-          family: family,
-          timeframe: timeframe,
-          force_cache: true
-        )
+      leaderboard = Leaderboard.calculate(
+        family: family,
+        timeframe: timeframe.to_sym,
+        force_cache: true
+      )
 
-        LiveLeaderboardsChannel.broadcast_to(
-          leaderboard.channel,
-          {
-            html: LeaderboardsController.render(
-              partial: 'leaderboards/leaderboard',
-              locals: {
-                leaderboard: LeaderboardDecorator.new(leaderboard),
-                bust_cache: true,
-              }
-            )
-          }
-        )
-      end
+      BroadcastLeaderboardService.call(leaderboard)
     end
   end
 end

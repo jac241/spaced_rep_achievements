@@ -1,4 +1,17 @@
-ping:
-  cron: "*/20 * * * * *"
+update_daily_leaderboards:
+  cron: "*/15 * * * * *"
   class: "UpdateLeaderboardsJob"
   queue: default
+  args: "daily"
+
+update_weekly_leaderboards:
+  cron: "* */2 * * * *"
+  class: "UpdateLeaderboardsJob"
+  queue: default
+  args: "weekly"
+
+update_monthly_leaderboards:
+  cron: "* */5 * * * *"
+  class: "UpdateLeaderboardsJob"
+  queue: default
+  args: "monthly"

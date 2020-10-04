@@ -12,7 +12,7 @@ export default class extends Controller {
     },
     live: {
       class: "badge-danger",
-      text: "LIVE",
+      text: "Connected",
     },
     disconnected: {
       class: "badge-dark",

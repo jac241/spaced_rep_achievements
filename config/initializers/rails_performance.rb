@@ -3,7 +3,7 @@ RailsPerformance.setup do |config|
   config.duration = 4.hours
 
   config.debug    = false # currently not used>
-  config.enabled  = false
+  config.enabled  = true
 
   # default path where to mount gem
   config.mount_at = '/rails/performance'

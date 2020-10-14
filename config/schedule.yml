@@ -15,3 +15,7 @@ update_monthly_leaderboards:
   class: "UpdateLeaderboardsJob"
   queue: default
   args: "monthly"
+
+delete_old_achievements:
+  cron: "0 1 * * *"
+  class: "DeleteOldAchievementsJob"

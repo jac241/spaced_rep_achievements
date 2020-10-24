@@ -1,0 +1,13 @@
+.container
+  #medals
+    - @families_with_medals.each do |family|
+      - cache family do
+        .family-medals
+          %h2= family.name
+          .medals
+            - family.medals.order(:rank).each do |medal|
+              - cache medal do
+                .medal-type
+                  = image_tag medal_image_path(medal), title: medal.name
+                  %h5.title= medal.name
+                  %p= "#{medal.score} points"

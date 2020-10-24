@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :families, path: :games do
     resources :leaderboards
   end
+  resources :medals
 
 
   #resources :notifications, only: [:index]

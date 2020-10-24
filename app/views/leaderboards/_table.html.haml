@@ -4,7 +4,9 @@
       %th{scope: "col"} Rank
       %th{scope: "col"} Username
       %th{scope: "col"} Score
-      %th{scope: "col"} Top Scoring Medals
+      %th{scope: "col"}
+        Top Scoring Medals
+        %span.float-right= link_to "Medal values", medals_path
   %tbody
     - leaderboard.entries.each do |entry|
       %tr

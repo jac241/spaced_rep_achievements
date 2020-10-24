@@ -1,0 +1,19 @@
+#medals {
+  .family-medals {
+    margin-top: 1em;
+  }
+
+  h2 {
+    margin-bottom: 0.75em;
+  }
+  .medal-type {
+    min-width: 170px;
+  }
+
+  .medals {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+}

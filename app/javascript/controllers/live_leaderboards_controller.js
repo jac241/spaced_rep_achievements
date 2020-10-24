@@ -67,8 +67,10 @@ export default class extends Controller {
   }
 
   disconnect() {
-    console.log("live leaderboard unsubscribed: " + this.leaderboard)
-    this.subscription.unsubscribe()
+    if (this.subscription) {
+      console.log("live leaderboard unsubscribed: " + this.leaderboard)
+      this.subscription.unsubscribe()
+    }
   }
 
   replaceLeaderboardHtml(html) {

@@ -15,7 +15,20 @@ class GroupsController < ApplicationController
   def show
     authorize @group
 
-    @membership_for_current_user = @group.memberships.find_by(member: current_user)
+    leaderboard_results = FindLeaderboardService.call(
+      user: current_user,
+      maybe_family_slug: params[:family_id],
+      maybe_timeframe: params[:timeframe],
+    )
+
+    leaderboard_results.on(:found) do |leaderboard|
+      @leaderboard = LeaderboardDecorator.new(
+        GroupLeaderboard.new(leaderboard, @group)
+      )
+      @families = Family.all
+      @timeframes = Leaderboard.timeframes
+      @membership_for_current_user = @group.memberships.find_by(member: current_user)
+    end
   end
 
   def edit

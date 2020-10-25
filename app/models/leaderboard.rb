@@ -113,6 +113,10 @@ class Leaderboard
     end
   end
 
+  def top_medals_by_user_id
+    top_medals.group_by(&:user_id)
+  end
+
   private
 
   def self.starting_date(timeframe)
@@ -128,9 +132,5 @@ class Leaderboard
 
   def self.instance_cache_key(family, timeframe)
     "#{family.slug}/#{timeframe}/instance"
-  end
-
-  def top_medals_by_user_id
-    top_medals.group_by(&:user_id)
   end
 end

@@ -18,12 +18,12 @@
 
   %ul.nav.nav-tabs{ role: "tablist" }
     %li.nav-item{ role: "presentation" }
-      %a#members_tab.nav-link.active{ data: { toggle: "tab" }, href: "#members", role: "tab" }
+      %a#leaderboards_tab.nav-link.active{ data: { toggle: "tab" }, href: "#leaderboards", role: "tab" }
+        Leaderboards
+    %li.nav-item{ role: "presentation" }
+      %a#members_tab.nav-link{ data: { toggle: "tab" }, href: "#members", role: "tab" }
         Members
         = "(#{@group.members.count})"
-    %li.nav-item{ role: "presentation" }
-      %a#leaderboards_tab.nav-link{ data: { toggle: "tab" }, href: "#leaderboards", role: "tab" }
-        Leaderboards
     - if policy(@group).update?
       %li.nav-item{ role: "presentation" }
         %a#membership_requests_tab.nav-link{ data: { toggle: "tab" }, href: "#membership_requests", role: "tab" }
@@ -31,7 +31,9 @@
           = "(#{@group.membership_requests.count})"
 
   .tab-content
-    #members.tab-pane.fade.show.active{ role: "tabpanel" }
+    #leaderboards.tab-pane.fade.show.active{ role: "tabpanel" }
+      = render partial: "leaderboard", locals: { families: @families, timeframes: @timeframes, leaderboard: @leaderboard }
+    #members.tab-pane.fade{ role: "tabpanel" }
       %table.table.table-borderless.table-hover
         %tbody
           - @group.memberships.each do |membership|
@@ -47,8 +49,6 @@
                       method: :delete, remote: true, class: "btn btn-danger btn-sm",
                       data: { confirm: "Are you sure you want to remove #{membership.member.username} from the group?" }
 
-    #leaderboards.tab-pane.fade{ role: "tabpanel" }
-      %h3 Leaderboards
     - if policy(@group).update?
       #membership_requests.tab-pane.fade{ role: "tabpanel" }
         %table.table.table-borderless.table-hover

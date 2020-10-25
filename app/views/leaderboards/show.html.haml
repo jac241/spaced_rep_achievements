@@ -1,21 +1,7 @@
 .container
   %h1 Leaderboards
 
-
-  .leaderboard-navigation
-    %h5 Games
-    %nav.nav.nav-pills
-      - @families.each do |family|
-        = link_to family.name,
-          family_leaderboard_path(family, @leaderboard.timeframe),
-          class: nav_link_classes(link_object: family, active_object: @leaderboard.family)
-
-    %h5 Leaderboards
-    %nav.nav.nav-pills
-      - @timeframes.each do |timeframe|
-        = link_to timeframe.to_s.titleize,
-          family_leaderboard_path(@leaderboard.family, timeframe),
-          class: nav_link_classes(link_object: timeframe.to_s, active_object: @leaderboard.timeframe.to_s)
+  = render partial: "nav", locals: { families: @families, leaderboard: @leaderboard, timeframes: @timeframes }
 
   #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
     = render partial: "leaderboard", locals: { leaderboard: @leaderboard }

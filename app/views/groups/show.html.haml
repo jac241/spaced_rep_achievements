@@ -6,8 +6,37 @@
     Admins:
     = @group.admins.pluck(:username).join(",")
 
-  %h3 Members
-  %table
-    %tbody
-      - @group.members.each do |member|
-        %tr=member.username
+  %ul.nav.nav-tabs{ role: "tablist" }
+    %li.nav-item{ role: "presentation" }
+      %a#members_tab.nav-link.active{ data: { toggle: "tab" }, href: "#members", role: "tab" }
+        Members
+        = "(#{@group.members.count})"
+    %li.nav-item{ role: "presentation" }
+      %a#leaderboards_tab.nav-link{ data: { toggle: "tab" }, href: "#leaderboards", role: "tab" }
+        Leaderboards
+    - if policy(@group).update?
+      %li.nav-item{ role: "presentation" }
+        %a#membership_requests_tab.nav-link{ data: { toggle: "tab" }, href: "#membership_requests", role: "tab" }
+          Membership Requests
+          = "(#{@group.membership_requests.count})"
+
+  .tab-content
+    #members.tab-pane.fade.show.active{ role: "tabpanel" }
+      %table.table
+        %tbody
+          - @group.members.each do |member|
+            %tr
+              %td=member.username
+    #members.tab-pane.fade{ role: "tabpanel" }
+      %h3 Leaderboards
+    - if policy(@group).update?
+      #membership_requests.tab-pane.fade{ role: "tabpanel" }
+        %table.table
+          %tbody
+            - @group.membership_requests.each do |request|
+              %tr
+                %td=request.user.username
+                %td
+                  = link_to "Approve", membership_request_approvals_path(membership_request_id: request.id),
+                    method: :post, remote: true, class: "btn btn-primary"
+

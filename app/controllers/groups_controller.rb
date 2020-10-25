@@ -13,6 +13,8 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
+
+    authorize @group
   end
 
   def create

@@ -38,6 +38,10 @@ Rails.application.routes.draw do
     resources :membership_requests
   end
 
+  resources :membership_requests do
+    resources :approvals
+  end
+
 
   #resources :notifications, only: [:index]
   #resources :announcements, only: [:index]

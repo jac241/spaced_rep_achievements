@@ -20,8 +20,8 @@
         %td= entry.total_score
         %td
           %div.top-medals
-            - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.each do |top_medal|
-              %div.top-medal.ml-1
+            - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
+              %div.top-medal
                 = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
                 x
                 = top_medal.achievements_count

@@ -1,6 +1,14 @@
 .container
-  %h1= @group.name
-  %p= @group.description
+  .row
+    .col-8
+      %h1= @group.name
+    .col-4.d-flex.align-items-center.justify-content-end
+      - if @membership_for_current_user.present?
+        = link_to "Leave group", group_membership_path(@group, @membership_for_current_user),
+          method: :delete, remote: true, class: "btn btn-danger btn-sm",
+          data: { confirm: "Are you sure you want to leave the group?" }
+  %p.text-muted= @group.public? ? "Public" : "Private"
+  %p.lead= @group.description
 
   %p
     Admins:
@@ -22,16 +30,22 @@
 
   .tab-content
     #members.tab-pane.fade.show.active{ role: "tabpanel" }
-      %table.table
+      %table.table.table-borderless.table-hover
         %tbody
-          - @group.members.each do |member|
+          - @group.memberships.each do |membership|
             %tr
-              %td=member.username
+              %td=membership.member.username
+              - if policy(@group).update? && !(membership.member == current_user)
+                %td
+                  = link_to "Remove", group_membership_path(@group, membership),
+                    method: :delete, remote: true, class: "btn btn-danger btn-sm",
+                    data: { confirm: "Are you sure you want to remove #{membership.member.username} from the group?" }
+
     #members.tab-pane.fade{ role: "tabpanel" }
       %h3 Leaderboards
     - if policy(@group).update?
       #membership_requests.tab-pane.fade{ role: "tabpanel" }
-        %table.table
+        %table.table.table-borderless.table-hover
           %tbody
             - @group.membership_requests.each do |request|
               %tr

@@ -20,4 +20,27 @@ class MembershipsController < ApplicationController
       end
     end
   end
+
+  def destroy
+    results = DestroyMembershipService.call(params: params, approving_user: current_user)
+    respond_to do |format|
+      results.on(:destroyed) do |membership|
+        format.js { redirect_to membership.group, notice: destroy_notice(membership) }
+      end
+
+      results.on(:last_admin_cannot_leave) do |membership|
+        format.js { redirect_to membership.group, notice: "Groups have to have at least one admin. Find another, then you'll be able to leave." }
+      end
+    end
+  end
+
+  private
+
+  def destroy_notice(membership)
+    if membership.member == current_user
+      "You've successfully left #{membership.group.name}"
+    else
+      "Removed #{membership.member.username} from the group."
+    end
+  end
 end

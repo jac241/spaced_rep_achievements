@@ -15,6 +15,8 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
 
     authorize @group
+
+    @membership_for_current_user = @group.memberships.find_by(member: current_user)
   end
 
   def create

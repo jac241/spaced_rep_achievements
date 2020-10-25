@@ -7,6 +7,6 @@ class Group < ApplicationRecord
   has_many :members, through: :memberships
 
   def admins
-    members.where(admin: true)
+    members.joins(:memberships).where(memberships: { admin: true }).uniq
   end
 end

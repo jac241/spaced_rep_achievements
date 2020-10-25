@@ -12,5 +12,11 @@ class User < ApplicationRecord
 
   has_many :syncs, dependent: :destroy
   has_many :achievements, dependent: :destroy
+
+  has_many :memberships, dependent: :destroy, foreign_key: "member_id"
+  has_many :groups, through: :memberships
+
+  has_many :membership_requests, dependent: :destroy
+  has_many :requested_groups, through: :membership_requests, source: :group
 end
 

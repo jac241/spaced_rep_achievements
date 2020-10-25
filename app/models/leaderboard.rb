@@ -75,7 +75,7 @@ class Leaderboard
   end
 
   class Details
-    DEFAULT_FAMILY = 'halo-3'
+    DEFAULT_FAMILY_SLUG = 'halo-3'
     DEFAULT_TIMEFRAME = :daily
 
     attr_reader :family, :timeframe
@@ -88,7 +88,7 @@ class Leaderboard
         )
       else
         new(
-          family_slug: DEFAULT_FAMILY,
+          family: Family.friendly.find(DEFAULT_FAMILY_SLUG),
           timeframe: DEFAULT_TIMEFRAME,
         )
       end

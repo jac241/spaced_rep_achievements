@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_25_103512) do
+ActiveRecord::Schema.define(version: 2020_10_25_115425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -107,10 +107,21 @@ ActiveRecord::Schema.define(version: 2020_10_25_103512) do
     t.index ["family_id"], name: "index_medals_on_family_id"
   end
 
+  create_table "membership_requests", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id", "user_id"], name: "index_membership_requests_on_group_id_and_user_id", unique: true
+    t.index ["group_id"], name: "index_membership_requests_on_group_id"
+    t.index ["user_id"], name: "index_membership_requests_on_user_id"
+  end
+
   create_table "memberships", force: :cascade do |t|
     t.boolean "admin", default: false
     t.bigint "group_id"
     t.bigint "member_id"
+    t.index ["group_id", "member_id"], name: "index_memberships_on_group_id_and_member_id", unique: true
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["member_id"], name: "index_memberships_on_member_id"
   end
@@ -179,6 +190,8 @@ ActiveRecord::Schema.define(version: 2020_10_25_103512) do
   add_foreign_key "achievements", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "medals", "families"
+  add_foreign_key "membership_requests", "groups"
+  add_foreign_key "membership_requests", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users", column: "member_id"
   add_foreign_key "services", "users"

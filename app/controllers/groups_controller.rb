@@ -1,7 +1,10 @@
 class GroupsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @groups = Group.order(:name)
+    @groups_current_user_belongs_to = current_user.groups.pluck(:id).to_set
+    @groups_current_user_requesting_to_join = current_user.requested_groups.pluck(:id).to_set
   end
 
   def new
@@ -14,7 +17,6 @@ class GroupsController < ApplicationController
 
   def create
     result = CreateGroupService.call(params: create_params, user: current_user)
-    #@group = Group.new(create_params)
 
     if result.success?
       respond_to do |format|
@@ -32,6 +34,6 @@ class GroupsController < ApplicationController
   private
 
   def create_params
-    params.require(:group).permit(:name, :description)
+    params.require(:group).permit(:name, :description, :public)
   end
 end

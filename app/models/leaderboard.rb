@@ -1,7 +1,7 @@
 class Leaderboard
   MAX_COUNT = 1000
 
-  attr_reader :leaders, :family, :timeframe, :top_medals, :online_user_ids
+  attr_reader :leaders, :family, :timeframe, :top_medals
 
   def self.timeframes
     [:daily, :weekly, :monthly]
@@ -26,18 +26,16 @@ class Leaderboard
             family: family,
             since: since_datetime,
           ).to_a,
-          online_user_ids: User.online_ids,
         )
       end
     end
   end
 
-  def initialize(leaders:, family:, timeframe:, top_medals:, online_user_ids: Set.new)
+  def initialize(leaders:, family:, timeframe:, top_medals:, online_user_ids: Set.new) # Remove online_user_ids once cache cleared
     @leaders = leaders
     @family = family
     @timeframe = timeframe
     @top_medals = top_medals
-    @online_user_ids = online_user_ids
   end
 
   def channel
@@ -63,6 +61,10 @@ class Leaderboard
     end.tap do |entries|
       Rails.logger.info("#{entries.size} leaderboard entries for #{family.slug}:#{timeframe.to_s}")
     end
+  end
+
+  def online_user_ids
+    @online_user_ids ||= User.online_ids
   end
 
   def make_entry(entry_for_user)

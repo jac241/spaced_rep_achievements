@@ -11,15 +11,11 @@ class GroupLeaderboard
   end
 
   def entries
-    @entries ||= leaders.map do |entry_for_user|
-      Leaderboard::Entry.new(
-        entry_for_user: entry_for_user,
-        top_medals_for_user: top_medals_by_user_id[entry_for_user.user_id],
-      )
-    end
+    @entries ||= leaders.map { |l| make_entry(l) }
   end
 
-  delegate :timeframe, :family, :top_medals_by_user_id, to: :leaderboard
+  delegate :timeframe, :family, :top_medals_by_user_id, :online_user_ids,
+    :make_entry, to: :leaderboard
 
   private
 

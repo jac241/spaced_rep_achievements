@@ -1,7 +1,7 @@
 class Leaderboard
   MAX_COUNT = 1000
 
-  attr_reader :leaders, :family, :timeframe, :top_medals
+  attr_reader :leaders, :family, :timeframe, :top_medals, :online_user_ids
 
   def self.timeframes
     [:daily, :weekly, :monthly]
@@ -25,17 +25,19 @@ class Leaderboard
           top_medals: Achievement.top_medals_for(
             family: family,
             since: since_datetime,
-          ).to_a
+          ).to_a,
+          online_user_ids: User.online_ids,
         )
       end
     end
   end
 
-  def initialize(leaders:, family:, timeframe:, top_medals:)
+  def initialize(leaders:, family:, timeframe:, top_medals:, online_user_ids: Set.new)
     @leaders = leaders
     @family = family
     @timeframe = timeframe
     @top_medals = top_medals
+    @online_user_ids = online_user_ids
   end
 
   def channel
@@ -57,21 +59,30 @@ class Leaderboard
 
   def entries
     @entries ||= leaders.map do |entry_for_user|
-      Entry.new(
-        entry_for_user: entry_for_user,
-        top_medals_for_user: top_medals_by_user_id[entry_for_user.user_id],
-      )
+      make_entry(entry_for_user)
     end.tap do |entries|
       Rails.logger.info("#{entries.size} leaderboard entries for #{family.slug}:#{timeframe.to_s}")
     end
   end
 
+  def make_entry(entry_for_user)
+    Entry.new(
+      entry_for_user: entry_for_user,
+      top_medals_for_user: top_medals_by_user_id[entry_for_user.user_id],
+      user_online: online_user_ids.include?(entry_for_user.user.id),
+    )
+  end
+
   class Entry
     include ActiveModel::Model
-    attr_accessor :entry_for_user, :top_medals_for_user
+    attr_accessor :entry_for_user, :top_medals_for_user, :user_online
 
     delegate :family_rank, :user, :total_score, to: :entry_for_user
     delegate :achievements_count, :medal, to: :entry_for_user
+
+    def user_online?
+      user_online
+    end
   end
 
   class Details

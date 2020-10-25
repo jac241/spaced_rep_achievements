@@ -18,5 +18,12 @@ class User < ApplicationRecord
 
   has_many :membership_requests, dependent: :destroy
   has_many :requested_groups, through: :membership_requests, source: :group
+
+  def self.online_ids
+    joins(:achievements)
+      .where("achievements.client_earned_at > ?", 5.minutes.ago)
+      .pluck(:id)
+      .to_set
+  end
 end
 

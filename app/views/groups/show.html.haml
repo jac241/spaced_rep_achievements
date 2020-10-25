@@ -13,7 +13,7 @@
   %p.lead= @group.description
 
   %p
-    Admins:
+    %b Admins:
     = @group.admins.pluck(:username).join(", ")
 
   %ul.nav.nav-tabs{ role: "tablist" }

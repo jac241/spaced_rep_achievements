@@ -1,6 +1,6 @@
 class MembershipPolicy < ApplicationPolicy
   def destroy?
-    record.group.admin?(user) && either_member_is_not_an_admin_or_member_is_themselves
+    record.member == user || (record.group.admin?(user) && !record.admin?)
   end
 
   def create?

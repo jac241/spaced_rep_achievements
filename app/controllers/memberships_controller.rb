@@ -34,6 +34,20 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def update
+    membership = Membership.find(params[:id])
+
+    authorize membership
+
+    respond_to do |format|
+      if membership.update(update_params)
+        format.js { redirect_to membership.group, notice: "#{membership.member.username}'s membership was updated." }
+      else
+        format.js { redirect_to membership.group, notice: "Unable to update membership: #{membership.errors.full_messages.join(",")}" }
+      end
+    end
+  end
+
   private
 
   def destroy_redirect_path(membership)
@@ -42,6 +56,10 @@ class MembershipsController < ApplicationController
     else
       group_path(membership.group)
     end
+  end
+
+  def update_params
+    params.require(:membership).permit(:admin)
   end
 
   def destroy_notice(membership)

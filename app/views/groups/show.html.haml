@@ -14,7 +14,7 @@
 
   %p
     Admins:
-    = @group.admins.pluck(:username).join(",")
+    = @group.admins.pluck(:username).join(", ")
 
   %ul.nav.nav-tabs{ role: "tablist" }
     %li.nav-item{ role: "presentation" }
@@ -39,11 +39,15 @@
               %td=membership.member.username
               - if policy(@group).update? && !(membership.member == current_user)
                 %td
-                  = link_to "Remove", group_membership_path(@group, membership),
-                    method: :delete, remote: true, class: "btn btn-danger btn-sm",
-                    data: { confirm: "Are you sure you want to remove #{membership.member.username} from the group?" }
+                  - unless @group.admin?(membership.member)
+                    = link_to "Make admin", group_membership_path(@group, membership, membership: { admin: true }),
+                      method: :patch, remote: true, class: "btn btn-secondary btn-sm",
+                      data: { confirm: "Are you sure you want to make #{membership.member.username} an admin?" }
+                    = link_to "Remove", group_membership_path(@group, membership),
+                      method: :delete, remote: true, class: "btn btn-danger btn-sm",
+                      data: { confirm: "Are you sure you want to remove #{membership.member.username} from the group?" }
 
-    #members.tab-pane.fade{ role: "tabpanel" }
+    #leaderboards.tab-pane.fade{ role: "tabpanel" }
       %h3 Leaderboards
     - if policy(@group).update?
       #membership_requests.tab-pane.fade{ role: "tabpanel" }

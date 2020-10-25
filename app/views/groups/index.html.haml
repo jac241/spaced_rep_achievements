@@ -5,7 +5,7 @@
         %h1 Groups
       .group-header-buttons
         = link_to "Create new group", new_group_path, class: "btn btn-primary"
-    .row.d-flex.flex-row
+    .row.d-flex.flex-row.justify-content-between
       - @groups.each do |group|
         .group-card
           .card-body.d-flex.flex-column

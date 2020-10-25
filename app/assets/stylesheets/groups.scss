@@ -1,5 +1,9 @@
 @import "bootstrap";
 
+#groups {
+  margin-bottom: 3rem;
+}
+
 .group-header {
   @extend .row;
 

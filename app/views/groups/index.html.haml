@@ -1,25 +1,26 @@
 .container
-  .group-header
-    .group-header-name
-      %h1 Groups
-    .group-header-buttons
-      = link_to "Create new group", new_group_path, class: "btn btn-primary"
-  .row.d-flex.flex-row
-    - @groups.each do |group|
-      .group-card
-        %h5.card-title= group.name
-        %h6.card-subtitle.mb-2.text-muted
-          = group.public? ? "Public" : "Private"
-        %p.card-text= group.description
-        - if group.public?
-          = link_to "View", group_path(group), class: "btn btn-success"
-          - unless @groups_current_user_belongs_to.include?(group.id)
-            = link_to "Join group!", group_memberships_path(group_id: group.id), method: :post, remote: true, class: "btn btn-primary"
-        - else
-          - if @groups_current_user_belongs_to.include?(group.id)
+  #groups
+    .group-header
+      .group-header-name
+        %h1 Groups
+      .group-header-buttons
+        = link_to "Create new group", new_group_path, class: "btn btn-primary"
+    .row.d-flex.flex-row
+      - @groups.each do |group|
+        .group-card
+          %h5.card-title= group.name
+          %h6.card-subtitle.mb-2.text-muted
+            = group.public? ? "Public" : "Private"
+          %p.card-text= group.description
+          - if group.public?
             = link_to "View", group_path(group), class: "btn btn-success"
-          - elsif @groups_current_user_requesting_to_join.include?(group.id)
-            %p.font-italic.font-weight-light Requested to join
+            - unless @groups_current_user_belongs_to.include?(group.id)
+              = link_to "Join group!", group_memberships_path(group_id: group.id), method: :post, remote: true, class: "btn btn-primary"
           - else
-            = link_to "Request to join group", group_membership_requests_path(group_id: group.id), method: :post, remote: true, class: "btn btn-secondary"
+            - if @groups_current_user_belongs_to.include?(group.id)
+              = link_to "View", group_path(group), class: "btn btn-success"
+            - elsif @groups_current_user_requesting_to_join.include?(group.id)
+              %p.font-italic.font-weight-light Requested to join
+            - else
+              = link_to "Request to join group", group_membership_requests_path(group_id: group.id), method: :post, remote: true, class: "btn btn-secondary"
 

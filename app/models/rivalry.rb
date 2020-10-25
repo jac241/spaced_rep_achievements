@@ -22,8 +22,16 @@ class Rivalry
     rival_entry.total_score
   end
 
+  def rival_online?
+    leaderboard.online_user_ids.include?(rival.try(:id))
+  end
+
   def top_3_medals_for_user
     leaderboard.entries[user_index].top_medals_for_user.first(3)
+  end
+
+  def rival_display_text
+    "#{rival.username} - #{rival_score}"
   end
 
   private

@@ -12,4 +12,8 @@
   - if @rivalry.rival
     %td#rivalry_rival
       Rival: 
-      = "#{@rivalry.rival.username} - #{@rivalry.rival_score}"
+      - if @rivalry.rival_online?
+        %span{ title: "Online", style: 'color: #0275d8;' }
+          = @rivalry.rival_display_text
+      - else
+        = @rivalry.rival_display_text

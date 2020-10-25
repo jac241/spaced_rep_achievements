@@ -11,9 +11,17 @@ require("local-time").start()
 
 window.Rails = Rails
 
+import $ from "jquery"
+
+global.$ = $
+window.$ = $
+
 import 'bootstrap'
 import 'data-confirm-modal'
 import "controllers"
+
+import '@client-side-validations/client-side-validations' // must be after turbolinks#start()
+import '@client-side-validations/simple-form/dist/simple-form.bootstrap4'
 
 $(document).on("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()

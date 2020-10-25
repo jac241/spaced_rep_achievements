@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_220727) do
+ActiveRecord::Schema.define(version: 2020_10_25_103512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -86,6 +86,15 @@ ActiveRecord::Schema.define(version: 2020_10_24_220727) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "public", default: false
+    t.index ["name"], name: "index_groups_on_name", unique: true
+  end
+
   create_table "medals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "client_medal_id", null: false
@@ -96,6 +105,14 @@ ActiveRecord::Schema.define(version: 2020_10_24_220727) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["family_id"], name: "index_medals_on_family_id"
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.boolean "admin", default: false
+    t.bigint "group_id"
+    t.bigint "member_id"
+    t.index ["group_id"], name: "index_memberships_on_group_id"
+    t.index ["member_id"], name: "index_memberships_on_member_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -162,6 +179,8 @@ ActiveRecord::Schema.define(version: 2020_10_24_220727) do
   add_foreign_key "achievements", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "medals", "families"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users", column: "member_id"
   add_foreign_key "services", "users"
   add_foreign_key "syncs", "users"
 end

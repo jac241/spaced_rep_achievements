@@ -1,0 +1,11 @@
+.container
+  .row.justify-content-center
+    .col-8
+      %h1 Groups
+    .col-4.d-flex.align-items-center
+      = link_to "Create new group", new_group_path, class: "btn btn-primary"
+  .row.d-flex.flex-row
+    - @groups.each do |group|
+      .group-card
+        %h5.card-title= group.name
+        %p.card-text= group.description

@@ -1,0 +1,13 @@
+.container
+  %h1= @group.name
+  %p= @group.description
+
+  %p
+    Admins:
+    = @group.admins.pluck(:username).join(",")
+
+  %h3 Members
+  %table
+    %tbody
+      - @group.members.each do |member|
+        %tr=member.username

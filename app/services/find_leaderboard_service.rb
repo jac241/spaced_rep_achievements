@@ -1,6 +1,5 @@
 class FindLeaderboardService
   include FlexibleService
-  LeaderboardDetails = Struct.new(:family_slug, :timeframe, keyword_init: true)
 
   def initialize(calculate_leaderboard: CalculateLeadersService)
     @calculate_leaderboard = calculate_leaderboard

@@ -91,3 +91,6 @@ gem 'sidekiq-limit_fetch'
 
 gem "kaminari", ">= 1.2.1"
 
+gem 'simple_form'
+gem 'client_side_validations'
+gem 'client_side_validations-simple_form'

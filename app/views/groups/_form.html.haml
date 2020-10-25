@@ -1,0 +1,5 @@
+= simple_form_for group, remote: true, validate: true do |f|
+  = f.input :name
+  = f.input :public, hint: "Anyone can join public groups. If you make the group private, people will request to join."
+  = f.input :description
+  = f.button :submit, class: "btn-primary", disable_with: "Creating..."

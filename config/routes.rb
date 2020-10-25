@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :leaderboards
   end
   resources :medals
+  resources :groups
 
 
   #resources :notifications, only: [:index]

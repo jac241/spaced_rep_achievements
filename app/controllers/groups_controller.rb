@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_group, only: [:show, :edit, :update]
 
   def index
     @groups = Group.order(:name)
@@ -12,11 +13,25 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:id])
-
     authorize @group
 
     @membership_for_current_user = @group.memberships.find_by(member: current_user)
+  end
+
+  def edit
+    authorize @group
+  end
+
+  def update
+    authorize @group
+
+    respond_to do |format|
+      if @group.update(update_params)
+        format.js { redirect_to @group, notice: "Group successfully updated!" }
+      else
+        format.js { render :edit }
+      end
+    end
   end
 
   def create
@@ -37,7 +52,15 @@ class GroupsController < ApplicationController
 
   private
 
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
   def create_params
     params.require(:group).permit(:name, :description, :public)
+  end
+
+  def update_params
+    create_params
   end
 end

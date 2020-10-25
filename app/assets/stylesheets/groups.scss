@@ -1,5 +1,24 @@
 @import "bootstrap";
 
+.group-header {
+  @extend .row;
+
+  .group-header-name {
+    @extend .col-8;
+  }
+
+  .group-header-buttons {
+    @extend .col-4;
+    @extend .d-flex;
+    @extend .align-items-center;
+    @extend .justify-content-end;
+
+    .action-btn {
+      margin-left: 5px;
+    }
+  }
+}
+
 .group-card {
   @extend .card;
 

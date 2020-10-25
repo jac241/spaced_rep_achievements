@@ -1,11 +1,13 @@
 .container
-  .row
-    .col-8
+  .group-header
+    .group-header-name
       %h1= @group.name
-    .col-4.d-flex.align-items-center.justify-content-end
+    .group-header-buttons
+      - if policy(@group).edit?
+        = link_to "Edit", edit_group_path(@group), class: "action-btn btn btn-primary btn-sm"
       - if @membership_for_current_user.present?
         = link_to "Leave group", group_membership_path(@group, @membership_for_current_user),
-          method: :delete, remote: true, class: "btn btn-danger btn-sm",
+          method: :delete, remote: true, class: "action-btn btn btn-danger btn-sm",
           data: { confirm: "Are you sure you want to leave the group?" }
   %p.text-muted= @group.public? ? "Public" : "Private"
   %p.lead= @group.description

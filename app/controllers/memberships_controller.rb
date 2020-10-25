@@ -25,7 +25,7 @@ class MembershipsController < ApplicationController
     results = DestroyMembershipService.call(params: params, approving_user: current_user)
     respond_to do |format|
       results.on(:destroyed) do |membership|
-        format.js { redirect_to membership.group, notice: destroy_notice(membership) }
+        format.js { redirect_to destroy_redirect_path(membership), notice: destroy_notice(membership) }
       end
 
       results.on(:last_admin_cannot_leave) do |membership|
@@ -35,6 +35,14 @@ class MembershipsController < ApplicationController
   end
 
   private
+
+  def destroy_redirect_path(membership)
+    if membership.member == current_user
+      groups_path
+    else
+      group_path(membership.group)
+    end
+  end
 
   def destroy_notice(membership)
     if membership.member == current_user

@@ -17,6 +17,10 @@
               = entry.username
           - else
             = entry.username
+          - entry.user_groups_where_tag_present.each do |group|
+            %a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
+              = group.tag
+
         %td= entry.total_score
         %td
           %div.top-medals

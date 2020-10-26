@@ -72,15 +72,29 @@ class Leaderboard
       entry_for_user: entry_for_user,
       top_medals_for_user: top_medals_by_user_id[entry_for_user.user_id],
       user_online: online_user_ids.include?(entry_for_user.user.id),
+      user_groups: groups_by_user_id.fetch(entry_for_user.user_id, []),
     )
+  end
+
+  def groups_by_user_id
+    @groups_by_user_id ||= Membership
+      .select(:member_id, :group_id)
+      .includes(:group)
+      .where(member_id: leaders.map(&:user_id))
+      .group_by { |m| m.member_id }
+      .transform_values { |m| m.map(&:group) }
   end
 
   class Entry
     include ActiveModel::Model
-    attr_accessor :entry_for_user, :top_medals_for_user, :user_online
+    attr_accessor :entry_for_user, :top_medals_for_user, :user_online, :user_groups
 
     delegate :family_rank, :user, :total_score, to: :entry_for_user
     delegate :achievements_count, :medal, to: :entry_for_user
+
+    def user_groups_where_tag_present
+      user_groups.select { |g| g.tag.present? }
+    end
 
     def user_online?
       user_online

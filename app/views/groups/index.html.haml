@@ -9,7 +9,11 @@
       - @groups.each do |group|
         .group-card
           .card-body.d-flex.flex-column
-            %h5.card-title= group.name
+            %h5.card-title{ class: group.tag.present? ? "mb-1" : "" }
+              = group.name
+            - if group.tag.present?
+              %h6.mb-3
+                = render "tag", group: group
             %h6.card-subtitle.mb-2.text-muted
               = group.public? ? "Public" : "Private"
             %p.card-text= group.description

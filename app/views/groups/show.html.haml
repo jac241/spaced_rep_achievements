@@ -3,8 +3,7 @@
     .group-header-name
       %h1= @group.name
       - if @group.tag.present?
-        %span.badge.badge-pill{ style: "background-color: #{@group.color}", class: @group.light? ? "text-light" : "text-dark" }
-          = @group.tag
+        = render "tag", group: @group
     .group-header-buttons
       - if policy(@group).edit?
         = link_to "Edit", edit_group_path(@group), class: "action-btn btn btn-primary btn-sm"

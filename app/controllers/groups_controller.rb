@@ -70,7 +70,9 @@ class GroupsController < ApplicationController
   end
 
   def create_params
-    params.require(:group).permit(:name, :description, :public)
+    params.require(:group).permit(
+      :name, :description, :public, :tag, :color, :tag_text_color
+    )
   end
 
   def update_params

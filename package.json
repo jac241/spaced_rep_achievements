@@ -9,6 +9,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.2.2",
     "bootstrap": "^4.4.1",
+    "bootstrap-colorpicker": "^3.2.0",
     "data-confirm-modal": "^1.6.2",
     "expose-loader": "^0.7.5",
     "jquery": "^3.5.0",

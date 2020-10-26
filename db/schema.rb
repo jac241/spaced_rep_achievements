@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_25_115425) do
+ActiveRecord::Schema.define(version: 2020_10_26_134039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -92,6 +92,9 @@ ActiveRecord::Schema.define(version: 2020_10_25_115425) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "public", default: false
+    t.string "tag"
+    t.string "color", default: "#0275d8", null: false
+    t.integer "tag_text_color", default: 0, null: false
     t.index ["name"], name: "index_groups_on_name", unique: true
   end
 

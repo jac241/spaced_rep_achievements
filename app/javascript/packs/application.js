@@ -23,9 +23,13 @@ import "controllers"
 import '@client-side-validations/client-side-validations' // must be after turbolinks#start()
 import '@client-side-validations/simple-form/dist/simple-form.bootstrap4'
 
+import 'bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js'
+
 $(document).on("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
   $('[data-toggle="popover"]').popover()
+
+  $("#group_color_picker").colorpicker({ })
 })
 
 $(document).on("turbolinks:before-cache", () => {

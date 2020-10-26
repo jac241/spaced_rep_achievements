@@ -1,5 +1,13 @@
 = simple_form_for group, remote: true, validate: true do |f|
   = f.input :name
   = f.input :public, hint: "Anyone can join public groups. If you make the group private, people will request to join."
+  = f.input :tag, hint: "Max 6 characters. Will be shown on leaderboard next to usernames."
+  = f.input :color, hint: "Choose a color for the tag." do
+    #group_color_picker.input-group
+      = f.input_field :color, class: "form-control"
+      %span.input-group-append
+        %span.input-group-text.colorpicker-input-addon
+          %i
+  = f.input :tag_text_color, collection: Group.tag_text_colors.keys, hint: "Light or dark color text for the tag"
   = f.input :description
   = f.button :submit, class: "btn-primary", disable_with: "Creating..."

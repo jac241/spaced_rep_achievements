@@ -25,6 +25,11 @@ h1.form-header {
   margin-bottom: 0.35em
 }
 
+.main {
+  @extend .container;
+  margin-bottom: 90px; // 1.5 * footer height
+}
+
 @import "leaderboards";
 @import "medals";
 @import "groups";

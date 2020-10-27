@@ -1,7 +1,20 @@
-.container
+.main
   %h1 Leaderboards
 
   = render partial: "nav", locals: { families: @families, leaderboard: @leaderboard, timeframes: @timeframes }
 
   #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
     = render partial: "leaderboard", locals: { leaderboard: @leaderboard }
+
+  .toast{ style: "position: absolute; top: 60px; right: 4px;", data: { controller: "group-toast" } }
+    .toast-header
+      %strong.mr-auto New Feature: Groups!
+      %button{ type: "button", class: "ml-2 mb-1 close", data: { dismiss: "toast", target: 'group-toast.dismissButton' }, aria: { label: "Close" } }
+        %span{ aria: { hidden: "true" } }
+          &times;
+    .toast-body
+      Check out the different groups available
+      %a{ href: groups_path } here.
+      Joining will show a badge next to your name on the leaderboard,
+      and each group has it's own leaderboard within the group page.
+      You can also create your own groups if you don't see the one you want!

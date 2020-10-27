@@ -29,7 +29,6 @@ $(document).on("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
   $('[data-toggle="popover"]').popover()
 
-  $("#group_color_picker").colorpicker({ })
 })
 
 $(document).on("turbolinks:before-cache", () => {

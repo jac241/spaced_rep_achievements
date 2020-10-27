@@ -3,7 +3,7 @@
   = f.input :public, hint: "Anyone can join public groups. If you make the group private, people will request to join."
   = f.input :tag, hint: "Max 6 characters. Will be shown on leaderboard next to usernames."
   = f.input :color, hint: "Choose a color for the tag." do
-    #group_color_picker.input-group
+    #group_color_picker.input-group{ data: { controller: "color-picker" } }
       = f.input_field :color, class: "form-control"
       %span.input-group-append
         %span.input-group-text.colorpicker-input-addon

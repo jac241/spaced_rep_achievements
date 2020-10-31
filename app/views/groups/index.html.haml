@@ -30,9 +30,6 @@
               - elsif @groups_current_user_requesting_to_join.include?(group.id)
                 %p.font-italic.font-weight-light Requested to join
               - else
-                = link_to "Request to join group", group_membership_requests_path(group_id: group.id),
-                  method: :post, remote: true,
-                  class: "mt-auto btn btn-secondary"
                 = link_to "Request to join group", new_group_membership_request_path(group_id: group.id),
                   remote: true, class: "mt-auto btn btn-secondary",
                   data: { toggle: "modal", target: "#membership_request_modal" }

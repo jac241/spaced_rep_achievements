@@ -1,10 +1,12 @@
 class CreateMembershipRequestService
   include FlexibleService
 
-  def call(params:, user:)
+  def call(group_id:, params:, user:)
     membership_request = MembershipRequest.create!(
-      group: Group.find(params[:group_id]),
-      user: user
+      params.merge(
+        group: Group.find(group_id),
+        user: user,
+      )
     )
     success(:created, membership_request)
   rescue ActiveRecord::RecordNotUnique

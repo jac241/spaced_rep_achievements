@@ -1,0 +1,17 @@
+.modal-dialog{ role: "document" }
+  .modal-content
+    .modal-header
+      %h5.modal-title
+        Request to join
+        = membership_request.group.name
+      %button.close{ data: { dismiss: "modal" } , aria: { hidden: "true" } }
+        %span
+          &times;
+    = simple_form_for [membership_request.group, membership_request], remote: true, validate: true do |f|
+      .modal-body
+        = f.input :message
+      .modal-footer
+        %button.btn.btn-secondary{ data: { dismiss: "modal" } }
+          Close
+        = f.button :submit, "Send Request!", class: "btn-primary", data: { disable_with: "Sending..." }
+

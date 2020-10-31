@@ -17,18 +17,20 @@
               = entry.username
           - else
             = entry.username
-          - entry.user_groups_where_tag_present.each do |group|
-            = cache group do
-              %a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
-                = group.tag
+          = cache ["users_groups", entry.user_groups_where_tag_present.map(&:id), entry.user_groups_where_tag_present.max { |g| g.updated_at }] do
+            - entry.user_groups_where_tag_present.each do |group|
+              = cache group do
+                %a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
+                  = group.tag
 
         %td= entry.total_score
         %td
-          %div.top-medals
-            - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
-              %div.top-medal
-                = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
-                x
-                = top_medal.achievements_count
+          = cache entry.top_medals_cache_key do
+            %div.top-medals
+              - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
+                %div.top-medal
+                  = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
+                  x
+                  = top_medal.achievements_count
 
 

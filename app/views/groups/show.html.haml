@@ -54,10 +54,16 @@
     - if policy(@group).update?
       #membership_requests.tab-pane.fade{ role: "tabpanel" }
         %table.table.table-borderless.table-hover
+          %thead
+            %tr
+              %th User
+              %th Message
+              %th Actions
           %tbody
             - @group.membership_requests.each do |request|
               %tr
                 %td=request.user.username
+                %td=request.message
                 %td
                   = link_to "Approve", membership_request_approvals_path(membership_request_id: request.id),
                     method: :post, remote: true, class: "btn btn-primary"

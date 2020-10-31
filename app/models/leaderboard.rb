@@ -93,11 +93,25 @@ class Leaderboard
     delegate :achievements_count, :medal, to: :entry_for_user
 
     def user_groups_where_tag_present
-      user_groups.select { |g| g.tag.present? }
+      @user_groups_where_tag_present ||= user_groups.select { |g| g.tag.present? }
     end
 
     def user_online?
       user_online
+    end
+
+    def top_medals_cache_key
+      ["top_medals", user, top_medal_ids, top_medal_scores]
+    end
+
+    private
+
+    def top_medal_ids
+      top_medals_for_user.map(&:medal).map(&:id)
+    end
+
+    def top_medal_scores
+      top_medals_for_user.map(&:total_score)
     end
   end
 

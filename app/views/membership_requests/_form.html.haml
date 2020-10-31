@@ -1,0 +1,3 @@
+= simple_form_for membership_request, remote: true, validate: true do |f|
+  = f.input :message
+  = f.button :submit, "Send Request!", class: "btn-primary", data: { disable_with: "Sending..." }

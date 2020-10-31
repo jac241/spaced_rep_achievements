@@ -1,18 +1,14 @@
 class MembershipPolicy < ApplicationPolicy
   def destroy?
-    record.member == user || (record.group.admin?(user) && !record.admin?)
+    record.member == user || (record.group.admin?(user) && !record.admin?) || super
   end
 
   def create?
-    if record.public?
-      true
-    else
-      record.admin?(user)
-    end
+    record.public? || record.admin?(user) || super
   end
 
   def update?
-    record.group.admin?(user) && either_member_is_not_an_admin_or_member_is_themselves
+    record.group.admin?(user) && either_member_is_not_an_admin_or_member_is_themselves || super
   end
 
   private

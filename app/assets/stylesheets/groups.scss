@@ -30,7 +30,12 @@
   margin: 10px;
   padding: 20px;
 
+  .card-text {
+    flex: 1;
+  }
+
   .btn {
     margin-bottom: 5px;
+    width: 100%;
   }
 }

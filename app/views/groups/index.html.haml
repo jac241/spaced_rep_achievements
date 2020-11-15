@@ -17,22 +17,23 @@
             %h6.card-subtitle.mb-2.text-muted
               = group.public? ? "Public" : "Private"
             %p.card-text= group.description
-            - if group.public?
-              - unless @groups_current_user_belongs_to.include?(group.id)
-                = link_to "Join group!", group_memberships_path(group_id: group.id),
-                  method: :post, remote: true,
-                  class: "mt-auto btn btn-primary"
-              = link_to "View", group_path(group), class: "mt-auto btn btn-success"
-            - else
-              - if @groups_current_user_belongs_to.include?(group.id)
-                = link_to "View", group_path(group),
-                  class: "mt-auto btn btn-success"
-              - elsif @groups_current_user_requesting_to_join.include?(group.id)
-                %p.font-italic.font-weight-light Requested to join
+            .group-action-buttons
+              - if group.public?
+                - unless @groups_current_user_belongs_to.include?(group.id)
+                  = link_to "Join group!", group_memberships_path(group_id: group.id),
+                    method: :post, remote: true,
+                    class: "mt-auto btn btn-primary"
+                = link_to "View", group_path(group), class: "mt-auto btn btn-success"
               - else
-                = link_to "Request to join group", new_group_membership_request_path(group_id: group.id),
-                  remote: true, class: "mt-auto btn btn-secondary",
-                  data: { toggle: "modal", target: "#membership_request_modal" }
+                - if @groups_current_user_belongs_to.include?(group.id)
+                  = link_to "View", group_path(group),
+                    class: "mt-auto btn btn-success"
+                - elsif @groups_current_user_requesting_to_join.include?(group.id)
+                  %p.font-italic.font-weight-light Requested to join
+                - else
+                  = link_to "Request to join group", new_group_membership_request_path(group_id: group.id),
+                    remote: true, class: "mt-auto btn btn-secondary",
+                    data: { toggle: "modal", target: "#membership_request_modal" }
 
 #membership_request_modal.modal{ role: "dialog", aria: { hidden: true } }
 

@@ -21,6 +21,12 @@ export default class extends Controller {
   }
 
   connect() {
+    if (!this.isTurbolinksPreview) {
+      this.subscribeToLeaderboard()
+    }
+  }
+
+  subscribeToLeaderboard() {
     this.leaderboard = this.data.get("leaderboard")
 
     if (this.leaderboard === localStorage.getItem('lastLeaderboard')) {
@@ -71,6 +77,8 @@ export default class extends Controller {
       console.log("live leaderboard unsubscribed: " + this.leaderboard)
       this.subscription.unsubscribe()
     }
+
+    this.showStatus('disconnected')
   }
 
   replaceLeaderboardHtml(html) {
@@ -87,5 +95,9 @@ export default class extends Controller {
     }
 
     this.statusTarget.classList.add(this.statuses[status_name].class);
+  }
+
+  get isTurbolinksPreview() {
+    return document.documentElement.hasAttribute("data-turbolinks-preview");
   }
 }

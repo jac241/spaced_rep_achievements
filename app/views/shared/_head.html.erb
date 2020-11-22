@@ -10,3 +10,7 @@
 <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
 <%= favicon_link_tag asset_path('icons8-trophy-16.png') %>
+
+<% if content_for? :head %>
+  <%= yield :head %>
+<% end %>

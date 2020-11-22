@@ -10,4 +10,4 @@
           %i
   = f.input :tag_text_color, collection: Group.tag_text_colors.keys, hint: "Light or dark color text for the tag"
   = f.input :description
-  = f.button :submit, class: "btn-primary", disable_with: "Creating..."
+  = f.button :submit, class: "btn-primary", data: { disable_with: "Creating..." }

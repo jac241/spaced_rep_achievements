@@ -6,7 +6,7 @@ class MembershipsController < ApplicationController
 
     respond_to do |format|
       results.on(:created) do |membership|
-        format.js { redirect_to membership.group, notice: "Successfully joined group!" }
+        format.js { redirect_to membership.group, notice: "Successfully joined group!", turbolinks: "advance" }
       end
 
       results.on(:invalid_params) do |membership|

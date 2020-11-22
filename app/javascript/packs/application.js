@@ -10,6 +10,7 @@ require("channels")
 require("local-time").start()
 
 window.Rails = Rails
+window.Turbolinks = Turbolinks
 
 import $ from "jquery"
 

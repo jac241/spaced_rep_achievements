@@ -4,13 +4,15 @@
     - families.each do |family|
       = link_to family.name,
         group_path(leaderboard.group, family_id: family.id, timeframe: leaderboard.timeframe),
-        class: nav_link_classes(link_object: family, active_object: leaderboard.family)
+        class: nav_link_classes(link_object: family, active_object: leaderboard.family),
+        data: { turbolinks_scroll: false }
 
   %h5 Leaderboards
   %nav.nav.nav-pills
     - timeframes.each do |timeframe|
       = link_to timeframe.to_s.titleize,
         group_path(leaderboard.group, family_id: leaderboard.family.id, timeframe: timeframe),
-        class: nav_link_classes(link_object: timeframe.to_s, active_object: leaderboard.timeframe.to_s)
+        class: nav_link_classes(link_object: timeframe.to_s, active_object: leaderboard.timeframe.to_s),
+        data: { turbolinks_scroll: false }
 
 = render partial: "leaderboards/table", locals: { leaderboard: leaderboard }

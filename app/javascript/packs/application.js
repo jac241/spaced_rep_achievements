@@ -39,7 +39,7 @@ $(document).on("turbolinks:before-cache", () => {
 
 window.Turbolinks.scroll = {};
 
-document.addEventListener("turbolinks:load", ()=> {
+document.addEventListener("turbolinks:render", ()=> {
 
   const elements = document.querySelectorAll("[data-turbolinks-scroll]");
 

@@ -165,4 +165,7 @@ upstream {{ $.APP }}-{{ $upstream_port }} {
   server {{ $listener_ip }}:{{ $upstream_port }};{{ end }}
 }
 # {{ $.DOKKU_APP_ACWS_LISTENERS }}
+upstream {{ $.APP }}-ws-{{ $upstream_port}} {
+  server {{ $.DOKKU_APP_ACWS_LISTENERS }}
+}
 {{ end }}{{ end }}

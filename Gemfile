@@ -98,3 +98,5 @@ gem 'client_side_validations-simple_form'
 gem 'pundit'
 
 gem "permessage_deflate", "~> 0.1.4"
+
+gem "anycable-rails", "~> 1.0"

@@ -37,4 +37,4 @@ test:
 
 production:
   <<: *default
-  rpc_host: "sra.acgrpc:5000"
+  rpc_host: "0.0.0.0:5000"

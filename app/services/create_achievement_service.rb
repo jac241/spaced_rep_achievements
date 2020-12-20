@@ -15,7 +15,9 @@ class CreateAchievementService
 
     ApplicationRecord.transaction do
       achievement.save!
+
       upsert_leaderboard_entries!(user, achievement.medal.family, achievement.medal.score)
+      upsert_medal_statistics!(user, achievement.medal.family, achievement.medal)
       create_achievement_expirations!(achievement)
     end
 
@@ -27,6 +29,18 @@ class CreateAchievementService
       entry = leaderboard.entry_for_user(user)
       entry.adjust_score(score)
       entry.save!
+    end
+  end
+
+  def upsert_medal_statistics!(user, family, medal)
+    family.reified_leaderboards.find_each do |leaderboard|
+      stats = MedalStatistic.find_or_initialize_by(
+        user: user,
+        reified_leaderboard: leaderboard,
+        medal: medal
+      )
+      stats.add_medal(medal)
+      stats.save!
     end
   end
 

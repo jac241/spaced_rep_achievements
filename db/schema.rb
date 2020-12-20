@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_20_143839) do
+ActiveRecord::Schema.define(version: 2020_12_20_180008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -120,6 +120,21 @@ ActiveRecord::Schema.define(version: 2020_12_20_143839) do
     t.index ["name"], name: "index_groups_on_name", unique: true
   end
 
+  create_table "medal_statistics", force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "reified_leaderboard_id"
+    t.uuid "medal_id"
+    t.integer "count", default: 0, null: false
+    t.integer "score", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["medal_id"], name: "index_medal_statistics_on_medal_id"
+    t.index ["reified_leaderboard_id"], name: "index_medal_statistics_on_reified_leaderboard_id"
+    t.index ["score"], name: "index_medal_statistics_on_score"
+    t.index ["user_id", "reified_leaderboard_id", "medal_id"], name: "idx_med_stats_on_user_lb_medal", unique: true
+    t.index ["user_id"], name: "index_medal_statistics_on_user_id"
+  end
+
   create_table "medals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "client_medal_id", null: false
@@ -226,6 +241,9 @@ ActiveRecord::Schema.define(version: 2020_12_20_143839) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "entries", "reified_leaderboards"
   add_foreign_key "entries", "users"
+  add_foreign_key "medal_statistics", "medals"
+  add_foreign_key "medal_statistics", "reified_leaderboards"
+  add_foreign_key "medal_statistics", "users"
   add_foreign_key "medals", "families"
   add_foreign_key "membership_requests", "groups"
   add_foreign_key "membership_requests", "users"

@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :syncs, dependent: :destroy
   has_many :achievements, dependent: :destroy
   has_many :entries, dependent: :destroy
+  has_many :medal_statistics, dependent: :destroy
 
   has_many :memberships, dependent: :destroy, foreign_key: "member_id"
   has_many :groups, through: :memberships

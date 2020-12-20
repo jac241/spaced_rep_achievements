@@ -33,10 +33,17 @@ describe "Creating achievements" do
           expect(user.achievements.count).to be 1
         end
 
-        it "should update that user's leaderboard entry" do
+        it "should update that user's leaderboard entries" do
           post!
           entry = user.entries.where(reified_leaderboard: leaderboard).first
           expect(entry.score).to eq medal.score
+        end
+
+        it "should update that user's medal statistic" do
+          post!
+          medal_statistic = user.medal_statistics.where(reified_leaderboard: leaderboard).first
+          expect(medal_statistic.count).to eq 1
+          expect(medal_statistic.score).to eq medal.score
         end
 
         context "multiple leaderboards" do

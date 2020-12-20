@@ -12,6 +12,13 @@ class LeaderboardsController < ApplicationController
       @leaderboard = LeaderboardDecorator.new(leaderboard)
       @families = Family.all
       @timeframes = Leaderboard.timeframes
+
+      if current_user.admin?
+        @reified_leaderboard = ReifiedLeaderboard.includes(entries: :user).find_by(
+          family: leaderboard.family,
+          timeframe: leaderboard.timeframe
+        )
+      end
     end
   end
 end

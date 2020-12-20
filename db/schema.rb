@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_31_041657) do
+ActiveRecord::Schema.define(version: 2020_12_19_221400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -65,6 +65,18 @@ ActiveRecord::Schema.define(version: 2020_10_31_041657) do
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "user_id"
+    t.uuid "reified_leaderboard_id"
+    t.integer "score", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reified_leaderboard_id"], name: "index_entries_on_reified_leaderboard_id"
+    t.index ["score"], name: "index_entries_on_score"
+    t.index ["user_id", "reified_leaderboard_id"], name: "index_entries_on_user_id_and_reified_leaderboard_id", unique: true
+    t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
   create_table "families", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -141,6 +153,15 @@ ActiveRecord::Schema.define(version: 2020_10_31_041657) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "reified_leaderboards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "family_id"
+    t.integer "timeframe"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["family_id", "timeframe"], name: "index_reified_leaderboards_on_family_id_and_timeframe", unique: true
+    t.index ["family_id"], name: "index_reified_leaderboards_on_family_id"
+  end
+
   create_table "services", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "provider"
@@ -193,11 +214,14 @@ ActiveRecord::Schema.define(version: 2020_10_31_041657) do
   add_foreign_key "achievements", "syncs"
   add_foreign_key "achievements", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "entries", "reified_leaderboards"
+  add_foreign_key "entries", "users"
   add_foreign_key "medals", "families"
   add_foreign_key "membership_requests", "groups"
   add_foreign_key "membership_requests", "users"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users", column: "member_id"
+  add_foreign_key "reified_leaderboards", "families"
   add_foreign_key "services", "users"
   add_foreign_key "syncs", "users"
 end

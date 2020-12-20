@@ -1,7 +1,8 @@
 import { Controller } from "stimulus"
 import consumer from "channels/consumer"
 import $ from "jquery"
-import store from 'realtime_leaderboard/app.js'
+import { store, renderLeaderboard } from 'realtime_leaderboard'
+import normalize from 'json-api-normalizer'
 
 export default class extends Controller {
   static targets = [ "status" ]
@@ -26,7 +27,9 @@ export default class extends Controller {
       this.subscribeToLeaderboard()
     }
     console.log('worked')
-    console.log(JSON.parse(this.data.get("data")))
+    const initialData = JSON.parse(this.data.get("data"))
+    renderLeaderboard(this.element, normalize(initialData))
+    console.log(normalize(initialData))
   }
 
   subscribeToLeaderboard() {

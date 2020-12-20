@@ -1,15 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit'
+
+const entriesAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.attributes.score - a.attributes.score
+})
 
 const entriesSlice = createSlice({
   name: 'entries',
-  initialState: [],
+  initialState: entriesAdapter.getInitialState(),
   reducers: {
-    receiveEntry(state, action) {
-      return state
+    receiveEntries(state, { payload }) {
+      for (let [id, entry] of Object.entries(payload)) {
+        if (state.entities[id] !== undefined) {
+          if (entry.updatedAt > state.entities[id].updatedAt) {
+            entriesAdapter.upsertOne(state, entry)
+          }
+        } else {
+          entriesAdapter.addOne(state, entry)
+        }
+      }
     }
   }
 })
 
-export const { receiveEntry } = entriesSlice.actions
-
+export const { receiveEntries } = entriesSlice.actions
 export default entriesSlice.reducer

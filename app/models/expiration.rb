@@ -4,7 +4,7 @@ class Expiration < ApplicationRecord
 
   scope :expired_for_leaderboard, -> (leaderboard) do
     where(reified_leaderboard: leaderboard)
-      .where("created_at > ?", leaderboard.expiration_date)
+      .where("created_at < ?", leaderboard.expiration_date)
   end
 
   def expire!

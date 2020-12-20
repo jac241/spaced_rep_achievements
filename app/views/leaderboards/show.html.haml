@@ -5,9 +5,9 @@
 
   - if current_user.admin?
     #realtime_leaderboard{ data: { controller: "realtime-leaderboards", realtime_leaderboards_leaderboard: @reified_leaderboard.channel, realtime_leaderboards_data: @reified_leaderboard.serializer.to_json } }
-  - else
-    #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
-      = render partial: "leaderboard", locals: { leaderboard: @leaderboard }
+
+  #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }
+    = render partial: "leaderboard", locals: { leaderboard: @leaderboard }
 
 
   .toast{ style: "position: absolute; top: 60px; right: 4px;", data: { controller: "group-toast" } }

@@ -7,11 +7,11 @@ import { hydrate } from './leaderboard/apiSlice'
 
 import App from './app/App'
 
-const store = configureStore({
-  reducer: rootReducers
-})
-
 const renderLeaderboard = (element, initialData) => {
+  const store = configureStore({
+    reducer: rootReducers
+  })
+
   store.dispatch(hydrate(initialData))
   render(
     <Provider store={store}>
@@ -19,5 +19,7 @@ const renderLeaderboard = (element, initialData) => {
     </Provider>,
     element
   )
+
+  return store
 }
-export { store, renderLeaderboard }
+export { renderLeaderboard }

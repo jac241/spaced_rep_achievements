@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 import consumer from "channels/consumer"
 import $ from "jquery"
-import { store, renderLeaderboard } from 'realtime_leaderboard'
+import { renderLeaderboard } from 'realtime_leaderboard'
 import normalize from 'json-api-normalizer'
 
 export default class extends Controller {
@@ -25,11 +25,16 @@ export default class extends Controller {
   connect() {
     if (!this.isTurbolinksPreview) {
       //this.subscribeToLeaderboard()
+      //console.log('worked')
     }
-    console.log('worked')
     const initialData = JSON.parse(this.data.get("data"))
-    renderLeaderboard(this.element, normalize(initialData))
     console.log(normalize(initialData))
+    this.store = renderLeaderboard(this.element, normalize(initialData))
+  }
+
+  disconnect() {
+    console.log("disconnected")
+    this.store = null
   }
 
   //subscribeToLeaderboard() {

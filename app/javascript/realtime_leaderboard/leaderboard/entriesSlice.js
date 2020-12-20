@@ -8,14 +8,16 @@ const entriesSlice = createSlice({
   name: 'entries',
   initialState: entriesAdapter.getInitialState(),
   reducers: {
-    receiveEntries(state, { payload }) {
-      for (let [id, entry] of Object.entries(payload)) {
-        if (state.entities[id] !== undefined) {
-          if (entry.updatedAt > state.entities[id].updatedAt) {
-            entriesAdapter.upsertOne(state, entry)
+    receiveEntries(state, action) {
+      if (action.payload !== undefined) {
+        for (let [id, entry] of Object.entries(action.payload)) {
+          if (state.entities[id] !== undefined) {
+            if (entry.updatedAt > state.entities[id].updatedAt) {
+              entriesAdapter.upsertOne(state, entry)
+            }
+          } else {
+            entriesAdapter.addOne(state, entry)
           }
-        } else {
-          entriesAdapter.addOne(state, entry)
         }
       }
     }

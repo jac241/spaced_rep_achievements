@@ -16,6 +16,7 @@ class CreateAchievementService
     ApplicationRecord.transaction do
       achievement.save!
       upsert_leaderboard_entries!(user, achievement.medal.family, achievement.medal.score)
+      create_achievement_expirations!(achievement)
     end
 
     success(:created, achievement)
@@ -27,5 +28,19 @@ class CreateAchievementService
       entry.adjust_score(score)
       entry.save!
     end
+  end
+
+  def create_achievement_expirations!(achievement)
+    leaderboard_ids = achievement.medal.family.reified_leaderboards.pluck(:id)
+    points = achievement.medal.score
+
+    achievement.expirations.import! (
+      leaderboard_ids.map do |rlbid|
+        {
+          reified_leaderboard_id: rlbid,
+          points: points
+        }
+      end
+    )
   end
 end

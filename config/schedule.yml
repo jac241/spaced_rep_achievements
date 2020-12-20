@@ -19,3 +19,8 @@ update_monthly_leaderboards:
 delete_old_achievements:
   cron: "0 1 * * *"
   class: "DeleteOldAchievementsJob"
+
+subtract_expired_achievements:
+  cron: "*/5 * * * *"
+  class: "ExpireAchievementsJob"
+  queue: default

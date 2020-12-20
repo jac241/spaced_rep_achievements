@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_19_221400) do
+ActiveRecord::Schema.define(version: 2020_12_20_143839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -77,6 +77,16 @@ ActiveRecord::Schema.define(version: 2020_12_19_221400) do
     t.index ["score"], name: "index_entries_on_score"
     t.index ["user_id", "reified_leaderboard_id"], name: "index_entries_on_user_id_and_reified_leaderboard_id", unique: true
     t.index ["user_id"], name: "index_entries_on_user_id"
+  end
+
+  create_table "expirations", force: :cascade do |t|
+    t.uuid "achievement_id"
+    t.uuid "reified_leaderboard_id"
+    t.integer "points", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["achievement_id"], name: "index_expirations_on_achievement_id"
+    t.index ["reified_leaderboard_id"], name: "index_expirations_on_reified_leaderboard_id"
   end
 
   create_table "families", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

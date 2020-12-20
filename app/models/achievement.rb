@@ -3,6 +3,8 @@ class Achievement < ApplicationRecord
   belongs_to :medal
   belongs_to :user
 
+  has_many :expirations, dependent: :destroy
+
   scope :in_order_earned, -> { order(client_earned_at: :asc) }
 
   scope :leaders_for, -> (family:, since:) do

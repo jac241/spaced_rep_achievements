@@ -1,14 +1,9 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { createSelector } from "reselect"
-//import image from "images/medals/halo-3/double-kill.png"
+
 const assets = require.context('../..', true)
-assets.keys().forEach((filename)=>{
-  console.log(filename);
-});
 const assetPath = (name) => assets(`.${name}`, true)
-
-
 
 const selectEntryIds = createSelector(
   state => state.entries,

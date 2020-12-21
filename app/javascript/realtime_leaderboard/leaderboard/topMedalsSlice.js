@@ -15,6 +15,9 @@ const topMedalsSlice = createSlice({
       if (payload.medalStatistic) {
         addMedalStatistics(state, payload.medalStatistic)
       }
+      if (payload.user) {
+        ensureEntryForUsers(state, payload.user)
+      }
     })
   }
 })
@@ -40,6 +43,12 @@ const groupTopMedalsByUserId = (state, newMedalStatistic) => {
 
   ensureEntryForUser(state, userId)
   insertInOrder(state, state.topMedalsbyUserId[userId], newMedalStatistic)
+}
+
+const ensureEntryForUsers = (state, usersById) => {
+  for (const [id, user] of Object.entries(usersById)) {
+    ensureEntryForUser(state, id)
+  }
 }
 
 const ensureEntryForUser = (state, userId) => {

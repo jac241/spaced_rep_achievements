@@ -15,7 +15,12 @@ const apiSlice = createSlice({
   initialState: initialState,
   reducers: {
     receiveData(state, { payload }) {
-      Object.keys(payload).forEach(key => state[key] = payload[key])
+      Object.keys(payload).forEach((entityType) => {
+        const payloadEntities = payload[entityType]
+        for (const entityId in payloadEntities) {
+          state[entityType][entityId] = payloadEntities[entityId]
+        }
+      })
     }
   }
 })

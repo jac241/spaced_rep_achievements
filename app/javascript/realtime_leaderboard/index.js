@@ -3,7 +3,7 @@ import rootReducers from './reducers'
 import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
-import { hydrate } from './leaderboard/apiSlice'
+import { receiveJsonApiData } from './leaderboard/apiSlice'
 
 import App from './app/App'
 
@@ -12,7 +12,7 @@ const renderLeaderboard = (element, initialData) => {
     reducer: rootReducers
   })
 
-  store.dispatch(hydrate(initialData))
+  store.dispatch(receiveJsonApiData(initialData))
   render(
     <Provider store={store}>
       <App />

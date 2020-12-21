@@ -3,6 +3,7 @@ import consumer from "channels/consumer"
 import $ from "jquery"
 import { renderLeaderboard } from 'realtime_leaderboard'
 import normalize from 'json-api-normalizer'
+import { receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
 
 export default class extends Controller {
   static targets = [ "status" ]
@@ -34,7 +35,7 @@ export default class extends Controller {
   _initializeTable() {
     const initialData = JSON.parse(this.data.get("initial-data"))
     console.log(normalize(initialData))
-    this.store = renderLeaderboard(this.element, normalize(initialData))
+    this.store = renderLeaderboard(this.element, initialData)
   }
 
   _subscribeToLeaderboard() {
@@ -68,7 +69,7 @@ export default class extends Controller {
     return consumer.subscriptions.create(
       {
         channel: "RealtimeLeaderboardsChannel",
-        leaderboard: leaderboard,
+        leaderboard: `realtime_leaderboards:${leaderboard}`,
         last_updated: mostRecentEntryUpdatedAt,
       },
       {
@@ -80,10 +81,13 @@ export default class extends Controller {
         disconnected: () => {
         },
 
-        received: (data) => {
-          console.log(`realtime: ${data}`)
+        received: (action) => {
+          console.log("received realtime")
+          console.log(action)
+          if (action.type === "api/receiveJsonApiData") {
+            this.store.dispatch(receiveJsonApiData(action.payload))
+          }
         },
-
       }
     )
   }

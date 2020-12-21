@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { receiveEntries } from './entriesSlice'
+import normalize from 'json-api-normalizer'
 
 const initialState = {
   entry: {},
@@ -10,19 +10,20 @@ const initialState = {
   user: {},
 }
 
-const leaderboardSlice = createSlice({
+const apiSlice = createSlice({
   name: 'leaderboard',
   initialState: initialState,
   reducers: {
-    hydrate(state, { payload }) {
-      Object.keys(state).forEach(key => state[key] = payload[key])
+    receiveData(state, { payload }) {
+      Object.keys(payload).forEach(key => state[key] = payload[key])
     }
   }
 })
 
-export const hydrate = (initialData) => (dispatch) => {
-  dispatch(receiveEntries(initialData.entry))
-  dispatch(leaderboardSlice.actions.hydrate(initialData))
+export const { receiveData } = apiSlice.actions
+
+export const receiveJsonApiData = (data) => (dispatch) => {
+  dispatch(apiSlice.actions.receiveData(normalize(data)))
 }
 
-export default leaderboardSlice.reducer
+export default apiSlice.reducer

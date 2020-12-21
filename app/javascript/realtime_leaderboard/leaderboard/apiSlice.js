@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import normalize from 'json-api-normalizer'
+import merge from 'lodash.merge'
 
 const initialState = {
   entry: {},
@@ -18,7 +19,12 @@ const apiSlice = createSlice({
       Object.keys(payload).forEach((entityType) => {
         const payloadEntities = payload[entityType]
         for (const entityId in payloadEntities) {
-          state[entityType][entityId] = payloadEntities[entityId]
+          const existingEntity = state[entityType][entityId]
+          if (existingEntity) {
+            state[entityType][entityId] = merge(existingEntity, payloadEntities[entityId])
+          } else {
+            state[entityType][entityId] = payloadEntities[entityId]
+          }
         }
       })
     }

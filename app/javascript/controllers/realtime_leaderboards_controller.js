@@ -34,7 +34,6 @@ export default class extends Controller {
 
   _initializeTable() {
     const initialData = JSON.parse(this.data.get("initial-data"))
-    console.log(normalize(initialData))
     this.store = renderLeaderboard(this.element, initialData)
   }
 
@@ -82,8 +81,6 @@ export default class extends Controller {
         },
 
         received: (action) => {
-          console.log("received realtime")
-          console.log(action)
           if (action.type === "api/receiveJsonApiData") {
             this.store.dispatch(receiveJsonApiData(action.payload))
           }

@@ -6,7 +6,7 @@ class BroadcastLeaderboardUpdatesJob < ApplicationJob
         entry.reified_leaderboard.channel,
         {
           type: "api/receiveJsonApiData",
-          payload: EntrySerializer.new([ entry ]).to_hash
+          payload: EntrySerializer.new([ entry ], include: [ :user ]).to_hash
         }
       )
     end

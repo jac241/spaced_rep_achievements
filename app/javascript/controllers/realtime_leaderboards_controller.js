@@ -22,59 +22,96 @@ export default class extends Controller {
     }
   }
 
+  _subscriptions = []
+
   connect() {
     if (!this.isTurbolinksPreview) {
-      //this.subscribeToLeaderboard()
-      //console.log('worked')
+      this._initializeTable()
+      this._subscribeToLeaderboard()
     }
-    const initialData = JSON.parse(this.data.get("data"))
+  }
+
+  _initializeTable() {
+    const initialData = JSON.parse(this.data.get("initial-data"))
     console.log(normalize(initialData))
     this.store = renderLeaderboard(this.element, normalize(initialData))
   }
 
+  _subscribeToLeaderboard() {
+    this._addSubscription(
+      this._createSubscription(
+        this._leaderboard,
+        this._mostRecentEntryUpdatedAt,
+      )
+    )
+  }
+
+  get _leaderboard() {
+    return this.data.get("leaderboard")
+  }
+
+  get _mostRecentEntryUpdatedAt() {
+    const entries = this.store.getState().entries
+    let max = new Date('1995-12-17T03:24:00')
+    entries.ids.forEach((id) => {
+      const updatedAt = new Date(entries.entities[id].attributes.updatedAt)
+      if (updatedAt > max) {
+        max = updatedAt
+      }
+    })
+
+    return max
+  }
+
+  _createSubscription(leaderboard, mostRecentEntryUpdatedAt) {
+    console.log(`Most recent updated at: ${mostRecentEntryUpdatedAt}`)
+    return consumer.subscriptions.create(
+      {
+        channel: "RealtimeLeaderboardsChannel",
+        leaderboard: leaderboard,
+        last_updated: mostRecentEntryUpdatedAt,
+      },
+      {
+        connected: () => {
+          // Called when the subscription is ready for use on the server
+          console.log("realtime lb connected" + leaderboard)
+        },
+
+        disconnected: () => {
+        },
+
+        received: (data) => {
+          console.log(`realtime: ${data}`)
+        },
+
+      }
+    )
+  }
+
+  _addSubscription(subscription) {
+    this._subscriptions.push({
+      leaderboard: this._leaderboard,
+      subscription
+    })
+
+    console.log(`Added. New subscription list: ${this._subscriptions}`)
+  }
+
   disconnect() {
     console.log("disconnected")
+    this._clearStore()
+    this._unsubscribeFromLeaderboard()
+  }
+
+  _clearStore() {
     this.store = null
   }
 
-  //subscribeToLeaderboard() {
-    //this.leaderboard = this.data.get("leaderboard")
+  _unsubscribeFromLeaderboard() {
+    const index = this._subscriptions.findIndex(record => record.leaderboard === this._leaderboard)
+    const subscriptionRecord = this._subscriptions.splice(index, 1)[0]
 
-    //if (this.leaderboard === localStorage.getItem('lastLeaderboard')) {
-      //// Previous subscription is getting cancelled, need to wait so it doesn't
-      //// cancel ours. Brittle race condition but I don't see another way right
-      //// now...
-      //console.log('rt Waiting to connect!')
-      //setTimeout(() => {
-        //this.subscription = this.createSubscription(this.leaderboard)
-        //localStorage.setItem('lastLeaderboard', this.leaderboard)
-      //}, 1500)
-    //} else {
-      //this.subscription = this.createSubscription(this.leaderboard)
-      //localStorage.setItem('lastLeaderboard', this.leaderboard)
-    //}
-  //}
-
-  //createSubscription(leaderboard) {
-    //return consumer.subscriptions.create(
-      //{
-        //channel: "RealtimeLeaderboardsChannel",
-        //leaderboard: leaderboard,
-      //},
-      //{
-        //connected: () => {
-          //// Called when the subscription is ready for use on the server
-          //console.log("realtime lb connected" + leaderboard)
-        //},
-
-        //disconnected: () => {
-        //},
-
-        //received: (data) => {
-          //console.log(`realtime: ${data}`)
-        //},
-
-      //}
-    //)
-  //}
+    subscriptionRecord.subscription.unsubscribe()
+    console.log(`Removed. New subscription list: ${this._subscriptions}`)
+  }
 }

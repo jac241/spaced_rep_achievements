@@ -39,7 +39,7 @@ const groupTopMedalsByUserId = (state, newMedalStatistic) => {
   const userId = newMedalStatistic.relationships.user.data.id
 
   ensureEntryForUser(state, userId)
-  insertInOrder(state.topMedalsbyUserId[userId], newMedalStatistic)
+  insertInOrder(state, state.topMedalsbyUserId[userId], newMedalStatistic)
 }
 
 const ensureEntryForUser = (state, userId) => {
@@ -48,14 +48,15 @@ const ensureEntryForUser = (state, userId) => {
   }
 }
 
-const insertInOrder = (array, newMedalStatistic) => {
-  const getAttr = item => item.attributes.score
+const insertInOrder = (state, array, newMedalStatistic) => {
+  const getAttr = medalStatisticId => state.entities[medalStatisticId].attributes.score
+
   const comparator = (a, b) =>  b - a
   const insertionIndex = (array, newItem, getAttr, comparator) => {
     var low = 0,
       high = array.length;
 
-    const newValue = getAttr(newItem)
+    const newValue = getAttr(newItem.id)
 
     while (low < high) {
       var mid = low + high >>> 1;
@@ -68,7 +69,7 @@ const insertInOrder = (array, newMedalStatistic) => {
     return low;
   }
 
-  array.splice(insertionIndex(array, newMedalStatistic, getAttr, comparator), 0, newMedalStatistic)
+  array.splice(insertionIndex(array, newMedalStatistic, getAttr, comparator), 0, newMedalStatistic.id)
 }
 
 export default topMedalsSlice.reducer

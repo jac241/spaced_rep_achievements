@@ -76,6 +76,12 @@ module.exports = function(api) {
           async: false
         }
       ],
+      //[require("babel-plugin-module-resolver").default, {
+        //"root": ["./app"],
+        //"alias": {
+          //"assets": "./assets"
+        //}
+      //}]
       //isProductionEnv && [
         //'babel-plugin-transform-react-remove-prop-types',
         //{

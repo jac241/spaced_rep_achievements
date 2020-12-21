@@ -9,6 +9,7 @@ const initialState = {
   medalStatistic: {},
   reifiedLeaderboard: {},
   user: {},
+  medal: {},
 }
 
 const apiSlice = createSlice({

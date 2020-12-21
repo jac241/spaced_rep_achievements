@@ -7,4 +7,5 @@ class Medal < ApplicationRecord
   has_many :achievements
   has_one_attached :image
   belongs_to :family, touch: true
+  has_many :medal_statistics
 end

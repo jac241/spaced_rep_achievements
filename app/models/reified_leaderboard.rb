@@ -37,7 +37,8 @@ class ReifiedLeaderboard < ApplicationRecord
           :entries,
           :medal_statistics,
           "entries.user",
-          "entries.user.groups"
+          "entries.user.groups",
+          "medal_statistics.medal",
         ]
       }
     )

@@ -29,8 +29,16 @@ class ReifiedLeaderboard < ApplicationRecord
   end
 
   def serializer
+    rl = ReifiedLeaderboard
+      .where(id: self.id)
+      .includes(
+        :family,
+        entries: { user: [ :groups ] },
+        medal_statistics: [:medal]
+      ).first
+
     ReifiedLeaderboardSerializer.new(
-      self,
+      rl,
       {
         include: [
           :family,

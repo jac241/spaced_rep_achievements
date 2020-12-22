@@ -9,5 +9,15 @@ class BroadcastLeaderboardUpdatesJob < ApplicationJob
         }
       )
     end
+
+    medal_statistics.each do |stat|
+      RealtimeLeaderboardsChannel.broadcast_to(
+        stat.reified_leaderboard.channel,
+        {
+          type: "api/receiveJsonApiData",
+          payload: MedalStatisticSerializer.new([ stat ], include: [ :user ]).to_hash
+        }
+      )
+    end
   end
 end

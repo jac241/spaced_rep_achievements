@@ -78,7 +78,14 @@ const insertInOrder = (state, array, newMedalStatistic) => {
     return low;
   }
 
-  array.splice(insertionIndex(array, newMedalStatistic, getAttr, comparator), 0, newMedalStatistic.id)
+  const index = insertionIndex(array, newMedalStatistic, getAttr, comparator)
+  if (!inSortedArray(array, index, newMedalStatistic.id)) {
+    array.splice(index, 0, newMedalStatistic.id)
+  }
+}
+
+const inSortedArray = (array, index, value) => {
+  return array[index] === value || (index > 0 && array[index - 1] === value) || (index < array.length - 1 && array[index + 1] === value)
 }
 
 export default topMedalsSlice.reducer

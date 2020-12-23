@@ -1,4 +1,6 @@
 class BroadcastLeaderboardUpdatesJob < ApplicationJob
+  queue_as :realtime_leaderboard
+
   def perform(entries:, medal_statistics:)
     entries.each do |entry|
       RealtimeLeaderboardsChannel.broadcast_to(

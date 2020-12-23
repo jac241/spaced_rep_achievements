@@ -1,4 +1,6 @@
 class UpdateRealtimeLeaderboardJob < ApplicationJob
+  queue_as :realtime_leaderboard
+
   def perform(leaderboard:, data_since:)
     RealtimeLeaderboardsChannel.broadcast_to(
       leaderboard,

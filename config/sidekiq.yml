@@ -1,8 +1,9 @@
-:concurrency: 2
+:concurrency: 7
 
 :queues:
   - default
   - sync
+  - realtime_leaderboard
 
 :limits:
   sync: 1

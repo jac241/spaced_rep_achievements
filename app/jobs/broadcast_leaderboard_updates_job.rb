@@ -17,7 +17,7 @@ class BroadcastLeaderboardUpdatesJob < ApplicationJob
         stat.reified_leaderboard,
         {
           type: "api/receiveJsonApiData",
-          payload: MedalStatisticSerializer.new([ stat ], include: [ :user ]).to_hash
+          payload: MedalStatisticSerializer.new([ stat ], include: [ :user, :medal ]).to_hash
         }
       )
     end

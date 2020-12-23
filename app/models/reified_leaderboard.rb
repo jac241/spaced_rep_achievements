@@ -28,17 +28,9 @@ class ReifiedLeaderboard < ApplicationRecord
     "realtime:#{family.slug}:#{timeframe}"
   end
 
-  def serializer
-    rl = ReifiedLeaderboard
-      .where(id: self.id)
-      .includes(
-        :family,
-        entries: { user: [ :groups ] },
-        medal_statistics: [:medal]
-      ).first
-
+  def serializer(data_since: Time.at(0))
     ReifiedLeaderboardSerializer.new(
-      rl,
+      self,
       {
         include: [
           :family,
@@ -47,7 +39,10 @@ class ReifiedLeaderboard < ApplicationRecord
           "entries.user",
           "entries.user.groups",
           "medal_statistics.medal",
-        ]
+        ],
+        params: {
+          data_since: data_since
+        }
       }
     )
   end

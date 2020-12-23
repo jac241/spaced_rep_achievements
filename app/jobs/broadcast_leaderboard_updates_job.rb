@@ -2,7 +2,7 @@ class BroadcastLeaderboardUpdatesJob < ApplicationJob
   def perform(entries:, medal_statistics:)
     entries.each do |entry|
       RealtimeLeaderboardsChannel.broadcast_to(
-        entry.reified_leaderboard.channel,
+        entry.reified_leaderboard,
         {
           type: "api/receiveJsonApiData",
           payload: EntrySerializer.new([ entry ], include: [ :user ]).to_hash
@@ -12,7 +12,7 @@ class BroadcastLeaderboardUpdatesJob < ApplicationJob
 
     medal_statistics.each do |stat|
       RealtimeLeaderboardsChannel.broadcast_to(
-        stat.reified_leaderboard.channel,
+        stat.reified_leaderboard,
         {
           type: "api/receiveJsonApiData",
           payload: MedalStatisticSerializer.new([ stat ], include: [ :user ]).to_hash

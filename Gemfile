@@ -101,3 +101,4 @@ gem 'pundit'
 gem "permessage_deflate", "~> 0.1.4"
 
 gem "anycable-rails", "~> 1.0"
+gem 'oj'

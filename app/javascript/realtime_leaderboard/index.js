@@ -3,19 +3,36 @@ import rootReducers from './reducers'
 import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
-import { receiveJsonApiData } from './leaderboard/apiSlice'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
+import { PersistGate } from 'redux-persist/lib/integration/react';
+
 
 import App from './app/App'
+import { receiveJsonApiData } from './leaderboard/apiSlice'
 
-const renderLeaderboard = (element, initialData) => {
+import logger from 'redux-logger'
+
+const renderLeaderboard = (element, leaderboardKey, controller) => {
+  const persistConfig = {
+    key: `realtimeLeaderboard:${leaderboardKey}`,
+    storage: storage,
+    stateReconciler: autoMergeLevel2
+  }
+
+  const pReducer = persistReducer(persistConfig, rootReducers)
   const store = configureStore({
-    reducer: rootReducers
+    reducer: pReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   })
+  const persistor = persistStore(store)
 
-  store.dispatch(receiveJsonApiData(initialData))
   render(
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App controller={controller}/>
+      </PersistGate>
     </Provider>,
     element
   )

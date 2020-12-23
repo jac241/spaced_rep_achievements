@@ -58,10 +58,9 @@ const ensureEntryForUser = (state, userId) => {
 }
 
 const insertInOrder = (state, array, newMedalStatistic) => {
-  const getAttr = medalStatisticId => state.entities[medalStatisticId].attributes.score
-
+  const getScore = medalStatisticId => state.entities[medalStatisticId].attributes.score
   const comparator = (a, b) =>  b - a
-  const insertionIndex = (array, newItem, getAttr, comparator) => {
+  const findInsertionIndex = (array, newItem, getAttr, comparator) => {
     var low = 0,
       high = array.length;
 
@@ -78,14 +77,43 @@ const insertInOrder = (state, array, newMedalStatistic) => {
     return low;
   }
 
-  const index = insertionIndex(array, newMedalStatistic, getAttr, comparator)
-  if (!inSortedArray(array, index, newMedalStatistic.id)) {
-    array.splice(index, 0, newMedalStatistic.id)
-  }
-}
 
-const inSortedArray = (array, index, value) => {
-  return array[index] === value || (index > 0 && array[index - 1] === value) || (index < array.length - 1 && array[index + 1] === value)
+  let medalsOldIndex = array.findIndex(id => id === newMedalStatistic.id);
+  //console.log(`medals old index: ${medalsOldIndex}`)
+
+  const medalWouldNotMakeTopFive = () => {
+    return medalsOldIndex === -1 // medal not in array
+      && array.length == 5
+      && getScore(array[4]) >= getScore(newMedalStatistic.id)
+  }
+  //console.log(newMedalStatistic.id, `incoming score ${getScore(newMedalStatistic.id)}`)
+  //console.log(array.map(i => i))
+  //console.log(array.map(getScore))
+
+  if (medalWouldNotMakeTopFive()) {
+    //console.log('medal would not make top five')
+    return
+  }
+
+  const insertionIndex = findInsertionIndex(array, newMedalStatistic, getScore, comparator)
+  //console.log('insertionIndex: ', insertionIndex)
+
+  if (medalsOldIndex > -1) {
+    if (medalsOldIndex == insertionIndex) {
+      return
+    }
+
+    if (insertionIndex < medalsOldIndex) { // gained points, increasing medal rank, will move old down when we insert
+      medalsOldIndex++;
+    }
+  }
+
+
+  array.splice(insertionIndex, 0, newMedalStatistic.id)
+  //console.log('slicing')
+  while (array.length > 5) {
+    array.pop()
+  }
 }
 
 export default topMedalsSlice.reducer

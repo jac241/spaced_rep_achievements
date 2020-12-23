@@ -28,26 +28,27 @@ export default class extends Controller {
   connect() {
     if (!this.isTurbolinksPreview) {
       this._initializeTable()
-      this._subscribeToLeaderboard()
+      //const subscription = this._subscribeToLeaderboard()
     }
   }
 
   _initializeTable() {
-    const initialData = JSON.parse(this.data.get("initial-data"))
-    this.store = renderLeaderboard(this.element, initialData)
+    this.store = renderLeaderboard(this.element, this._leaderboardId, this)
   }
 
-  _subscribeToLeaderboard() {
-    this._addSubscription(
-      this._createSubscription(
-        this._leaderboard,
-        this._mostRecentEntryUpdatedAt,
-      )
+  subscribeToLeaderboard() {
+    const subscription = this._createSubscription(
+      this._leaderboardId,
+      this._mostRecentEntryUpdatedAt,
     )
+
+    this._addSubscription(subscription)
+
+    return subscription
   }
 
-  get _leaderboard() {
-    return this.data.get("leaderboard")
+  get _leaderboardId() {
+    return this.data.get("leaderboard-id")
   }
 
   get _mostRecentEntryUpdatedAt() {
@@ -63,18 +64,19 @@ export default class extends Controller {
     return max
   }
 
-  _createSubscription(leaderboard, mostRecentEntryUpdatedAt) {
-    console.log(`Most recent updated at: ${mostRecentEntryUpdatedAt}`)
+  _createSubscription(leaderboardId, mostRecentEntryUpdatedAt) {
+    const controller = this
     return consumer.subscriptions.create(
       {
         channel: "RealtimeLeaderboardsChannel",
-        leaderboard: `realtime_leaderboards:${leaderboard}`,
-        last_updated: mostRecentEntryUpdatedAt,
+        leaderboard_id: leaderboardId,
       },
       {
-        connected: () => {
+
+        connected() {
           // Called when the subscription is ready for use on the server
-          console.log("realtime lb connected" + leaderboard)
+          console.log("realtime lb connected" + leaderboardId)
+          this.requestLatestData()
         },
 
         disconnected: () => {
@@ -85,13 +87,20 @@ export default class extends Controller {
             this.store.dispatch(receiveJsonApiData(action.payload))
           }
         },
+
+        requestLatestData() {
+          console.log("requesting")
+          this.perform("request_data_since", {
+            last_updated: controller._mostRecentEntryUpdatedAt
+          })
+        },
       }
     )
   }
 
   _addSubscription(subscription) {
     this._subscriptions.push({
-      leaderboard: this._leaderboard,
+      leaderboard: this._leaderboardId,
       subscription
     })
 
@@ -109,7 +118,7 @@ export default class extends Controller {
   }
 
   _unsubscribeFromLeaderboard() {
-    const index = this._subscriptions.findIndex(record => record.leaderboard === this._leaderboard)
+    const index = this._subscriptions.findIndex(record => record.leaderboard === this._leaderboardId)
     const subscriptionRecord = this._subscriptions.splice(index, 1)[0]
 
     subscriptionRecord.subscription.unsubscribe()

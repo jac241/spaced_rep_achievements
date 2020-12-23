@@ -3,10 +3,11 @@ import { useDispatch } from "react-redux"
 import { hydrate } from '../leaderboard/apiSlice'
 import Table from '../leaderboard/Table'
 
-const App = ({ initialData }) => {
+const App = ({ controller }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    controller.subscribeToLeaderboard()
   }, [])
 
   return (

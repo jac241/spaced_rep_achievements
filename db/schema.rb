@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_20_180008) do
+ActiveRecord::Schema.define(version: 2020_12_23_151920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_180008) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["reified_leaderboard_id"], name: "index_entries_on_reified_leaderboard_id"
     t.index ["score"], name: "index_entries_on_score"
+    t.index ["updated_at"], name: "index_entries_on_updated_at"
     t.index ["user_id", "reified_leaderboard_id"], name: "index_entries_on_user_id_and_reified_leaderboard_id", unique: true
     t.index ["user_id"], name: "index_entries_on_user_id"
   end
@@ -131,6 +132,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_180008) do
     t.index ["medal_id"], name: "index_medal_statistics_on_medal_id"
     t.index ["reified_leaderboard_id"], name: "index_medal_statistics_on_reified_leaderboard_id"
     t.index ["score"], name: "index_medal_statistics_on_score"
+    t.index ["updated_at"], name: "index_medal_statistics_on_updated_at"
     t.index ["user_id", "reified_leaderboard_id", "medal_id"], name: "idx_med_stats_on_user_lb_medal", unique: true
     t.index ["user_id"], name: "index_medal_statistics_on_user_id"
   end

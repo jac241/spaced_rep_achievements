@@ -8,21 +8,6 @@ import { receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
 export default class extends Controller {
   static targets = [ "status" ]
 
-  statuses = {
-    connecting: {
-      class: "badge-secondary",
-      text: "Connecting...",
-    },
-    live: {
-      class: "badge-danger",
-      text: "Connected",
-    },
-    disconnected: {
-      class: "badge-dark",
-      text: "Disconnected",
-    }
-  }
-
   _subscriptions = []
 
   connect() {
@@ -108,9 +93,11 @@ export default class extends Controller {
   }
 
   disconnect() {
-    console.log("disconnected")
-    this._clearStore()
-    this._unsubscribeFromLeaderboard()
+    if (!this.isTurbolinksPreview) {
+      console.log("disconnected")
+      this._clearStore()
+      this._unsubscribeFromLeaderboard()
+    }
   }
 
   _clearStore() {
@@ -125,5 +112,9 @@ export default class extends Controller {
       subscriptionRecord.subscription.unsubscribe()
       console.log(`Removed. New subscription list: ${this._subscriptions}`)
     }
+  }
+
+  get isTurbolinksPreview() {
+    return document.documentElement.hasAttribute("data-turbolinks-preview");
   }
 }

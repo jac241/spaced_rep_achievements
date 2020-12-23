@@ -76,6 +76,12 @@ module.exports = function(api) {
           async: false
         }
       ],
+      [
+        "@babel/plugin-transform-react-jsx", {
+          "pragma": "h",
+          "pragmaFrag": "Fragment",
+        }
+      ]
       //[require("babel-plugin-module-resolver").default, {
         //"root": ["./app"],
         //"alias": {

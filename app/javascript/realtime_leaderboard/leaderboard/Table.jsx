@@ -6,7 +6,7 @@ const assets = require.context('../..', true)
 const assetPath = (name) => assets(`.${name}`, true)
 
 const selectEntryIds = state => state.entries.ids
-const selectEntriesById = state => state.api.entry
+const selectEntriesById = state => state.entries.entities
 
 const selectEntry = (state, id) => state.entries.entities[id]
 const selectEntryUser = (state, entry) => state.api.user[entry.relationships.user.data.id]

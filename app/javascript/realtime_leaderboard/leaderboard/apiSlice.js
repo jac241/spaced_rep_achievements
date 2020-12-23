@@ -12,12 +12,18 @@ const initialState = {
   medal: {},
 }
 
+const hasOwnSliceBlacklist = ['entry', 'medalStatistic']
+
 const apiSlice = createSlice({
   name: 'leaderboard',
   initialState: initialState,
   reducers: {
     receiveData(state, { payload }) {
       Object.keys(payload).forEach((entityType) => {
+        if (hasOwnSliceBlacklist.includes(entityType)) {
+          return
+        }
+
         const payloadEntities = payload[entityType]
         for (const entityId in payloadEntities) {
           const existingEntity = state[entityType][entityId]

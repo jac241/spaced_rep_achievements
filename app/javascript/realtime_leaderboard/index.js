@@ -4,9 +4,9 @@ import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
 import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
-import { PersistGate } from 'redux-persist/lib/integration/react';
+import { PersistGate } from 'redux-persist/lib/integration/react'
+import localForage from 'localforage'
 
 
 import App from './app/App'
@@ -17,7 +17,7 @@ import logger from 'redux-logger'
 const renderLeaderboard = (element, leaderboardKey, controller) => {
   const persistConfig = {
     key: `realtimeLeaderboard:${leaderboardKey}`,
-    storage: storage,
+    storage: localForage,
     stateReconciler: autoMergeLevel2
   }
 

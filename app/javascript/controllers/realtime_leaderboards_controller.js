@@ -100,7 +100,7 @@ export default class extends Controller {
 
   _addSubscription(subscription) {
     this._subscriptions.push({
-      leaderboard: this._leaderboardId,
+      leaderboardId: this._leaderboardId,
       subscription
     })
 
@@ -118,10 +118,12 @@ export default class extends Controller {
   }
 
   _unsubscribeFromLeaderboard() {
-    const index = this._subscriptions.findIndex(record => record.leaderboard === this._leaderboardId)
+    const index = this._subscriptions.findIndex(record => record.leaderboardId === this._leaderboardId)
     const subscriptionRecord = this._subscriptions.splice(index, 1)[0]
 
-    subscriptionRecord.subscription.unsubscribe()
-    console.log(`Removed. New subscription list: ${this._subscriptions}`)
+    if (subscriptionRecord) {
+      subscriptionRecord.subscription.unsubscribe()
+      console.log(`Removed. New subscription list: ${this._subscriptions}`)
+    }
   }
 }

@@ -1,3 +1,7 @@
+// Or if you just want the devtools bridge (~240B) without other
+// debug code (useful for production sites)
+import "preact/devtools";
+
 import { configureStore } from '@reduxjs/toolkit'
 import rootReducers from './reducers'
 import React from "react"
@@ -12,19 +16,24 @@ import localForage from 'localforage'
 import App from './app/App'
 import { receiveJsonApiData } from './leaderboard/apiSlice'
 
-import logger from 'redux-logger'
-
 const renderLeaderboard = (element, leaderboardKey, controller) => {
   const persistConfig = {
     key: `realtimeLeaderboard:${leaderboardKey}`,
     storage: localForage,
     stateReconciler: autoMergeLevel2
   }
+  const middlewares = []
+  if (process.env.NODE_ENV === `development`) {
+    const { logger } = require(`redux-logger`);
+
+    middlewares.push(logger);
+  }
+
 
   const pReducer = persistReducer(persistConfig, rootReducers)
   const store = configureStore({
     reducer: pReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(middlewares),
   })
   const persistor = persistStore(store)
 

@@ -104,13 +104,17 @@ const insertInOrder = (state, array, newMedalStatistic) => {
     }
 
     if (insertionIndex < medalsOldIndex) { // gained points, increasing medal rank, will move old down when we insert
-      medalsOldIndex++;
+      array.splice(medalsOldIndex, 1)
+      array.splice(insertionIndex, 0, newMedalStatistic.id)
     }
+
+    if (insertionIndex > medalsOldIndex) {
+      array.splice(insertionIndex, 0, newMedalStatistic.id)
+      array.splice(medalsOldIndex, 1)
+    }
+  } else {
+    array.splice(insertionIndex, 0, newMedalStatistic.id)
   }
-
-
-  array.splice(insertionIndex, 0, newMedalStatistic.id)
-  //console.log('slicing')
   while (array.length > 5) {
     array.pop()
   }

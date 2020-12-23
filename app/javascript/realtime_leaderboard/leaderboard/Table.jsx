@@ -5,13 +5,16 @@ import { createSelector } from "reselect"
 const assets = require.context('../..', true)
 const assetPath = (name) => assets(`.${name}`, true)
 
-const selectEntryIds = createSelector(
-  state => state.entries,
-  entries => entries.ids
-)
+const selectEntryIds = state => state.entries.ids
+const selectEntriesById = state => state.api.entry
 
 const selectEntry = (state, id) => state.entries.entities[id]
 const selectEntryUser = (state, entry) => state.api.user[entry.relationships.user.data.id]
+
+const selectEntryIdsWithPoints = createSelector(
+  [ selectEntryIds, selectEntriesById ],
+  ( entryIds, entriesById ) => entryIds.filter(id => entriesById[id].attributes.score > 0)
+)
 
 const ONLINE_INVERVAL = 5 * 60 * 1000
 
@@ -83,7 +86,7 @@ const TopMedal = ({ medal, medalStatistic }) => {
 }
 
 const Table = () => {
-  const entryIds = useSelector(selectEntryIds)
+  const entryIds = useSelector(selectEntryIdsWithPoints)
   return (
     <table className="table table-responsive-md">
       <thead>

@@ -4,6 +4,7 @@ import $ from "jquery"
 import { renderLeaderboard } from 'realtime_leaderboard'
 import normalize from 'json-api-normalizer'
 import { receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
+import { unmountComponentAtNode } from 'react-dom'
 
 export default class extends Controller {
   static targets = [ "status" ]
@@ -13,7 +14,6 @@ export default class extends Controller {
   connect() {
     if (!this.isTurbolinksPreview) {
       this._initializeTable()
-      //const subscription = this._subscribeToLeaderboard()
     }
   }
 
@@ -97,6 +97,7 @@ export default class extends Controller {
       console.log("disconnected")
       this._clearStore()
       this._unsubscribeFromLeaderboard()
+      console.log('unmounted?:', unmountComponentAtNode(this.element))
     }
   }
 

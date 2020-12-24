@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, shallowEqual } from "react-redux"
 import { createSelector } from "reselect"
 
 const assets = require.context('../..', true)
@@ -45,7 +45,7 @@ const EntryRow = ({ rank, entryId }) => {
 }
 
 const selectTopMedalStatisticIdsForUser = (state, user) => {
-  return state.topMedals.topMedalsbyUserId[user.id].slice(0, 5)
+  return state.topMedals.topMedalsbyUserId[user.id]
 }
 
 const selectTopMedals = (state, topMedalStatisticIds) => {
@@ -58,22 +58,24 @@ const selectMedalStatistics = (state, ids) => {
 }
 
 const TopMedalsList = ({ user }) => {
-  const topMedalStatisticIds = useSelector(state => selectTopMedalStatisticIdsForUser (state, user))
-  const medalStatistics = useSelector(state => selectMedalStatistics(state, topMedalStatisticIds))
-  const topMedals = useSelector(state => selectTopMedals(state, topMedalStatisticIds))
-  return (
-    <div className="top-medals">
-      {
-        topMedals.map((medal, index) => (
-          <TopMedal medal={medal} medalStatistic={medalStatistics[index]} key={medal.id} />
-        ))
-      }
-    </div>
-  )
+  const topMedalStatisticIds = useSelector(state => selectTopMedalStatisticIdsForUser(state, user))
+  const medalStatistics = useSelector(state => selectMedalStatistics(state, topMedalStatisticIds), shallowEqual)
+  const topMedals = useSelector(state => selectTopMedals(state, topMedalStatisticIds), shallowEqual)
+
+  return <TopMedals topMedals={topMedals} medalStatistics={medalStatistics} />
 }
 
-const TopMedal = ({ medal, medalStatistic }) => {
-  const medalsById = useSelector(state => state.api.medal)
+const TopMedals = React.memo(({ topMedals, medalStatistics }) => (
+  <div className="top-medals">
+    {
+      topMedals.map((medal, index) => (
+        <TopMedal medal={medal} medalStatistic={medalStatistics[index]} key={medal.id} />
+      ))
+    }
+  </div>
+))
+
+const TopMedal = React.memo(({ medal, medalStatistic }) => {
   return (
     <div className="top-medal">
       <img src={assetPath(medal.attributes.imagePath)} width="28" height="28"></img>
@@ -83,7 +85,7 @@ const TopMedal = ({ medal, medalStatistic }) => {
 
     </div>
   )
-}
+})
 
 const Table = () => {
   const entryIds = useSelector(selectEntryIdsWithPoints)

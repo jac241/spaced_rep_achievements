@@ -11,9 +11,12 @@ export default class extends Controller {
 
   _subscriptions = []
 
+  INITIAL_CABLE_STATUS = 'lb_not_yet_requested'
+
   connect() {
     if (!this.isTurbolinksPreview) {
       this._initializeTable()
+      this._cable_status = this.INITIAL_CABLE_STATUS
     }
   }
 
@@ -61,24 +64,46 @@ export default class extends Controller {
         connected() {
           // Called when the subscription is ready for use on the server
           console.log("realtime lb connected" + leaderboardId)
-          this.requestLatestData()
+          if (controller._cable_status === 'lb_not_yet_requested'){
+            this.requestCachedData()
+            controller._cable_status = 'cached_lb_requested'
+          }
+          else {
+            this.requestLatestData()
+          }
         },
 
-        disconnected: () => {
+        disconnected() {
         },
 
-        received: (action) => {
-          if (action.type === "api/receiveJsonApiData") {
-            this.store.dispatch(receiveJsonApiData(action.payload))
+        received(action) {
+          if (
+            controller._cable_status === 'cached_lb_requested' &&
+            action.payload.meta && action.payload.meta.from_cache
+          ) {
+            controller.store.dispatch(receiveJsonApiData(action.payload))
+            this.requestLatestData()
+            controller._cable_status = 'cached_lb_received'
+          } else if (controller._cable_status === 'cached_lb_received') {
+            if (action.type === "api/receiveJsonApiData") {
+              controller.store.dispatch(receiveJsonApiData(action.payload))
+            }
           }
         },
 
         requestLatestData() {
-          console.log("requesting")
+          console.log("requesting", controller._mostRecentEntryUpdatedAt)
           this.perform("request_data_since", {
             last_updated: controller._mostRecentEntryUpdatedAt
           })
         },
+
+        requestCachedData() {
+          console.log("requesting", controller._mostRecentEntryUpdatedAt)
+          this.perform("request_data_since", {
+            should_use_cache: true
+          })
+        }
       }
     )
   }
@@ -97,6 +122,7 @@ export default class extends Controller {
       console.log("disconnected")
       this._clearStore()
       this._unsubscribeFromLeaderboard()
+      this._cable_status = this.INITIAL_CABLE_STATUS
       console.log('unmounted?:', unmountComponentAtNode(this.element))
     }
   }

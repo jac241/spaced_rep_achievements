@@ -28,7 +28,7 @@ class ReifiedLeaderboard < ApplicationRecord
     "realtime:#{family.slug}:#{timeframe}"
   end
 
-  def serializer(data_since: Time.at(0))
+  def serializer(data_since: Time.at(0), meta: {})
     ReifiedLeaderboardSerializer.new(
       self,
       {
@@ -42,7 +42,8 @@ class ReifiedLeaderboard < ApplicationRecord
         ],
         params: {
           data_since: data_since
-        }
+        },
+        meta: meta
       }
     )
   end

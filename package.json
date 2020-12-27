@@ -18,7 +18,6 @@
     "jquery": "^3.5.0",
     "json-api-normalizer": "^1.0.1",
     "local-time": "^2.1.0",
-    "localforage": "^1.9.0",
     "lodash.merge": "^4.6.2",
     "popper.js": "^1.16.1",
     "preact": "^10.5.7",
@@ -26,7 +25,6 @@
     "prop-types": "^15.7.2",
     "react-redux": "^7.2.2",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^6.0.0",
     "stimulus": "^1.1.1",
     "turbolinks": "^5.2.0",
     "websocket-extensions": "^0.1.4"

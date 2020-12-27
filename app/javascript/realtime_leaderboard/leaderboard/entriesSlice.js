@@ -8,8 +8,16 @@ const entriesAdapter = createEntityAdapter({
 
 const entriesSlice = createSlice({
   name: 'entries',
-  initialState: entriesAdapter.getInitialState(),
+  initialState: entriesAdapter.getInitialState({
+    isRequestingCachedEntries: false,
+  }),
   reducers: {
+    getCachedEntriesStart(state, action) {
+      state.isRequestingCachedEntries = true
+    },
+    getCachedEntriesSuccess(state, action) {
+      state.isRequestingCachedEntries = false
+    },
     receiveEntries(state, { payload = {} }) {
       upsertMany(state, payload)
     }
@@ -29,5 +37,9 @@ const upsertMany = (state, newEntries) => {
   }
 }
 
-export const { receiveEntries } = entriesSlice.actions
+export const {
+  receiveEntries,
+  getCachedEntriesStart,
+  getCachedEntriesSuccess
+} = entriesSlice.actions
 export default entriesSlice.reducer

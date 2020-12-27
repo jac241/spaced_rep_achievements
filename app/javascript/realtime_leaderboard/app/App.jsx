@@ -11,9 +11,7 @@ const App = ({ controller }) => {
   }, [])
 
   return (
-    <div>
-      <Table />
-    </div>
+    <Table />
   )
 }
 

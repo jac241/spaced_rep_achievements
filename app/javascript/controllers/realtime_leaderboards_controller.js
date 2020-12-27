@@ -4,6 +4,10 @@ import $ from "jquery"
 import { renderLeaderboard } from 'realtime_leaderboard'
 import normalize from 'json-api-normalizer'
 import { receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
+import {
+  getCachedEntriesStart,
+  getCachedEntriesSuccess
+} from 'realtime_leaderboard/leaderboard/entriesSlice'
 import { unmountComponentAtNode } from 'react-dom'
 
 export default class extends Controller {
@@ -65,8 +69,8 @@ export default class extends Controller {
           // Called when the subscription is ready for use on the server
           console.log("realtime lb connected" + leaderboardId)
           if (controller._cable_status === 'lb_not_yet_requested'){
+            controller.onCachedEntriesRequested()
             this.requestCachedData()
-            controller._cable_status = 'cached_lb_requested'
           }
           else {
             this.requestLatestData()
@@ -81,9 +85,8 @@ export default class extends Controller {
             controller._cable_status === 'cached_lb_requested' &&
             action.payload.meta && action.payload.meta.from_cache
           ) {
-            controller.store.dispatch(receiveJsonApiData(action.payload))
+            controller.onCachedEntriesReceived(action)
             this.requestLatestData()
-            controller._cable_status = 'cached_lb_received'
           } else if (controller._cable_status === 'cached_lb_received') {
             if (action.type === "api/receiveJsonApiData") {
               controller.store.dispatch(receiveJsonApiData(action.payload))
@@ -143,5 +146,16 @@ export default class extends Controller {
 
   get isTurbolinksPreview() {
     return document.documentElement.hasAttribute("data-turbolinks-preview");
+  }
+
+  onCachedEntriesRequested() {
+    this.store.dispatch(getCachedEntriesStart())
+    this._cable_status = 'cached_lb_requested'
+  }
+
+  onCachedEntriesReceived(serverAction) {
+    this.store.dispatch(receiveJsonApiData(serverAction.payload))
+    this._cable_status = 'cached_lb_received'
+    this.store.dispatch(getCachedEntriesSuccess())
   }
 }

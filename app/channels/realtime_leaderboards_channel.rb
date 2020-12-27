@@ -1,4 +1,6 @@
 class RealtimeLeaderboardsChannel < ApplicationCable::Channel
+  include RawJsonBroadcasting
+
   state_attr_accessor :leaderboard
 
   def subscribed

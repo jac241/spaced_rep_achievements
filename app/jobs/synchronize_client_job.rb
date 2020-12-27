@@ -26,7 +26,7 @@ class SynchronizeClientJob < ApplicationJob
           sync.achievements.import!(
             achievements,
             on_duplicate_key_update: {
-              conflict_target: [:client_uuid, :client_db_id],
+              conflict_target: [:client_uuid, :client_db_id, :client_earned_at],
               columns: [:sync_id]
             }
           )

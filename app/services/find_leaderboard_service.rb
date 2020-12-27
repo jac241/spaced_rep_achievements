@@ -13,7 +13,7 @@ class FindLeaderboardService
       )
     else
       leaderboard_details = Leaderboard::Details.from(
-        maybe_achievement: user.achievements.in_order_earned.last
+        maybe_achievement: user.latest_achievement
       )
 
       calculate_leaderboard.call(

@@ -27,5 +27,9 @@ class User < ApplicationRecord
       .pluck(:id)
       .to_set
   end
+
+  def latest_achievement
+    achievements.in_order_earned.last unless achievements.empty?
+  end
 end
 

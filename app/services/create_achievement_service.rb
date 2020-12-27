@@ -16,8 +16,16 @@ class CreateAchievementService
     entries, stats = ApplicationRecord.transaction do
       achievement.save!
 
-      entries = upsert_leaderboard_entries!(user, achievement.medal.family, achievement.medal.score)
-      stats = upsert_medal_statistics!(user, achievement.medal.family, achievement.medal)
+      entries = upsert_leaderboard_entries!(
+        user,
+        achievement.medal.family,
+        achievement.medal.score
+      )
+      stats = upsert_medal_statistics!(
+        user,
+        achievement.medal.family,
+        achievement.medal
+      )
       create_achievement_expirations!(achievement)
 
       [ entries, stats ]

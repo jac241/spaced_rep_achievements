@@ -8,21 +8,35 @@ class Expiration < ApplicationRecord
       .includes(:reified_leaderboard, achievement: [ :medal ])
   end
 
-  AffectedRecord = Struct.new(:entry, :medal_statistic)
-  def expire!
-    entry = reified_leaderboard.entries.find_by(user_id: achievement.user_id) # ids to prevent loading record
+  def expire(entries_cache, medal_stats_cache)
+    entry = entries_cache[[reified_leaderboard, achievement.user_id]]
     entry.adjust_score(-self.points)
-    entry.save!
 
-    stats = reified_leaderboard.medal_statistics.find_by(
-      user_id: achievement.user_id,
-      medal_id: achievement.medal_id
-    )
+    stats = medal_stats_cache[[reified_leaderboard, achievement.user_id, achievement.medal_id]]
     stats.remove_medal(achievement.medal.score)
-    stats.save!
 
-    destroy!
-
-    AffectedRecord.new(entry, stats)
+    self
   end
+
+  private
+
+  def self.cache_for_entries
+    Hash.new do |cache, reified_leaderboard_user_id_pair|
+      cache[reified_leaderboard_user_id_pair] =
+        reified_leaderboard_user_id_pair.first.entries.find_by(
+          user_id: reified_leaderboard_user_id_pair.second
+        )
+    end
+  end
+
+  def self.cache_for_medal_statistics
+    Hash.new do |cache, rlb_user_id_medal_id_triple|
+      cache[rlb_user_id_medal_id_triple] =
+        rlb_user_id_medal_id_triple.first.medal_statistics.find_by(
+          user_id: rlb_user_id_medal_id_triple.second,
+          medal_id: rlb_user_id_medal_id_triple.third,
+        )
+    end
+  end
+
 end

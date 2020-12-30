@@ -1,4 +1,6 @@
 class ExpireAchievementsJob < ApplicationJob
+  queue_as :realtime_leaderboard
+
   def perform
     affected_records = ApplicationRecord.transaction do
       ReifiedLeaderboard.find_each.flat_map do |leaderboard|

@@ -13,25 +13,29 @@ class CreateAchievementService
     achievement = user.achievements.new(create_params)
     achievement.medal = Medal.find_by_client_medal_id(create_params[:client_medal_id])
 
-    entries, stats = ApplicationRecord.transaction do
+    if user.admin?
+      entries, stats = ApplicationRecord.transaction do
+        achievement.save!
+
+        entries = upsert_leaderboard_entries!(
+          user,
+          achievement.medal.family,
+          achievement.medal.score
+        )
+        stats = upsert_medal_statistics!(
+          user,
+          achievement.medal.family,
+          achievement.medal
+        )
+        create_achievement_expirations!(achievement)
+
+        [ entries, stats ]
+      end
+
+      BroadcastLeaderboardUpdatesJob.perform_later(entries: entries, medal_statistics: stats)
+    else
       achievement.save!
-
-      entries = upsert_leaderboard_entries!(
-        user,
-        achievement.medal.family,
-        achievement.medal.score
-      )
-      stats = upsert_medal_statistics!(
-        user,
-        achievement.medal.family,
-        achievement.medal
-      )
-      create_achievement_expirations!(achievement)
-
-      [ entries, stats ]
     end
-
-    BroadcastLeaderboardUpdatesJob.perform_later(entries: entries, medal_statistics: stats)
 
     success(:created, achievement)
   end

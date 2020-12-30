@@ -8,3 +8,4 @@
 :limits:
   sync: 1
   default: 1
+  realtime_leaderboard: 1

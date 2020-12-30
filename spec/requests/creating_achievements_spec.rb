@@ -4,7 +4,7 @@ describe "Creating achievements" do
   describe "POST create" do
     context "with user signed in" do
       let(:headers) { { "ACCEPT" => "application/json" } }
-      let(:user) { create(:user) }
+      let(:user) { create(:user, admin: true) }
 
       before(:each) do
         sign_in(user)

@@ -1,6 +1,6 @@
 class MedalStatistic < ApplicationRecord
   belongs_to :user
-  belongs_to :reified_leaderboard
+  belongs_to :reified_leaderboard, touch: true
   belongs_to :medal
 
   def add_medal(medal)

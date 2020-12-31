@@ -1,6 +1,4 @@
-class ReifiedLeaderboardSerializer
-  include JSONAPI::Serializer
-
+class ReifiedLeaderboardSerializer < ApplicationSerializer
   belongs_to :family
 
   has_many :entries do |record, params|
@@ -16,4 +14,6 @@ class ReifiedLeaderboardSerializer
   end
 
   attributes :timeframe
+
+  cache_with_default_options
 end

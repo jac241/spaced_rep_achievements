@@ -1,5 +1,4 @@
-class EntrySerializer
-  include JSONAPI::Serializer
+class EntrySerializer < ApplicationSerializer
   attributes :score, :updated_at
 
   belongs_to :reified_leaderboard
@@ -9,4 +8,6 @@ class EntrySerializer
     include: [ :user ],
     fields: { user: [:username] },
   }
+
+  cache_with_default_options
 end

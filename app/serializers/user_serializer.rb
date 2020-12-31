@@ -1,6 +1,7 @@
-class UserSerializer
-  include JSONAPI::Serializer
+class UserSerializer < ApplicationSerializer
   attributes :username
 
   has_many :groups
+
+  cache_with_default_options
 end

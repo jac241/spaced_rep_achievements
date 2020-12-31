@@ -1,5 +1,4 @@
-class MedalSerializer
-  include JSONAPI::Serializer
+class MedalSerializer < ApplicationSerializer
   extend ApplicationHelper
   extend ActionView::Helpers::AssetUrlHelper
   attributes :name, :score
@@ -10,4 +9,6 @@ class MedalSerializer
 
   belongs_to :family
   has_many :medal_statistics
+
+  cache_with_default_options
 end

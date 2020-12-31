@@ -1,5 +1,4 @@
-class MedalStatisticSerializer
-  include JSONAPI::Serializer
+class MedalStatisticSerializer < ApplicationSerializer
   attributes :count, :score
 
   belongs_to :reified_leaderboard
@@ -13,4 +12,6 @@ class MedalStatisticSerializer
       medal: [:name, :score, :image_path]
     },
   }
+
+  cache_with_default_options
 end

@@ -24,7 +24,9 @@
             <% end %>
             <div id="nav-account-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-dropdown">
               <% if current_user.admin? %>
-                <%= link_to "Admin Area", admin_root_path, class: "dropdown-item" %>
+                <%= link_to "Admin Area", admin_root_path, class: "dropdown-item", data: { turbolinks: false } %>
+                <%= link_to "Rails Performance", "/rails/performance", class: "dropdown-item", data: { turbolinks: false } %>
+                <%= link_to "Sidekiq", "/sidekiq", class: "dropdown-item", data: { turbolinks: false } %>
               <% end %>
               <%= link_to "Connect to Killstreaks Add-On", connect_path, class: "dropdown-item" %>
               <%= link_to "Settings", edit_user_registration_path, class: "dropdown-item" %>

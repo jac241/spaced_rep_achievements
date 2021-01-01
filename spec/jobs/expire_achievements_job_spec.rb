@@ -4,14 +4,15 @@ describe ExpireAchievementsJob do
   let!(:leaderboard) { create(:reified_leaderboard, timeframe: "monthly") }
   let!(:medal) { create(:medal) }
   let(:user) { create(:user) }
-  let!(:achievements) { create_list(:achievement, 2, user: user, medal: medal) }
+  let!(:expired_achievement) { create(:achievement, user: user, medal: medal, client_earned_at: 35.days.ago) }
+  let!(:indate_achievement) { create(:achievement, user: user, medal: medal, client_earned_at: 25.days.ago) }
 
   let!(:expiration) do
     create(
       :expiration,
       reified_leaderboard: leaderboard,
       created_at: 35.days.ago,
-      achievement: achievements.first,
+      achievement: expired_achievement,
     )
   end
   let!(:indate_expiration) do
@@ -19,7 +20,7 @@ describe ExpireAchievementsJob do
       :expiration,
       reified_leaderboard: leaderboard,
       created_at: 25.days.ago,
-      achievement: achievements.second,
+      achievement: indate_achievement,
     )
   end
 

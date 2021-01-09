@@ -8,4 +8,5 @@ class MedalSerializer < ApplicationSerializer
   end
 
   belongs_to :family
+  has_many :medal_statistics
 end

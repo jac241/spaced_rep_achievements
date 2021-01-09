@@ -9,6 +9,4 @@ class MedalSerializer < ApplicationSerializer
 
   belongs_to :family
   has_many :medal_statistics
-
-  cache_with_default_options
 end

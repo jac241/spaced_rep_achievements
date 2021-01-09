@@ -14,6 +14,4 @@ class ReifiedLeaderboardSerializer < ApplicationSerializer
   end
 
   attributes :timeframe
-
-  cache_with_default_options
 end

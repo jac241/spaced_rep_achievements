@@ -8,6 +8,4 @@ class EntrySerializer < ApplicationSerializer
     include: [ :user ],
     fields: { user: [:username] },
   }
-
-  cache_with_default_options
 end

@@ -8,12 +8,11 @@ class ReifiedLeaderboardSerializer < ApplicationSerializer
   end
 
   has_many :medal_statistics do |record, params|
-    @_medal_statistics ||=
-      MedalStatistic
-        .top_medals
-        .where("updated_at > ?", params[:data_since])
-        .where("reified_leaderboard_id = ?", record.id)
-        .includes(:medal)
+    MedalStatistic
+      .top_medals
+      .where("updated_at > ?", params[:data_since])
+      .where("reified_leaderboard_id = ?", record.id)
+      .includes(:medal)
   end
 
   attributes :timeframe

@@ -1,7 +1,7 @@
 class ReifiedLeaderboard < ApplicationRecord
   belongs_to :family
   has_many :entries, dependent: :destroy
-  has_many :medal_statistics, dependent: :destroy
+  has_many :medal_statistics, through: :entries
 
   enum timeframe: {
     daily: 0,
@@ -37,8 +37,8 @@ class ReifiedLeaderboard < ApplicationRecord
           :entries,
           "entries.user",
           "entries.user.groups",
-          "entries.medal_statistics",
-          "entries.medal_statistics.medal",
+          :medal_statistics,
+          "medal_statistics.medal",
         ],
         params: {
           data_since: data_since

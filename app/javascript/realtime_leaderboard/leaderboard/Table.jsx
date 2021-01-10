@@ -81,7 +81,7 @@ const Entry = React.memo(
   (prevProps, nextProps) => (
     prevProps.rank == nextProps.rank &&
     prevProps.entry.attributes.updatedAt == nextProps.entry.attributes.updatedAt &&
-    prevProps.user.attributes.updatedAt == nextProps.entry.user.updatedAt
+    prevProps.user.attributes.updatedAt == nextProps.entry.user.attributes.updatedAt
   )
 )
 

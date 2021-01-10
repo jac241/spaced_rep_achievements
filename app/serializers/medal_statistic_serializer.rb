@@ -5,7 +5,7 @@ class MedalStatisticSerializer < ApplicationSerializer
   belongs_to :medal
 
   TYPICAL_OPTIONS_FOR_BROADCAST = {
-    include: [ "entry.user", :medal ],
+    include: [ :entry, "entry.user", :medal ],
     fields: {
       user: [:username],
       medal: [:name, :score, :image_path]

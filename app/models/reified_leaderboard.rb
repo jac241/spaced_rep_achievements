@@ -39,6 +39,7 @@ class ReifiedLeaderboard < ApplicationRecord
           "entries.user.groups",
           :medal_statistics,
           "medal_statistics.medal",
+          "medal_statistics.entry",
         ],
         params: {
           data_since: data_since

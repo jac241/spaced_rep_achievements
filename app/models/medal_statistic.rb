@@ -3,7 +3,7 @@ class MedalStatistic < ApplicationRecord
   belongs_to :reified_leaderboard, touch: true
   belongs_to :medal
 
-  scope :top_medals, -> () do
+  scope :top_medals, -> (updated_since:, reified_leaderboard_id:, count: 5) do
     self
       .select("*")
       .from(<<-SQL
@@ -15,10 +15,12 @@ class MedalStatistic < ApplicationRecord
             FROM
               medal_statistics
             WHERE score > 0
-          ) as medal_ranks
+          ) as medal_statistics
         SQL
       )
-      .where("medal_rank <= 5")
+      .where("medal_rank <= ?", count)
+      .where("updated_at > ?", updated_since)
+      .where("reified_leaderboard_id = ?", reified_leaderboard_id)
   end
 
   def add_medal(medal)

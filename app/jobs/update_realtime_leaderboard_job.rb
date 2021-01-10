@@ -17,13 +17,18 @@ class UpdateRealtimeLeaderboardJob < ApplicationJob
       Rails.cache.fetch("#{leaderboard.cache_key}/realtime_full_json", expires_in: 1.minute) do
         {
           type: "api/receiveJsonApiData",
-          payload: leaderboard.serializer(meta: meta.merge({ from_cache: true })).to_hash
+          payload: leaderboard.serializer(
+            meta: meta.merge({ from_cache: true })
+          ).to_hash,
         }.to_json
       end
     else
       {
         type: "api/receiveJsonApiData",
-        payload: leaderboard.serializer(data_since: data_since, meta: meta).to_hash
+        payload: leaderboard.serializer(
+          data_since: data_since,
+          meta: meta,
+        ).to_hash,
       }.to_json
     end
   end

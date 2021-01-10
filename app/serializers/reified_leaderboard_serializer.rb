@@ -9,9 +9,10 @@ class ReifiedLeaderboardSerializer < ApplicationSerializer
 
   has_many :medal_statistics do |record, params|
     MedalStatistic
-      .top_medals
-      .where("updated_at > ?", params[:data_since])
-      .where("reified_leaderboard_id = ?", record.id)
+      .top_medals(
+        updated_since: params[:data_since],
+        reified_leaderboard_id: record.id
+      )
       .includes(:medal)
   end
 

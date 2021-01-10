@@ -13,7 +13,7 @@ class Expiration < ApplicationRecord
     entry = entries_cache[[reified_leaderboard, achievement.user_id]]
     entry.adjust_score(-self.points)
 
-    stats = medal_stats_cache[[reified_leaderboard, achievement.user_id, achievement.medal_id]]
+    stats = medal_stats_cache[[entry, achievement.medal_id]]
     stats.remove_medal(achievement.medal.score)
 
     self
@@ -31,11 +31,10 @@ class Expiration < ApplicationRecord
   end
 
   def self.cache_for_medal_statistics
-    Hash.new do |cache, rlb_user_id_medal_id_triple|
-      cache[rlb_user_id_medal_id_triple] =
-        rlb_user_id_medal_id_triple.first.medal_statistics.find_by(
-          user_id: rlb_user_id_medal_id_triple.second,
-          medal_id: rlb_user_id_medal_id_triple.third,
+    Hash.new do |cache, (entry, medal_id)|
+      cache[[entry, medal_id]] =
+        entry.medal_statistics.find_by(
+          medal_id: medal_id,
         )
     end
   end

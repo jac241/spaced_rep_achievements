@@ -18,7 +18,7 @@ class BroadcastLeaderboardChangesetService
       end
 
       medal_statistics
-        .group_by(&:reified_leaderboard)
+        .group_by { |m| m.entry.reified_leaderboard }
         .each do |leaderboard, grouped_medal_stats|
           RealtimeLeaderboardsChannel.broadcast_to(
             leaderboard.channel,

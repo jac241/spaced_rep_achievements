@@ -38,8 +38,7 @@ describe ExpireAchievementsJob do
       :medal_statistic,
       score: Achievement.all.sum { |a| a.medal.score },
       count: Achievement.count,
-      user: user,
-      reified_leaderboard: leaderboard,
+      entry: entry,
       medal: medal
     )
   end

@@ -41,7 +41,7 @@ describe "Creating achievements" do
 
         it "should update that user's medal statistic" do
           post!
-          medal_statistic = user.medal_statistics.where(reified_leaderboard: leaderboard).first
+          medal_statistic = user.medal_statistics.where(entries: { reified_leaderboard: leaderboard }).first
           expect(medal_statistic.count).to eq 1
           expect(medal_statistic.score).to eq medal.score
         end

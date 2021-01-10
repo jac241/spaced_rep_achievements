@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :medal_statistic do
-    association :user
-    association :reified_leaderboard
+    association :entry
     association :medal
 
     score { 0 }

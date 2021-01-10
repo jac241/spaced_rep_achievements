@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_145813) do
+ActiveRecord::Schema.define(version: 2021_01_10_151520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -129,6 +129,8 @@ ActiveRecord::Schema.define(version: 2020_12_27_145813) do
     t.integer "score", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "entry_id"
+    t.index ["entry_id"], name: "index_medal_statistics_on_entry_id"
     t.index ["medal_id"], name: "index_medal_statistics_on_medal_id"
     t.index ["reified_leaderboard_id"], name: "index_medal_statistics_on_reified_leaderboard_id"
     t.index ["score"], name: "index_medal_statistics_on_score"
@@ -243,6 +245,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_145813) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "entries", "reified_leaderboards"
   add_foreign_key "entries", "users"
+  add_foreign_key "medal_statistics", "entries"
   add_foreign_key "medal_statistics", "medals"
   add_foreign_key "medal_statistics", "reified_leaderboards"
   add_foreign_key "medal_statistics", "users"

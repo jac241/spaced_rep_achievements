@@ -1,6 +1,5 @@
 class MedalStatistic < ApplicationRecord
-  belongs_to :user
-  belongs_to :reified_leaderboard, touch: true
+  belongs_to :entry, touch: true
   belongs_to :medal
 
   scope :top_medals, -> (updated_since:, reified_leaderboard_id:, count: 5) do

@@ -22,8 +22,7 @@ class CreateAchievementService
         achievement.medal.score
       )
       stats = upsert_medal_statistics!(
-        user,
-        achievement.medal.family,
+        entries,
         achievement.medal
       )
       create_achievement_expirations!(achievement)
@@ -45,11 +44,10 @@ class CreateAchievementService
     end
   end
 
-  def upsert_medal_statistics!(user, family, medal)
-    family.reified_leaderboards.find_each.map do |leaderboard|
+  def upsert_medal_statistics!(entries, medal)
+    entries.map do |entry|
       MedalStatistic.find_or_initialize_by(
-        user: user,
-        reified_leaderboard: leaderboard,
+        entry: entry,
         medal: medal
       ).tap do |stats|
         stats.add_medal(medal)

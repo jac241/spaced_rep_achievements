@@ -3,7 +3,7 @@ import { receiveData } from 'realtime_leaderboard/leaderboard/apiSlice'
 import merge from 'lodash.merge'
 
 const initialState = {
-  topMedalsbyUserId: {},
+  topMedalsbyEntryId: {},
   entities: {}
 }
 
@@ -16,7 +16,7 @@ const topMedalsSlice = createSlice({
         addMedalStatistics(state, payload.medalStatistic)
       }
       if (payload.user) {
-        ensureEntryForUsers(state, payload.user)
+        ensureValuesForEntries(state, payload.entry)
       }
     })
   }
@@ -25,7 +25,7 @@ const topMedalsSlice = createSlice({
 const addMedalStatistics = (state, medalStatisticsById) => {
   for (const [id, newMedalStatistic] of Object.entries(medalStatisticsById)) {
     upsertIntoEntities(state, newMedalStatistic)
-    groupTopMedalsByUserId(state, newMedalStatistic)
+    groupTopMedalsByEntryId(state, newMedalStatistic)
   }
 }
 
@@ -38,22 +38,22 @@ const upsertIntoEntities = (state, newEntity) => {
   }
 }
 
-const groupTopMedalsByUserId = (state, newMedalStatistic) => {
-  const userId = newMedalStatistic.relationships.user.data.id
+const groupTopMedalsByEntryId = (state, newMedalStatistic) => {
+  const entryId = newMedalStatistic.relationships.entry.data.id
 
-  ensureEntryForUser(state, userId)
-  insertInOrder(state, state.topMedalsbyUserId[userId], newMedalStatistic)
+  ensureValueForEntryId(state, entryId)
+  insertInOrder(state, state.topMedalsbyEntryId[entryId], newMedalStatistic)
 }
 
-const ensureEntryForUsers = (state, usersById) => {
-  for (const [id, user] of Object.entries(usersById)) {
-    ensureEntryForUser(state, id)
+const ensureValuesForEntries = (state, entriesById) => {
+  for (const [entryId, entry] of Object.entries(entriesById)) {
+    ensureValueForEntryId(state, entryId)
   }
 }
 
-const ensureEntryForUser = (state, userId) => {
-  if (state.topMedalsbyUserId[userId] === undefined) {
-    state.topMedalsbyUserId[userId] = []
+const ensureValueForEntryId = (state, entryId) => {
+  if (state.topMedalsbyEntryId[entryId] === undefined) {
+    state.topMedalsbyEntryId[entryId] = []
   }
 }
 

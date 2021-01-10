@@ -74,7 +74,7 @@ const Entry = React.memo(
       }</td>
       <td>{ entry.attributes.score }</td>
       <td>
-        <TopMedalsList user={user} />
+        <TopMedalsList entry={entry} />
       </td>
     </tr>
   ),
@@ -89,16 +89,16 @@ const selectEntry = (state, id) => state.entries.entities[id]
 const selectEntryUser = (state, entry) => state.api.user[entry.relationships.user.data.id]
 
 
-const TopMedalsList = ({ user }) => {
-  const topMedalStatisticIds = useSelector(state => selectTopMedalStatisticIdsForUser(state, user))
+const TopMedalsList = ({ entry }) => {
+  const topMedalStatisticIds = useSelector(state => selectTopMedalStatisticIdsForEntry(state, entry))
   const medalStatistics = useSelector(state => selectMedalStatistics(state, topMedalStatisticIds), shallowEqual)
   const topMedals = useSelector(state => selectTopMedals(state, topMedalStatisticIds), shallowEqual)
 
   return <TopMedals topMedals={topMedals} medalStatistics={medalStatistics} />
 }
 
-const selectTopMedalStatisticIdsForUser = (state, user) => {
-  return state.topMedals.topMedalsbyUserId[user.id]
+const selectTopMedalStatisticIdsForEntry = (state, entry) => {
+  return state.topMedals.topMedalsbyEntryId[entry.id]
 }
 
 const selectMedalStatistics = (state, ids) => {

@@ -30,7 +30,7 @@ class CreateAchievementService
       [ entries, stats ]
     end
 
-    BroadcastLeaderboardUpdatesJob.perform_later(entries: entries, medal_statistics: stats)
+    BroadcastLeaderboardUpdatesJob.perform_later(medal_statistics: stats)
 
     success(:created, achievement)
   end

@@ -53,7 +53,11 @@ const selectIsRequestingCachedEntries = (state) => state.entries.isRequestingCac
 const EntryRow = ({ rank, entryId }) => {
   const entry = useSelector(state => selectEntry(state, entryId))
   const user = useSelector(state => selectEntryUser(state, entry))
-  return (
+  return <Entry rank={rank} entry={entry} user={user} />
+}
+
+const Entry = React.memo(
+  ({rank, entry, user}) => (
     <tr>
       <th>{ rank }</th>
       <td>{
@@ -73,8 +77,13 @@ const EntryRow = ({ rank, entryId }) => {
         <TopMedalsList user={user} />
       </td>
     </tr>
+  ),
+  (prevProps, nextProps) => (
+    prevProps.rank == nextProps.rank &&
+    prevProps.entry.attributes.updatedAt == nextProps.entry.attributes.updatedAt &&
+    prevProps.user.attributes.updatedAt == nextProps.entry.user.updatedAt
   )
-}
+)
 
 const selectEntry = (state, id) => state.entries.entities[id]
 const selectEntryUser = (state, entry) => state.api.user[entry.relationships.user.data.id]

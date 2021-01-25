@@ -5,8 +5,8 @@ class ExpireAchievementsJob < ApplicationJob
     entries_cache = Expiration.cache_for_entries
     medal_stats_cache = Expiration.cache_for_medal_statistics
 
-    ApplicationRecord.transaction do
-      ReifiedLeaderboard.find_each.flat_map do |leaderboard|
+    ReifiedLeaderboard.find_each do |leaderboard|
+      ApplicationRecord.transaction do
         expirations =
           Expiration
             .expired_for_leaderboard(leaderboard)

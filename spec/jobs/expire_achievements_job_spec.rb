@@ -5,15 +5,24 @@ describe ExpireAchievementsJob do
   let!(:medal) { create(:medal) }
   let(:user) { create(:user) }
   let!(:expired_achievement) { create(:achievement, user: user, medal: medal, client_earned_at: 35.days.ago) }
+  let!(:expired_achievement2) { create(:achievement, user: user, medal: medal, client_earned_at: 35.days.ago) }
   let!(:indate_achievement) { create(:achievement, user: user, medal: medal, client_earned_at: 25.days.ago) }
 
-  let!(:expiration) do
-    create(
-      :expiration,
-      reified_leaderboard: leaderboard,
-      created_at: 35.days.ago,
-      achievement: expired_achievement,
-    )
+  let!(:expired_expirations) do
+    [
+      create(
+        :expiration,
+        reified_leaderboard: leaderboard,
+        created_at: 35.days.ago,
+        achievement: expired_achievement,
+      ),
+      create(
+        :expiration,
+        reified_leaderboard: leaderboard,
+        created_at: 35.days.ago,
+        achievement: expired_achievement2,
+      ),
+    ]
   end
   let!(:indate_expiration) do
     create(

@@ -34,13 +34,8 @@ class ReifiedLeaderboard < ApplicationRecord
       {
         include: [
           :family,
-          :entries,
-          "entries.user",
           "entries.user.groups",
-          "entries.medal_statistics",
-          :medal_statistics,
-          "medal_statistics.medal",
-          "medal_statistics.entry",
+          "entries.medal_statistics.medals",
         ],
         params: {
           data_since: data_since

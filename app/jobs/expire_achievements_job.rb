@@ -10,10 +10,10 @@ class ExpireAchievementsJob < ApplicationJob
         expirations =
           Expiration
             .expired_for_leaderboard(leaderboard)
-            .find_each
-            .map { |exp| exp.expire(entries_cache, medal_stats_cache) }
 
-        expirations.each(&:destroy!)
+        expirations.find_each { |exp| exp.expire(entries_cache, medal_stats_cache) }
+
+        expirations.delete_all
         entries_cache.values.each(&:save!)
         medal_stats_cache.values.each(&:save!)
       end

@@ -11,11 +11,25 @@ class ExpireAchievementsJob < ApplicationJob
           Expiration
             .expired_for_leaderboard(leaderboard)
 
-        expirations.find_each { |exp| exp.expire(entries_cache, medal_stats_cache) }
+        bm = Benchmark.measure do
+          expirations.find_each { |exp| exp.expire(entries_cache, medal_stats_cache) }
+        end
+        Rails.logger.info("Time to expire records: #{1000 * bm.real}ms")
 
-        expirations.delete_all
-        entries_cache.values.each(&:save!)
-        medal_stats_cache.values.each(&:save!)
+        bm = Benchmark.measure do
+          expirations.delete_all
+        end
+        Rails.logger.info("Time to delete_all expirations: #{1000 * bm.real}ms")
+
+        bm = Benchmark.measure do
+          entries_cache.values.each(&:save!)
+        end
+        Rails.logger.info("Time to save entries: #{1000 * bm.real}ms")
+
+        bm = Benchmark.measure do
+          medal_stats_cache.values.each(&:save!)
+        end
+        Rails.logger.info("Time to save medal stats: #{1000 * bm.real}ms")
       end
     end
 

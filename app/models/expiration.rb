@@ -18,20 +18,4 @@ class Expiration < ApplicationRecord
 
     self
   end
-
-  private
-
-  def self.cache_for_entries
-    Hash.new do |cache, (reified_leaderboard, user_id)|
-      cache[[reified_leaderboard, user_id]] =
-        reified_leaderboard.entries.find_by(user_id: user_id)
-    end
-  end
-
-  def self.cache_for_medal_statistics
-    Hash.new do |cache, (entry, medal_id)|
-      cache[[entry, medal_id]] =
-        entry.medal_statistics.find_by(medal_id: medal_id)
-    end
-  end
 end

@@ -14,6 +14,7 @@ class ExpireAchievementsJob < ApplicationJob
 
           Rails.logger.info("Load affected entries")
           affected_entries = Entry
+            .includes(:user)
             .where(
               reified_leaderboard: leaderboard,
               user_id: Achievement.where(
@@ -28,6 +29,7 @@ class ExpireAchievementsJob < ApplicationJob
           Rails.logger.info("Load medal statistics")
           medal_stats_cache =
             MedalStatistic
+              .includes(:medal, entry: :user)
               .where(entry: affected_entries.pluck(:id))
               .group_by { |ms| [ms.entry_id, ms.medal_id] }
               .transform_values { |v| v.first }
@@ -57,7 +59,6 @@ class ExpireAchievementsJob < ApplicationJob
             medal_stats_cache.values.each { |ms| ms.save!(validate: false) }
           end
           Rails.logger.info("Time to save medal stats: #{1000 * bm.real}ms")
-          binding.pry
 
           [entries_cache, medal_stats_cache]
         end

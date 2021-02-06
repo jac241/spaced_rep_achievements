@@ -36,7 +36,7 @@ class ExpireAchievementsJob < ApplicationJob
 
           Rails.logger.info("Do expiration")
           bm = Benchmark.measure do
-            expirations.find_each { |exp| exp.expire(entries_cache, medal_stats_cache) }
+            expirations.each { |exp| exp.expire(entries_cache, medal_stats_cache) }
           end
           Rails.logger.info("Time to expire records: #{1000 * bm.real}ms")
 

@@ -4,6 +4,10 @@ class EntrySerializer < ApplicationSerializer
   belongs_to :reified_leaderboard
   belongs_to :user
 
+  attribute :online do |object|
+    object.updated_at > 5.minutes.ago
+  end
+
   TYPICAL_OPTIONS_FOR_BROADCAST = {
     include: [ :user ],
     fields: { user: [:username] },

@@ -1,11 +1,11 @@
-import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React, {useEffect} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {fetchEntries} from "chase_mode/actions"
+import { createCableSubscription } from "./cableSubscription";
 
-import consumer from "channels/ankiConsumer.js.erb"
-import { fetchEntries } from "chase_mode/actions"
-import { receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
 
-var cableSubscription = null
+let cableSubscription = null
+
 
 const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
   const dispatch = useDispatch()
@@ -25,34 +25,11 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
   )
 }
 
-const createCableSubscription = (reifiedLeaderboardId, dispatch) => {
-  return consumer.subscriptions.create(
-    {
-      channel: "RealtimeLeaderboardsChannel",
-      leaderboard_id: reifiedLeaderboardId,
-    },
-    {
-      connected() {
-        // Called when the subscription is ready for use on the server
-        console.log("realtime lb connected" + reifiedLeaderboardId)
-      },
 
-      disconnected() {
-      },
-
-      received(action) {
-        console.log(action)
-        if (action.type === "api/receiveJsonApiData") {
-          dispatch(receiveJsonApiData(action.payload))
-        }
-      },
-    }
-  )
-}
 const RivalryUser = ({ userId }) => {
   let entriesArePresent = useSelector(state => Object.keys(state.entries.entities).length > 0)
   let userEntry = useSelector(
-    state => Object.values(state.entries.entities).find(entry => entry.relationships.user.data.id == userId)
+    state => Object.values(state.entries.entities).find(entry => entry.relationships.user.data.id === userId)
   )
   let userEntryIndex = useSelector(
     state => userEntry ? state.entries.ids.findIndex(id => id === userEntry.id) : null
@@ -70,6 +47,7 @@ const RivalryUser = ({ userId }) => {
   ))
 
   if (userEntry && userEntry.attributes.score > 0) {
+
     return (
       <React.Fragment>
         <td id="rivalry_user">
@@ -77,11 +55,7 @@ const RivalryUser = ({ userId }) => {
           <br/>
           { `Your Rank: ${userEntryIndex + 1} `}
         </td>
-          { rivalEntry && rivalUser && (
-            <td id="rivalry_rival">
-              { `${rivalUser.attributes.username} - ${rivalEntry.attributes.score}` }
-            </td>
-          )}
+          { rivalEntry && rivalUser && <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} /> }
       </React.Fragment>
     )
   } else if (entriesArePresent) {
@@ -91,6 +65,24 @@ const RivalryUser = ({ userId }) => {
       </td>
     )
   }
+}
+
+
+const Rival = ({ rivalEntry, rivalUser }) => {
+  const rivalDisplayText = `${rivalUser.attributes.username} - ${rivalEntry.attributes.score}`
+
+  return (
+    <td id="rivalry_rival">
+      { rivalEntry.attributes.online ? (
+          <span title="Online" style="color: #0275d8">
+            { rivalDisplayText }
+          </span>
+        ) : (
+          { rivalDisplayText }
+        )
+      }
+    </td>
+  )
 }
 
 export default ChaseMode

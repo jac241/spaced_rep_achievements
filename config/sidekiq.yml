@@ -1,4 +1,4 @@
-:concurrency: 5
+:concurrency: 6
 
 :queues:
   - default
@@ -10,6 +10,6 @@
 :limits:
   sync: 1
   default: 1
-  realtime_leaderboard: 1
+  realtime_leaderboard: 2
   active_storage_analysis: 1
   active_storage_purge: 1

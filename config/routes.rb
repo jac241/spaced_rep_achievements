@@ -56,7 +56,13 @@ Rails.application.routes.draw do
       resources :achievements
       resources :rivalries
 
+      resources :entries
+
       mount_devise_token_auth_for 'User', at: 'auth'
+    end
+
+    namespace :v2 do
+      resources :rivalries
     end
   end
 

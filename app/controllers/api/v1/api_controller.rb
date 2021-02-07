@@ -4,7 +4,6 @@ module Api
       include DeviseTokenAuth::Concerns::SetUserByToken
 
       private
-      # Trying to do this manually because we devise the wrong user sometimes!!!
       def auth_by_token!
         unless set_user_by_token
           Rails.logger.info "Unauthorized token user"

@@ -1,0 +1,3 @@
+= javascript_pack_tag 'anki', host: Rails.application.config.action_controller.asset_host
+
+%div#chase_mode_root{data: { current_user_id: current_user.id, client: request.headers['client'], access_token: request.headers['access-token'], uid: request.headers['uid'], reified_leaderboard_id: @reified_leaderboard.id }}

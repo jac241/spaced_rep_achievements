@@ -1,6 +1,6 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit'
 import { upsertIfUpdated } from 'realtime_leaderboard/reducerUtil'
-import { receiveData } from 'realtime_leaderboard/leaderboard/apiSlice'
+import { receiveData, receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
 
 const entriesAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.attributes.score - a.attributes.score
@@ -10,6 +10,7 @@ const entriesSlice = createSlice({
   name: 'entries',
   initialState: entriesAdapter.getInitialState({
     isRequestingCachedEntries: false,
+    requestingEntries: false,
   }),
   reducers: {
     getCachedEntriesStart(state, action) {
@@ -20,7 +21,7 @@ const entriesSlice = createSlice({
     },
     receiveEntries(state, { payload = {} }) {
       upsertMany(state, payload)
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(receiveData, (state, { payload }) => {

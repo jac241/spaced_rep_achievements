@@ -1,0 +1,17 @@
+import axios from 'axios'
+
+const host = "<%= Rails.application.config.action_controller.asset_host %>"
+const element = document.querySelector("#chase_mode_root")
+
+const client = axios.create({
+  baseURL: host,
+  headers: {
+    'access-token': element.dataset.accessToken,
+    'client': element.dataset.client,
+    'uid': element.dataset.uid,
+  }
+});
+
+export { host }
+
+export default client

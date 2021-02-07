@@ -47,7 +47,6 @@ const RivalryUser = ({ userId }) => {
   ))
 
   if (userEntry && userEntry.attributes.score > 0) {
-
     return (
       <React.Fragment>
         <td id="rivalry_user">
@@ -55,7 +54,7 @@ const RivalryUser = ({ userId }) => {
           <br/>
           { `Your Rank: ${userEntryIndex + 1} `}
         </td>
-          { rivalEntry && rivalUser && <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} /> }
+        { rivalEntry && rivalUser && <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} /> }
       </React.Fragment>
     )
   } else if (entriesArePresent) {
@@ -73,12 +72,13 @@ const Rival = ({ rivalEntry, rivalUser }) => {
 
   return (
     <td id="rivalry_rival">
+      Rival:&nbsp;
       { rivalEntry.attributes.online ? (
           <span title="Online" style="color: #0275d8">
             { rivalDisplayText }
           </span>
         ) : (
-          { rivalDisplayText }
+           rivalDisplayText
         )
       }
     </td>

@@ -1,7 +1,10 @@
 import React, {useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {fetchEntries} from "chase_mode/actions"
+import Odometer from 'react-odometerjs';
+
 import { createCableSubscription } from "./cableSubscription";
+import {fetchEntries} from "chase_mode/actions"
+import 'chase_mode/styles/odometer.css'
 
 
 let cableSubscription = null
@@ -50,7 +53,8 @@ const RivalryUser = ({ userId }) => {
     return (
       <React.Fragment>
         <td id="rivalry_user">
-          { `Score: ${userEntry.attributes.score}` }
+          Score:&nbsp;
+          <Odometer value={userEntry.attributes.score} duration={500} animation="count"/>
           <br/>
           { `Your Rank: ${userEntryIndex + 1} `}
         </td>
@@ -84,5 +88,12 @@ const Rival = ({ rivalEntry, rivalUser }) => {
     </td>
   )
 }
+
+const RivalDisplayText = ({ username, score }) => (
+  <React.Fragment>
+    {`${username} - `}
+    <Odometer value={score} duration={500}/>
+  </React.Fragment>
+)
 
 export default ChaseMode

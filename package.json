@@ -25,6 +25,7 @@
     "preact-compat": "^3.19.0",
     "prop-types": "^15.7.2",
     "rails-erb-loader": "^5.5.2",
+    "react-odometerjs": "^2.1.1",
     "react-redux": "^7.2.2",
     "redux-logger": "^3.0.6",
     "stimulus": "^1.1.1",

@@ -10,7 +10,7 @@ const entriesSlice = createSlice({
   name: 'entries',
   initialState: entriesAdapter.getInitialState({
     isRequestingCachedEntries: false,
-    requestingEntries: false,
+    isRequestingEntries: false,
   }),
   reducers: {
     getCachedEntriesStart(state, action) {
@@ -21,6 +21,12 @@ const entriesSlice = createSlice({
     },
     receiveEntries(state, { payload = {} }) {
       upsertMany(state, payload)
+    },
+    getEntriesStart(state, action) {
+      state.isRequestingEntries = true
+    },
+    getEntriesFinished(state, action) {
+      state.isRequestingEntries = false
     },
   },
   extraReducers: (builder) => {
@@ -41,6 +47,8 @@ const upsertMany = (state, newEntries) => {
 export const {
   receiveEntries,
   getCachedEntriesStart,
-  getCachedEntriesSuccess
+  getCachedEntriesSuccess,
+  getEntriesStart,
+  getEntriesFinished,
 } = entriesSlice.actions
 export default entriesSlice.reducer

@@ -17,10 +17,18 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
       cableSubscription && cableSubscription.unsubscribe()
     }
   }, [])
+  const connectionStatus = useSelector(state => state.cable.connectionStatus)
+  const cableIsConnected = connectionStatus === 'connected'
+  const styles = cableIsConnected ? "" : "color: silver"
 
   return (
-    <table id="rivalry">
-      <RivalryUser userId={userId} />
+    <table id="rivalry" style={styles}>
+      { cableIsConnected ? (
+          <RivalryUser userId={userId} />
+        ) : (
+          'Connecting to AnkiAchievements.com...'
+        )
+      }
     </table>
   )
 }
@@ -45,6 +53,7 @@ const RivalryUser = ({ userId }) => {
   let rivalUser = useSelector((state) => (
     rivalEntry ? state.api.user[rivalEntry.relationships.user.data.id] : null
   ))
+  let isRequestingEntries = useSelector(state => state.entries.isRequestingEntries)
 
   if (userEntry && userEntry.attributes.score > 0) {
     return (
@@ -57,7 +66,7 @@ const RivalryUser = ({ userId }) => {
         { rivalEntry && rivalUser && <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} /> }
       </React.Fragment>
     )
-  } else if (entriesArePresent) {
+  } else if (!isRequestingEntries && entriesArePresent) {
     return (
       <td id="rivalry_user">
         Start reviewing to become ranked!

@@ -5,6 +5,7 @@ FactoryBot.define do
     sequence(:client_deck_id) { |n| n.to_i }
     client_earned_at { Time.now }
     client_uuid { SecureRandom.uuid }
+    client_db_uuid { SecureRandom.uuid }
 
     association :medal
     association :user

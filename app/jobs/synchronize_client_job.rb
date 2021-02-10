@@ -1,7 +1,7 @@
 class SynchronizeClientJob < ApplicationJob
   include ActiveSupport::Benchmarkable
 
-  queue_as :sync
+  #queue_as :sync
 
   def perform(sync)
     client_uuid = sync.client_uuid # don't want to call this 20,000 times...
@@ -21,12 +21,13 @@ class SynchronizeClientJob < ApplicationJob
       # let's us overwrite records that already exist, full sync will be the
       # ground truth. The requests that will come each time you earn a medal
       # reviewing will just be temporary
+      new_achievement_ids = []
       benchmark 'Write achievements to database' do
         ApplicationRecord.logger.silence do
-          sync.achievements.import!(
+          new_achievement_ids = sync.achievements.import!(
             achievements,
             on_duplicate_key_update: {
-              conflict_target: [:client_uuid, :client_db_id, :client_earned_at],
+              conflict_target: [:client_db_uuid],
               columns: [:sync_id]
             }
           )
@@ -39,7 +40,7 @@ class SynchronizeClientJob < ApplicationJob
   private
 
   def prepare_attrs(achievement_attrs:, client_uuid:, user_id:)
-    {
+    attrs = {
       medal_id: all_medal_ids_by_client_medal_id[achievement_attrs["medal_id"]],
       client_uuid: client_uuid,
       client_db_id: achievement_attrs["id_"],
@@ -48,6 +49,9 @@ class SynchronizeClientJob < ApplicationJob
       client_earned_at: achievement_attrs["created_at"],
       user_id: user_id,
     }
+    attrs[:client_db_uuid] = achievement_attrs["uuid"] if achievement_attrs["uuid"]
+
+    attrs
   end
 
   # actually care about speed cuz server only has 1 CPU...

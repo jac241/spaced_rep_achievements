@@ -1,4 +1,6 @@
 class ExpireAchievementsJob < ApplicationJob
+  include ActiveSupport::Benchmarkable
+
   queue_as :realtime_leaderboard
 
   def perform
@@ -32,30 +34,25 @@ class ExpireAchievementsJob < ApplicationJob
             .transform_values { |v| v.first }
 
         Rails.logger.info("Do expiration")
-        bm = Benchmark.measure do
+        benchmark "Time to expire records" do
           expirations.each { |exp| exp.expire(entries_cache, medal_stats_cache) }
         end
-        Rails.logger.info("Time to expire records: #{1000 * bm.real}ms")
 
-        expired_count = nil
-        bm = Benchmark.measure do
-          expired_count = expirations.delete_all
+        benchmark "Time to delete_all expirations" do
+          expired_count = Expiration.where(id: expirations.map(&:id)).delete_all
+          Rails.logger.info("Number of Expirations: #{expired_count}")
         end
-        Rails.logger.info("Number of Expirations: #{expired_count}")
-        Rails.logger.info("Time to delete_all expirations: #{1000 * bm.real}ms")
 
         Rails.logger.info("Number of entries affected: #{entries_cache.size}")
         Rails.logger.info("Number of medal stats affected: #{medal_stats_cache.size}")
 
-        bm = Benchmark.measure do
+        benchmark "Time to save entries" do
           entries_cache.values.each { |e| e.save!(validate: false) }
         end
-        Rails.logger.info("Time to save entries: #{1000 * bm.real}ms")
 
-        bm = Benchmark.measure do
+        benchmark "Time to save medal stats" do
           medal_stats_cache.values.each { |ms| ms.save!(validate: false) }
         end
-        Rails.logger.info("Time to save medal stats: #{1000 * bm.real}ms")
 
         [entries_cache, medal_stats_cache]
       end

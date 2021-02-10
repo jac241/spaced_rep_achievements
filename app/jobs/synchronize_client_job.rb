@@ -21,26 +21,23 @@ class SynchronizeClientJob < ApplicationJob
         end
     end
 
-    services_results = []
+    # let's us overwrite records that already exist, full sync will be the
+    # ground truth. The requests that will come each time you earn a medal
+    # reviewing will just be temporary
+    services_results = benchmark 'Write achievements to database', silence: true do
+      ApplicationRecord.transaction do
+        import_result = import_achievements!(sync, achievements)
 
-    ApplicationRecord.transaction do
-      # let's us overwrite records that already exist, full sync will be the
-      # ground truth. The requests that will come each time you earn a medal
-      # reviewing will just be temporary
-      benchmark 'Write achievements to database' do
-        ApplicationRecord.logger.silence do
-          import_result = import_achievements!(sync, achievements)
-
-          services_results = find_new_achievements_created_in_this_sync(import_result).map do |achievement|
-            AfterAchievementCreatedService.call(
-              achievement: achievement,
-              user: sync.user
-            )
-          end
+        services_results = find_new_achievements_created_in_this_sync(import_result).map do |achievement|
+          AfterAchievementCreatedService.call(
+            achievement: achievement,
+            user: sync.user
+          )
         end
       end
-      sync.achievements_file.purge
     end
+
+    sync.achievements_file.purge_later
 
     unless services_results.empty?
       BroadcastLeaderboardUpdatesJob.perform_later(

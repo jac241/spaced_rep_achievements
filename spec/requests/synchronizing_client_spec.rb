@@ -12,8 +12,9 @@ describe "Synchronizing a client" do
       end
 
       let(:medal) { create(:medal) }
-      let(:achievement) { build(:achievement) }
+      let(:achievement) { build(:achievement, user: user) }
       let(:medal_attributes) { { client_medal_id: medal.client_medal_id } }
+      let!(:reified_leaderboard) { create(:reified_leaderboard, family: medal.family) }
       let(:achievement_attributes) do
         attrs = achievement.attributes.merge(medal_attributes)
         [
@@ -38,13 +39,28 @@ describe "Synchronizing a client" do
           client_uuid: achievement.client_uuid,
           achievements_file: achievements_file
         }
+        perform_enqueued_jobs
       end
 
       it "should create an achievement" do
         expect {
           post!
-          perform_enqueued_jobs
         }.to change { Achievement.count }.by(1)
+      end
+
+      RSpec::Matchers.define :after_achievement_arguments_for do |achievement|
+        match do |kwargs|
+          kwargs[:achievement].client_db_uuid == achievement.client_db_uuid &&
+            kwargs[:user] == achievement.user
+        end
+      end
+
+      it "should perform actions required after achievement created" do
+        expect(AfterAchievementCreatedService).to(
+          receive(:call).with(after_achievement_arguments_for(achievement)))
+          .and_return(OpenStruct.new(body: OpenStruct.new(medal_statistics: [])))
+
+        post!
       end
 
       context "older version of anki killstreaks that has no uuid field" do
@@ -53,7 +69,6 @@ describe "Synchronizing a client" do
         it "should still create an achievement" do
           expect {
             post!
-            perform_enqueued_jobs
           }.to change { Achievement.count }.by(1)
         end
       end
@@ -63,9 +78,12 @@ describe "Synchronizing a client" do
 
         it "should add the new sync id to the achievement", :perform_enqueued do
           post!
-          perform_enqueued_jobs
 
           expect(achievement.reload.sync_id).to_not be nil
+        end
+
+        it "shouldn't call after achievement created service" do
+          expect(AfterAchievementCreatedService).to_not receive(:call)
         end
       end
     end

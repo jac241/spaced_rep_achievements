@@ -47,13 +47,11 @@ class AfterAchievementCreatedService
     leaderboard_ids = achievement.medal.family.reified_leaderboards.pluck(:id)
     points = achievement.medal.score
 
-    achievement.expirations.import! (
-      leaderboard_ids.map do |rlbid|
-        {
-          reified_leaderboard_id: rlbid,
-          points: points
-        }
-      end
-    )
+    leaderboard_ids.each do |leaderboard_id|
+      achievement.expirations.create!(
+        reified_leaderboard_id: leaderboard_id,
+        points: points,
+      )
+    end
   end
 end

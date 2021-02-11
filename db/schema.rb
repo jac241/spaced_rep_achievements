@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_233555) do
+ActiveRecord::Schema.define(version: 2021_02_10_222242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -124,7 +124,6 @@ ActiveRecord::Schema.define(version: 2021_02_09_233555) do
   end
 
   create_table "medal_statistics", force: :cascade do |t|
-    t.bigint "user_id"
     t.uuid "reified_leaderboard_id"
     t.uuid "medal_id"
     t.integer "count", default: 0, null: false
@@ -132,13 +131,12 @@ ActiveRecord::Schema.define(version: 2021_02_09_233555) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "entry_id"
+    t.index ["entry_id", "medal_id"], name: "index_medal_statistics_on_entry_id_and_medal_id", unique: true
     t.index ["entry_id"], name: "index_medal_statistics_on_entry_id"
     t.index ["medal_id"], name: "index_medal_statistics_on_medal_id"
     t.index ["reified_leaderboard_id"], name: "index_medal_statistics_on_reified_leaderboard_id"
     t.index ["score"], name: "index_medal_statistics_on_score"
     t.index ["updated_at"], name: "index_medal_statistics_on_updated_at"
-    t.index ["user_id", "reified_leaderboard_id", "medal_id"], name: "idx_med_stats_on_user_lb_medal", unique: true
-    t.index ["user_id"], name: "index_medal_statistics_on_user_id"
   end
 
   create_table "medals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -250,7 +248,6 @@ ActiveRecord::Schema.define(version: 2021_02_09_233555) do
   add_foreign_key "medal_statistics", "entries"
   add_foreign_key "medal_statistics", "medals"
   add_foreign_key "medal_statistics", "reified_leaderboards"
-  add_foreign_key "medal_statistics", "users"
   add_foreign_key "medals", "families"
   add_foreign_key "membership_requests", "groups"
   add_foreign_key "membership_requests", "users"

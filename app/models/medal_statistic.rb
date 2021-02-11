@@ -9,7 +9,7 @@ class MedalStatistic < ApplicationRecord
           (
             SELECT
               medal_statistics.*,
-              RANK() OVER (PARTITION BY medal_statistics.reified_leaderboard_id, medal_statistics.user_id
+              RANK() OVER (PARTITION BY medal_statistics.reified_leaderboard_id, medal_statistics.entry_id
                      ORDER BY medal_statistics.score DESC) AS medal_rank
             FROM
               medal_statistics

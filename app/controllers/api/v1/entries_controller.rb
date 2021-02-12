@@ -21,11 +21,17 @@ module Api
       end
 
       def fields
-        { user: [:username] }.tap do |f|
-           if includes_contains?("top_medals")
-             f[:medal] = [ :image_path ]
-           end
-        end
+         if includes_contains?("top_medals")
+           {
+             user: [ :username ],
+             medal:  [ :image_path ],
+           }
+         else
+          {
+            user: [ :username ],
+            entry: [ :score, :updated_at, :user, :online ],
+          }
+         end
       end
 
       def includes_contains?(key)
@@ -33,10 +39,11 @@ module Api
       end
 
       def serializer_includes
-        [:user, "user.groups"].tap do |i|
+        [:user].tap do |i|
            if includes_contains?("top_medals")
              i << "top_medals"
              i << "top_medals.medal"
+             i << "user.groups"
            end
         end
       end

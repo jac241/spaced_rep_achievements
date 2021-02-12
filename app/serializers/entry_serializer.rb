@@ -8,6 +8,8 @@ class EntrySerializer < ApplicationSerializer
     object.updated_at > 5.minutes.ago
   end
 
+  has_many :top_medals, serializer: MedalStatisticSerializer
+
   TYPICAL_OPTIONS_FOR_BROADCAST = {
     include: [ :user ],
     fields: { user: [:username] },

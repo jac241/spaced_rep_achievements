@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchEntries } from "chase_mode/actions"
-import { createCableSubscription } from "./cableSubscription";
+import { createCableSubscription, useCableReconnected } from "shared/cableSubscription";
+import { findMostRecentEntryUpdatedAt, compareDates } from "shared/entriesSelectors";
 
 
 let cableSubscription = null
@@ -11,7 +12,6 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
   const dispatch = useDispatch()
   const connectionStatus = useSelector(state => state.cable.connectionStatus)
   const mostRecentEntryUpdatedAt = useSelector(findMostRecentEntryUpdatedAt, compareDates)
-  const prevConnectionStatus = usePrevious(connectionStatus)
 
   useEffect(() => {
     dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId }))
@@ -22,19 +22,17 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (connectionStatus === 'connected' && prevConnectionStatus === 'disconnected') {
-      console.log(`Reconnected. Fetching entries since ${mostRecentEntryUpdatedAt}`)
-      dispatch(
-        fetchEntries(
-          {
-            reified_leaderboard_id: reifiedLeaderboardId,
-            updated_since: mostRecentEntryUpdatedAt.toJSON(),
-          }
-        )
+  useCableReconnected(connectionStatus, () => {
+    console.log(`Reconnected. Fetching entries since ${mostRecentEntryUpdatedAt}`)
+    dispatch(
+      fetchEntries(
+        {
+          reified_leaderboard_id: reifiedLeaderboardId,
+          updated_since: mostRecentEntryUpdatedAt.toJSON(),
+        }
       )
-    }
-  }, [connectionStatus])
+    )
+  })
 
   const cableIsConnected = connectionStatus === 'connected'
   const styles = cableIsConnected ? "" : "color: silver"
@@ -49,33 +47,6 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
       }
     </table>
   )
-}
-
-const minDate = new Date('1995-12-17T03:24:00')
-
-const findMostRecentEntryUpdatedAt = (state) => {
-  let max = minDate
-  Object.values(state.entries.entities).forEach((entry) => {
-    const updatedAt = new Date(entry.attributes.updatedAt)
-    if (updatedAt > max) {
-      max = updatedAt
-    }
-  })
-  return max
-}
-
-
-const compareDates = (a, b) => (
-  a.getTime() === b.getTime()
-)
-
-
-const usePrevious = (value) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
 }
 
 const RivalryUser = ({ userId }) => {

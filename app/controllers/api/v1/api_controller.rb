@@ -2,6 +2,7 @@ module Api
   module V1
     class ApiController < ActionController::API
       include DeviseTokenAuth::Concerns::SetUserByToken
+      skip_after_action :update_auth_header, unless: -> { @used_auth_by_token }
 
       private
       def auth_by_token!

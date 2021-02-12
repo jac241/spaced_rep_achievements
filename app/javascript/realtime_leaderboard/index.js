@@ -11,7 +11,7 @@ import { Provider } from "react-redux"
 import App from './app/App'
 import { receiveJsonApiData } from './leaderboard/apiSlice'
 
-const renderLeaderboard = (element, leaderboardKey, controller) => {
+const renderLeaderboard = (element, reifiedLeaderboardId, controller) => {
   const middlewares = []
   if (process.env.NODE_ENV === `development`) {
     const { logger } = require(`redux-logger`);
@@ -26,7 +26,7 @@ const renderLeaderboard = (element, leaderboardKey, controller) => {
 
   render(
     <Provider store={store}>
-      <App controller={controller}/>
+      <App reifiedLeaderboardId={reifiedLeaderboardId} />
     </Provider>,
     element
   )

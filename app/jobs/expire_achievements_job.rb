@@ -16,8 +16,7 @@ class ExpireAchievementsJob < ApplicationJob
           .includes(:user)
           .where(
             reified_leaderboard: leaderboard,
-            user_id: Achievement.where(
-              id: expirations.pluck(:achievement_id)).distinct.pluck(:user_id)
+            user_id: Achievement.where(id: expirations.pluck(:achievement_id)).pluck(:user_id).uniq
           )
 
         entries_cache =

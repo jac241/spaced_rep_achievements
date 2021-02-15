@@ -26,9 +26,9 @@ class SynchronizeClientJob < ApplicationJob
     # reviewing will just be temporary
     services_results = benchmark 'Write achievements to database', silence: true do
       ApplicationRecord.transaction do
-        import_result = import_achievements!(sync, achievements)
+        imported_ids = import_achievements!(sync, achievements)
 
-        services_results = find_new_achievements_created_in_this_sync(import_result).map do |achievement|
+        services_results = find_new_achievements_created_in_this_sync(imported_ids).map do |achievement|
           AfterAchievementCreatedService.call(
             achievement: achievement,
             user: sync.user
@@ -73,23 +73,35 @@ class SynchronizeClientJob < ApplicationJob
   end
 
   def import_achievements!(sync, achievements)
-    sync.achievements.import!(
-      achievements,
+    as_with_uuid, as_without_uuid = achievements.partition { |a| a[:client_db_uuid].present? }
+
+    with_uuid_result = sync.achievements.import!(
+      as_with_uuid,
       on_duplicate_key_update: {
         conflict_target: [:client_db_uuid],
         columns: [:sync_id]
       }
     )
+
+    without_uuid_result = sync.achievements.import!(
+      as_without_uuid,
+      on_duplicate_key_update: {
+        conflict_target: [:client_uuid, :client_db_id, :client_earned_at],
+        columns: [:sync_id]
+      }
+    )
+
+    with_uuid_result.ids.concat(without_uuid_result.ids)
   end
 
-  def find_new_achievements_created_in_this_sync(import_result)
+  def find_new_achievements_created_in_this_sync(imported_ids)
     achievements_with_expirations =
       Expiration
-      .where(achievement_id: import_result.ids)
+      .where(achievement_id: imported_ids)
       .pluck(:achievement_id)
 
     new_achievement_ids =
-      Set.new(import_result.ids) - achievements_with_expirations
+      Set.new(imported_ids) - achievements_with_expirations
 
     Achievement.where(id: new_achievement_ids)
   end

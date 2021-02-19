@@ -8,11 +8,11 @@ class Entry < ApplicationRecord
   attribute :instance_score_delta, :integer, default: 0
 
   def adjust_score!(points)
-    increment!(:score, points)
+    increment!(:score, points, touch: true)
   end
 
   def persist_score_delta!
-    increment!(:score, instance_score_delta)
+    increment!(:score, instance_score_delta, touch: true)
     self.instance_score_delta = 0
   end
 end

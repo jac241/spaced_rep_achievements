@@ -25,8 +25,8 @@ class MedalStatistic < ApplicationRecord
   attribute :instance_score_delta, :integer, default: 0
 
   def add_medal!(medal)
-    increment!(:count)
-    increment!(:score, medal.score)
+    increment!(:count, touch: true)
+    increment!(:score, medal.score, touch: true)
   end
 
   # takes score b/c assumes score can change
@@ -36,7 +36,7 @@ class MedalStatistic < ApplicationRecord
   end
 
   def persist_count_and_score_delta!
-    increment!(:count, instance_count_delta)
-    increment!(:score, instance_score_delta)
+    increment!(:count, instance_count_delta, touch: true)
+    increment!(:score, instance_score_delta, touch: true)
   end
 end

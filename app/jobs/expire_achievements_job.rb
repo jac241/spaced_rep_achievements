@@ -46,11 +46,11 @@ class ExpireAchievementsJob < ApplicationJob
         Rails.logger.info("Number of medal stats affected: #{medal_stats_cache.size}")
 
         benchmark "Time to save entries" do
-          entries_cache.values.each { |e| e.save!(validate: false) }
+          entries_cache.values.each { |e| e.persist_score_delta! }
         end
 
         benchmark "Time to save medal stats" do
-          medal_stats_cache.values.each { |ms| ms.save!(validate: false) }
+          medal_stats_cache.values.each { |ms| ms.persist_count_and_score_delta! }
         end
 
         [entries_cache, medal_stats_cache]

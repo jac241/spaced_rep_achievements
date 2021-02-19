@@ -21,14 +21,22 @@ class MedalStatistic < ApplicationRecord
       .where("medal_statistics.updated_at > ?", updated_since)
   end
 
-  def add_medal(medal)
-    self.count += 1
-    self.score += medal.score
+  attribute :instance_count_delta, :integer, default: 0
+  attribute :instance_score_delta, :integer, default: 0
+
+  def add_medal!(medal)
+    increment!(:count)
+    increment!(:score, medal.score)
   end
 
   # takes score b/c assumes score can change
-  def remove_medal(score)
-    self.count -= 1
-    self.score -= score
+  def tally_medal_removal(score)
+    self.instance_count_delta -= 1
+    self.instance_score_delta -= score
+  end
+
+  def persist_count_and_score_delta!
+    increment!(:count, instance_count_delta)
+    increment!(:score, instance_score_delta)
   end
 end

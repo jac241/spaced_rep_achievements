@@ -11,10 +11,10 @@ class Expiration < ApplicationRecord
 
   def expire(entries_cache, medal_stats_cache)
     entry = entries_cache[[reified_leaderboard_id, achievement.user_id]]
-    entry.adjust_score(-self.points)
+    entry.instance_score_delta -= self.points
 
     stats = medal_stats_cache[[entry.id, achievement.medal_id]]
-    stats.remove_medal(achievement.medal.score)
+    stats.tally_medal_removal(achievement.medal.score)
 
     self
   end

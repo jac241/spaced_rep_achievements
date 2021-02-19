@@ -58,7 +58,7 @@ describe "Synchronizing a client" do
       it "should perform actions required after achievement created" do
         expect(AfterAchievementCreatedService).to(
           receive(:call).with(after_achievement_arguments_for(achievement)))
-          .and_return(OpenStruct.new(body: OpenStruct.new(medal_statistics: [])))
+          .and_call_original
 
         post!
       end

@@ -20,8 +20,8 @@ class ReifiedLeaderboard < ApplicationRecord
     end
   end
 
-  def entry_for_user(user)
-    entries.find_or_initialize_by(user: user)
+  def entry_for_user!(user)
+    entries.find_or_create_by(user: user)
   end
 
   def channel

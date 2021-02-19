@@ -24,21 +24,19 @@ class AfterAchievementCreatedService
 
   def upsert_leaderboard_entries!(user, family, score)
     family.reified_leaderboards.find_each.map do |leaderboard|
-      leaderboard.entry_for_user(user).tap do |entry|
-        entry.adjust_score(score)
-        entry.save!
+      leaderboard.entry_for_user!(user).tap do |entry|
+        entry.adjust_score!(score)
       end
     end
   end
 
   def upsert_medal_statistics!(entries, medal)
     entries.map do |entry|
-      MedalStatistic.find_or_initialize_by(
+      MedalStatistic.find_or_create_by!(
         entry: entry,
         medal: medal
       ).tap do |stats|
-        stats.add_medal(medal)
-        stats.save!
+        stats.add_medal!(medal)
       end
     end
   end

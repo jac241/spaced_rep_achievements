@@ -6,6 +6,7 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   validates :username, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
 
   has_many :notifications, foreign_key: :recipient_id
   has_many :services

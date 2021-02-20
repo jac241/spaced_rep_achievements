@@ -2,7 +2,7 @@ require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
-  mount ActionCable.server => '/cable'
+  #mount ActionCable.server => '/cable'
   namespace :admin do
     resources :achievements
     resources :medals

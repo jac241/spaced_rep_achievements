@@ -4,9 +4,7 @@
 {{ $listen_port := index $port_map_list 1 }}
 {{ $upstream_port := index $port_map_list 2 }}
 
-events {
-  worker_connections  4096;  ## Default: 1024
-}
+worker_connections  4096;  ## Default: 1024
 
 {{ if eq $scheme "http" }}
 server {

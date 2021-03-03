@@ -104,3 +104,5 @@ gem "anycable-rails", "~> 1.0"
 gem 'oj'
 
 gem "rack-cors", "~> 1.1"
+
+gem "rack-attack", "~> 6.5"

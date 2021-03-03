@@ -21,7 +21,7 @@ module Api
 
       def create_params
         params.require(:achievement).permit(
-          :client_db_id, :client_medal_id, :client_deck_id, :client_earned_at,
+          :client_db_id, :client_db_uuid, :client_medal_id, :client_deck_id, :client_earned_at,
           :client_uuid
         )
       end

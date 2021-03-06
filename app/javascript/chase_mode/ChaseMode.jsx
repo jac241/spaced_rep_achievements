@@ -15,9 +15,11 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
 
   useEffect(() => {
     dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId }))
+
     cableSubscription = createCableSubscription(reifiedLeaderboardId, dispatch)
 
     return function cleanup() {
+      console.log("Chase Mode being unmounted")
       cableSubscription && cableSubscription.unsubscribe()
     }
   }, [])

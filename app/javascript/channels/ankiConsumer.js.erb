@@ -5,4 +5,9 @@ import { createConsumer } from "@rails/actioncable"
 import { host } from "chase_mode/apiClient.js.erb"
 
 const actionCableUrl = "<%= Rails.application.config.action_cable.url %>"
-export default createConsumer(actionCableUrl)
+
+if (!window.consumer) {
+  window.consumer = createConsumer(actionCableUrl)
+}
+
+export default window.consumer

@@ -1,7 +1,7 @@
 class MedalSerializer < ApplicationSerializer
   extend ApplicationHelper
   extend ActionView::Helpers::AssetUrlHelper
-  attributes :name, :score
+  attributes :name, :score, :updated_at
 
   attribute :image_path do |medal|
     medal_image_path(medal)

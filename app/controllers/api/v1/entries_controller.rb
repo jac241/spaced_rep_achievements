@@ -23,12 +23,12 @@ module Api
       def fields
          if includes_contains?("top_medals")
            {
-             user: [ :username ],
-             medal:  [ :image_path ],
+             user: [ :username, :updated_at ],
+             medal:  [ :image_path, :updated_at ],
            }
          else
           {
-            user: [ :username ],
+            user: [ :username, :updated_at ],
             entry: [ :score, :updated_at, :user, :online ],
           }
          end

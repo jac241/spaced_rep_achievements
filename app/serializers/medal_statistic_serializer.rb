@@ -1,5 +1,5 @@
 class MedalStatisticSerializer < ApplicationSerializer
-  attributes :count, :score
+  attributes :count, :score, :updated_at
 
   belongs_to :entry
   belongs_to :medal

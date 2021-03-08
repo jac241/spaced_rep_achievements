@@ -9,7 +9,7 @@ const ONLINE_INVERVAL = 3 * 60 * 1000
 
 const Table = () => {
   const entryIds = useSelector(selectEntryIdsWithPoints)
-  const isRequestingCachedEntries = useSelector(selectIsRequestingCachedEntries)
+  const isRequestingEntries = useSelector(selectIsRequestingEntries)
 
   return (
     <div>
@@ -34,7 +34,7 @@ const Table = () => {
         </tbody>
       </table>
       {
-        isRequestingCachedEntries && <Spinner />
+        isRequestingEntries && <Spinner />
       }
     </div>
   )
@@ -48,7 +48,7 @@ const selectEntryIdsWithPoints = createSelector(
   ( entryIds, entriesById ) => entryIds.filter(id => entriesById[id].attributes.score > 0)
 )
 
-const selectIsRequestingCachedEntries = (state) => state.entries.isRequestingCachedEntries
+const selectIsRequestingEntries = (state) => state.entries.isRequestingEntries
 
 const EntryRow = ({ rank, entryId }) => {
   const entry = useSelector(state => selectEntry(state, entryId))

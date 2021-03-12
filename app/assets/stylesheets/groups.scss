@@ -30,6 +30,14 @@
   margin: 10px;
   padding: 20px;
 
+  @include media-breakpoint-down(sm) {
+    width: 100%;
+  }
+
+  @include media-breakpoint-only(lg) {
+    width: 45%;
+  }
+
   .card-text {
     flex: 1;
   }

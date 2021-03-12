@@ -4,7 +4,11 @@ module Api
       before_action :authenticate_user!
 
       def index
-        entries = Entry.includes(*includes).where(index_params.except(:updated_since))
+        entries =
+          Entry
+            .includes(*includes)
+            .where(index_params.except(:updated_since))
+            .where("score > 0")
 
         if index_params[:updated_since]
           entries = entries.where("updated_at > ?", index_params[:updated_since])

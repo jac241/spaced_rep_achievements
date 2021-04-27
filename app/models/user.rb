@@ -5,7 +5,7 @@ class User < ApplicationRecord
     :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  validates :username, presence: true, uniqueness: true
+  validates :username, presence: true, uniqueness: true, length: { minimum: 1, maximum: 50 }
   validates :email, presence: true, uniqueness: true
 
   has_many :notifications, foreign_key: :recipient_id

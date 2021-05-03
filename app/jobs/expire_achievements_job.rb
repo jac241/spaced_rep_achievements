@@ -6,7 +6,6 @@ class ExpireAchievementsJob < ApplicationJob
   def perform
     ReifiedLeaderboard.find_each do |leaderboard|
       Rails.logger.info("Expiring for leaderboard: #{leaderboard.family.name} #{leaderboard.timeframe}")
-      entries_cache, medal_stats_cache = ApplicationRecord.transaction do
         expirations =
           Expiration
             .expired_for_leaderboard(leaderboard)
@@ -37,6 +36,7 @@ class ExpireAchievementsJob < ApplicationJob
           expirations.each { |exp| exp.expire(entries_cache, medal_stats_cache) }
         end
 
+      entries_cache, medal_stats_cache = ApplicationRecord.transaction do
         benchmark "Time to delete_all expirations" do
           expired_count = Expiration.where(id: expirations.map(&:id)).delete_all
           Rails.logger.info("Number of Expirations: #{expired_count}")

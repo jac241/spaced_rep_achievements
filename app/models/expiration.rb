@@ -6,7 +6,7 @@ class Expiration < ApplicationRecord
     joins(:achievement)
       .where(reified_leaderboard: leaderboard)
       .where("achievements.client_earned_at < ?", leaderboard.expiration_date)
-      .includes(:reified_leaderboard, achievement: [ :medal ])
+      .includes(:reified_leaderboard)
   end
 
   def expire(entries_cache, medal_stats_cache)

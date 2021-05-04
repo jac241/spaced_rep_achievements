@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_15_150253) do
+ActiveRecord::Schema.define(version: 2021_05_04_094353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 2021_02_15_150253) do
     t.integer "points", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "achievement_client_earned_at", null: false
+    t.index ["achievement_client_earned_at"], name: "index_expirations_on_achievement_client_earned_at"
     t.index ["achievement_id"], name: "index_expirations_on_achievement_id"
     t.index ["reified_leaderboard_id"], name: "index_expirations_on_reified_leaderboard_id"
   end

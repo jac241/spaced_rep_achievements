@@ -4,6 +4,7 @@ FactoryBot.define do
     association :reified_leaderboard
 
     points { achievement.medal.score }
+    achievement_client_earned_at { achievement.client_earned_at }
   end
 end
 

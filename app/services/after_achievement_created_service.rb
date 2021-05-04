@@ -49,6 +49,7 @@ class AfterAchievementCreatedService
       achievement.expirations.create!(
         reified_leaderboard_id: leaderboard_id,
         points: points,
+        achievement_client_earned_at: achievement.client_earned_at
       )
     end
   end

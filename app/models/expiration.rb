@@ -3,10 +3,9 @@ class Expiration < ApplicationRecord
   belongs_to :achievement
 
   scope :expired_for_leaderboard, -> (leaderboard) do
-    joins(:achievement)
-      .where(reified_leaderboard: leaderboard)
-      .where("achievements.client_earned_at < ?", leaderboard.expiration_date)
-      .includes(:reified_leaderboard)
+      where(reified_leaderboard: leaderboard)
+        .where("achievement_client_earned_at < ?", leaderboard.expiration_date)
+        .includes(:reified_leaderboard)
   end
 
   def expire(entries_cache, medal_stats_cache)

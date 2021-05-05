@@ -5,7 +5,7 @@ class HomeController < ApplicationController
     result = CalculateLeadersService.call(
       family_slug: "halo-3",
       count: @leaderboard_entries_count,
-      timeframe: :monthly
+      timeframe: :daily
     )
 
     result.on(:found) do |leaderboard|

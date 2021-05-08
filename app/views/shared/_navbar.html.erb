@@ -14,7 +14,7 @@
         <% unless user_signed_in? %>
           <li class="nav-item"><%= link_to "Connect to Killstreaks Add-On", connect_path, class: "nav-link" %></li>
         <% end %>
-        <li class="nav-item"><span class="nav-link">Donate - Venmo: @jac241</span></li>
+        <li class="nav-item"><a class="nav-link" href='https://cash.app/$jac241' target="_blank">Donate: $jac241</a></li>
 
         <% if user_signed_in? %>
           <li class="nav-item"><%= link_to "Groups", groups_path, class: "nav-link" %></li>

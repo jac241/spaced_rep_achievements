@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class UserDashboard < Administrate::BaseDashboard
+class MedalStatisticDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,20 +8,16 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    notifications: Field::HasMany,
-    services: Field::HasMany,
+    entry: Field::BelongsTo,
+    medal: Field::BelongsTo,
     id: Field::Number,
-    email: Field::String,
-    password: Field::String.with_options(searchable: false),
-    encrypted_password: Field::String,
-    reset_password_sent_at: Field::DateTime,
-    remember_created_at: Field::DateTime,
-    username: Field::String,
-    announcements_last_read_at: Field::DateTime,
-    entries: Field::HasMany,
-    admin: Field::Boolean,
+    reified_leaderboard_id: Field::String,
+    count: Field::Number,
+    score: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    instance_count_delta: Field::Number,
+    instance_score_delta: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -30,43 +26,39 @@ class UserDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
+  entry
+  medal
   id
-  email
-  username
-  updated_at
+  score
+  count
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  notifications
-  services
+  entry
+  medal
   id
-  email
-  encrypted_password
-  reset_password_sent_at
-  remember_created_at
-  username
-  announcements_last_read_at
-  entries
-  admin
+  reified_leaderboard_id
+  count
+  score
   created_at
   updated_at
+  instance_count_delta
+  instance_score_delta
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  notifications
-  services
-  email
-  encrypted_password
-  reset_password_sent_at
-  remember_created_at
-  username
-  announcements_last_read_at
-  admin
+  entry
+  medal
+  reified_leaderboard_id
+  count
+  score
+  instance_count_delta
+  instance_score_delta
   ].freeze
 
   # COLLECTION_FILTERS
@@ -81,13 +73,10 @@ class UserDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how users are displayed
+  # Overwrite this method to customize how medal statistics are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(user)
-  #   "User ##{user.id}"
+  # def display_resource(medal_statistic)
+  #   "MedalStatistic ##{medal_statistic.id}"
   # end
-  def display_resource(user)
-    "User ##{user.id} - #{user.email}"
-  end
 end

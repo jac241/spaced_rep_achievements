@@ -70,4 +70,8 @@ class MedalDashboard < Administrate::BaseDashboard
   # def display_resource(medal)
   #   "Medal ##{medal.id}"
   # end
+
+  def display_resource(medal)
+    medal.name
+  end
 end

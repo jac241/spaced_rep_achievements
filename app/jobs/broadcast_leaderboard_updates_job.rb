@@ -25,8 +25,9 @@ class BroadcastLeaderboardUpdatesJob < ApplicationJob
             [ stat ],
             include: [ :entry, :"entry.user", :medal ],
             fields: {
-              user: [:username],
-              medal: [:name, :score, :image_path]
+              user: [:username, :updated_at],
+              medal: [:name, :score, :image_path],
+              entry: [:score, :updated_at, :online, :user, :reified_leaderboard]
             },
           ).to_hash
         }

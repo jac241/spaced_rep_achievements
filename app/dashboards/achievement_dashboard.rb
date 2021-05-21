@@ -9,6 +9,7 @@ class AchievementDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     sync: Field::BelongsTo,
+    user: Field::BelongsTo,
     id: Field::String.with_options(searchable: false),
     client_db_id: Field::Number,
     client_medal_id: Field::String,
@@ -16,6 +17,7 @@ class AchievementDashboard < Administrate::BaseDashboard
     client_earned_at: Field::DateTime,
     client_uuid: Field::String.with_options(searchable: false),
     medal_id: Field::String.with_options(searchable: false),
+    updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,10 +26,11 @@ class AchievementDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  sync
   id
-  client_db_id
   client_medal_id
+  user
+  updated_at
+  client_earned_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

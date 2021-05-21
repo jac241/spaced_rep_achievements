@@ -4,14 +4,20 @@ require 'sidekiq/cron/web'
 Rails.application.routes.draw do
   #mount ActionCable.server => '/cable'
   namespace :admin do
-    resources :achievements
+    resources :users
     resources :medals
     resources :families
-    resources :users
     resources :announcements
     resources :notifications
-    resources :services
+    resources :achievements
     resources :syncs
+    resources :entries
+    resources :reified_leaderboards
+    resources :medal_statistics
+    resources :memberships
+    resources :membership_requests
+    resources :groups
+    resources :services
 
     root to: "users#index"
   end

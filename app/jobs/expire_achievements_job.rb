@@ -8,7 +8,7 @@ class ExpireAchievementsJob < ApplicationJob
       Rails.logger.info("Expiring for leaderboard: #{leaderboard.family.name} #{leaderboard.timeframe}")
         expirations =
           Expiration
-            .expired_for_leaderboard(leaderboard)
+            .expired_for_leaderboard(leaderboard).limit(10_000)
 
         Rails.logger.info("Load affected entries")
         affected_entries = Entry

@@ -9,7 +9,13 @@ class Expiration < ApplicationRecord
   end
 
   def expire(entries_cache, medal_stats_cache)
-    entry = entries_cache[[reified_leaderboard_id, achievement.user_id]]
+    #entry = entries_cache[[reified_leaderboard_id, achievement.user_id]]
+    entry = entries_cache.fetch([reified_leaderboard_id, achievement.user_id]) do
+      Entry.find_by(
+        reified_leaderboard_id: reified_leaderboard_id,
+        user_id: achievement.user_id
+      )
+    end
     entry.instance_score_delta -= self.points
 
     stats = medal_stats_cache[[entry.id, achievement.medal_id]]

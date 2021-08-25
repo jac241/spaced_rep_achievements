@@ -30,7 +30,6 @@ gem "sidekiq-cron"
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.2', require: false
 gem 'jsonapi-serializer'
 
 # https://github.com/ffi/ffi/issues/791

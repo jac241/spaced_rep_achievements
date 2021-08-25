@@ -464,6 +464,7 @@ DEPENDENCIES
   friendly_id (~> 5.2, >= 5.2.5)
   gravatar_image_tag!
   haml-rails
+  i18n (~> 1.8)
   image_processing (~> 1.2)
   jbuilder (~> 2.7)
   jsonapi-serializer

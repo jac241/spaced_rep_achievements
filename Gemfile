@@ -109,3 +109,4 @@ gem "rack-cors", "~> 1.1"
 
 gem "rack-attack", "~> 6.5"
 gem "i18n", "~> 1.8"
+gem 'bootsnap', require: false

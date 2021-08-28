@@ -33,7 +33,7 @@ class ExpireAchievementsJob < ApplicationJob
 
         Rails.logger.info("Do expiration")
         benchmark "Time to expire records" do
-          expirations.find_each { |exp| exp.expire(entries_cache, medal_stats_cache) }
+          expirations.each { |exp| exp.expire(entries_cache, medal_stats_cache) }
         end
 
       entries_cache, medal_stats_cache = ApplicationRecord.transaction do

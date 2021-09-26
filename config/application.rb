@@ -23,8 +23,6 @@ module SpacedRepAcheivements
     # the framework and any gems in your application.
     config.application_name = "Anki Achievements"
 
-    config.middleware.insert_after(Rails::Rack::Logger, UidLoggingMiddleware)
-
     config.exceptions_app = self.routes
   end
 end

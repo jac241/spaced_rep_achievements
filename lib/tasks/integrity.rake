@@ -43,4 +43,27 @@ namespace :integrity do
       .where("entries.score != 0")
       .update(score: 0)
   end
+
+  task :fix_zeros => :environment do
+    ApplicationRecord.transaction(isolation: :repeatable_read) do
+      count = Entry
+        .select("entries.*, sum(medal_statistics.score)")
+        .joins(:medal_statistics)
+        .group("entries.id")
+        .having("SUM(medal_statistics.score) = 0")
+        .where("entries.score != 0")
+        .to_a
+        .size
+
+      puts "Fixing #{count} entries"
+
+      Entry
+        .select("entries.*, sum(medal_statistics.score)")
+        .joins(:medal_statistics)
+        .group("entries.id")
+        .having("SUM(medal_statistics.score) = 0")
+        .where("entries.score != 0")
+        .update(score: 0)
+    end
+  end
 end

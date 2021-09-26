@@ -31,8 +31,16 @@ namespace :integrity do
           entry.score = entry.medal_statistics.sum(:score)
           entry.save!
         end
-        puts "#{changed_medal_statistics.size} entries modified"
+        puts "#{affected_entries.size} entries modified"
       end
     end
+
+    Entry
+      .select("entries.*, sum(medal_statistics.score)")
+      .joins(:medal_statistics)
+      .group("entries.id")
+      .having("SUM(medal_statistics.score) = 0")
+      .where("entries.score != 0")
+      .update(score: 0)
   end
 end

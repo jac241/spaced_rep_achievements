@@ -1,0 +1,2 @@
+class ExpireOneAchievementJob < ApplicationJob
+end

@@ -16,6 +16,10 @@ const App = ({ reifiedLeaderboardId }) => {
   useEffect(() => {
     dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId, include: "top_medals" }))
     cableSubscription = createCableSubscription(reifiedLeaderboardId, dispatch)
+    return function cleanup() {
+      console.log(`Unsubscribing from leaderboard: ${reifiedLeaderboardId}`)
+      cableSubscription.unsubscribe()
+    }
   }, [])
 
   useCableReconnected(connectionStatus, () => {

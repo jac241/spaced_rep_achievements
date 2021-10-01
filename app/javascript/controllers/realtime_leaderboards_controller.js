@@ -28,17 +28,6 @@ export default class extends Controller {
     this.store = renderLeaderboard(this.element, this._leaderboardId, this)
   }
 
-  subscribeToLeaderboard() {
-    const subscription = this._createSubscription(
-      this._leaderboardId,
-      this._mostRecentEntryUpdatedAt,
-    )
-
-    this._addSubscription(subscription)
-
-    return subscription
-  }
-
   get _leaderboardId() {
     return this.data.get("leaderboard-id")
   }
@@ -111,20 +100,10 @@ export default class extends Controller {
     )
   }
 
-  _addSubscription(subscription) {
-    this._subscriptions.push({
-      leaderboardId: this._leaderboardId,
-      subscription
-    })
-
-    console.log(`Added. New subscription list: ${this._subscriptions}`)
-  }
-
   disconnect() {
     if (!this.isTurbolinksPreview) {
       console.log("disconnected")
       this._clearStore()
-      this._unsubscribeFromLeaderboard()
       this._cable_status = this.INITIAL_CABLE_STATUS
       console.log('unmounted?:', unmountComponentAtNode(this.element))
     }
@@ -132,16 +111,6 @@ export default class extends Controller {
 
   _clearStore() {
     this.store = null
-  }
-
-  _unsubscribeFromLeaderboard() {
-    const index = this._subscriptions.findIndex(record => record.leaderboardId === this._leaderboardId)
-    const subscriptionRecord = this._subscriptions.splice(index, 1)[0]
-
-    if (subscriptionRecord) {
-      subscriptionRecord.subscription.unsubscribe()
-      console.log(`Removed. New subscription list: ${this._subscriptions}`)
-    }
   }
 
   get isTurbolinksPreview() {

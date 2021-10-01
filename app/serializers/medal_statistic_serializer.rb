@@ -11,4 +11,6 @@ class MedalStatisticSerializer < ApplicationSerializer
       medal: [:name, :score, :image_path]
     },
   }
+
+  cache_options store: MemoryCache
 end

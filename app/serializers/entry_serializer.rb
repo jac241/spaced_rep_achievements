@@ -14,4 +14,6 @@ class EntrySerializer < ApplicationSerializer
     include: [ :user ],
     fields: { user: [:username, :updated_at] },
   }
+
+  cache_options store: MemoryCache
 end

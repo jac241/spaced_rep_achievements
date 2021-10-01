@@ -17,4 +17,6 @@ class ReifiedLeaderboardSerializer < ApplicationSerializer
   end
 
   attributes :timeframe
+
+  cache_options store: MemoryCache
 end

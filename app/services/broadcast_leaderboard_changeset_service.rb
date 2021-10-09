@@ -6,7 +6,7 @@ class BroadcastLeaderboardChangesetService
         .group_by(&:reified_leaderboard)
         .each do |leaderboard, grouped_entries|
           RealtimeLeaderboardsChannel.broadcast_to(
-            leaderboard.channel,
+            leaderboard,
             {
               type: "api/receiveJsonApiData",
               payload: EntrySerializer.new(
@@ -21,7 +21,7 @@ class BroadcastLeaderboardChangesetService
         .group_by { |m| m.entry.reified_leaderboard }
         .each do |leaderboard, grouped_medal_stats|
           RealtimeLeaderboardsChannel.broadcast_to(
-            leaderboard.channel,
+            leaderboard,
             {
               type: "api/receiveJsonApiData",
               payload: MedalStatisticSerializer.new(

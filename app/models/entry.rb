@@ -2,7 +2,7 @@ class Entry < ApplicationRecord
   belongs_to :reified_leaderboard
   belongs_to :user
 
-  has_many :medal_statistics
+  has_many :medal_statistics, dependent: :destroy
   has_many :top_medals, -> { top_medals }, class_name: "MedalStatistic"
 
   attribute :instance_score_delta, :integer, default: 0

@@ -4,8 +4,8 @@ class Medal < ApplicationRecord
   validates :rank, presence: true, numericality: true
   validates :score, presence: true, numericality: true
 
-  has_many :achievements
+  has_many :achievements, dependent: :delete_all
   has_one_attached :image
   belongs_to :family, touch: true
-  has_many :medal_statistics
+  has_many :medal_statistics, dependent: :destroy
 end

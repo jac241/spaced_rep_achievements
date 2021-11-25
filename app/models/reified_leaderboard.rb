@@ -2,7 +2,7 @@ class ReifiedLeaderboard < ApplicationRecord
   belongs_to :family
   has_many :entries, dependent: :destroy
   has_many :medal_statistics, through: :entries
-  has_many :expirations
+  has_many :expirations, dependent: :delete_all
 
   enum timeframe: {
     daily: 0,

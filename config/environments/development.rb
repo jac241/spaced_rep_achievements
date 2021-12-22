@@ -1,11 +1,15 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Specify AnyCable WebSocket server URL to use by JS client
   config.after_initialize do
-    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
+    if AnyCable::Rails.enabled?
+      config.action_cable.url = ActionCable.server.config.url = ENV.fetch(
+        'CABLE_URL', 'ws://localhost:8080/cable'
+      )
+    end
   end
-  config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -25,7 +29,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    #config.cache_store = :file_store, Rails.root.join("tmp", "cache", "rails_cache")
+    # config.cache_store = :file_store, Rails.root.join("tmp", "cache", "rails_cache")
     config.cache_store = :redis_cache_store
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
@@ -67,7 +71,7 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  config.action_controller.asset_host = 'http://localhost:5000'
+  config.action_controller.asset_host = 'http://localhost:3000'
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 

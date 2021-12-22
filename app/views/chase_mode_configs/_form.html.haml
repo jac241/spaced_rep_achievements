@@ -1,0 +1,8 @@
+= form_for chase_mode_config, remote: true, url: chase_mode_config_path, method: :put do |f|
+  .form-group
+    .form-check
+      %label.form-check-label
+        = f.check_box :only_show_active_users
+        Only show active users?
+  .form-group
+    = f.submit "Save Changes", class: 'btn btn-lg btn-block btn-primary', data: { disable_with: "Saving..." }

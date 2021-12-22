@@ -10,6 +10,7 @@ const initialState = {
   reifiedLeaderboard: {},
   user: {},
   medal: {},
+  chaseModeConfig: {},
 }
 
 const hasOwnSliceBlacklist = ['entry', 'medalStatistic']

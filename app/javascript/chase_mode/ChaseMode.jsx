@@ -1,19 +1,33 @@
 import React, { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchEntries } from "chase_mode/actions"
-import { createCableSubscription, useCableReconnected } from "shared/cableSubscription";
-import { findMostRecentEntryUpdatedAt, compareDates } from "shared/entriesSelectors";
+import { fetchEntries, initializeChaseMode } from "./actions"
+import {
+  createCableSubscription,
+  useCableReconnected,
+} from "../shared/cableSubscription"
+import {
+  findMostRecentEntryUpdatedAt,
+  compareDates,
+} from "../shared/entriesSelectors"
 
+import { host } from "chase_mode/apiClient.js.erb"
+import SettingsIcon from "./icons/settings.svg"
+import SettingsPopover from "./settings/SettingsPopover"
 
 let cableSubscription = null
 
-
 const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
   const dispatch = useDispatch()
-  const connectionStatus = useSelector(state => state.cable.connectionStatus)
-  const mostRecentEntryUpdatedAt = useSelector(findMostRecentEntryUpdatedAt, compareDates)
+  const connectionStatus = useSelector((state) => state.cable.connectionStatus)
+  const mostRecentEntryUpdatedAt = useSelector(
+    findMostRecentEntryUpdatedAt,
+    compareDates
+  )
 
   useEffect(() => {
+    dispatch(
+      initializeChaseMode({ reified_leaderboard_id: reifiedLeaderboardId })
+    )
     dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId }))
 
     cableSubscription = createCableSubscription(reifiedLeaderboardId, dispatch)
@@ -25,39 +39,42 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
   }, [])
 
   useCableReconnected(connectionStatus, () => {
-    console.log(`Reconnected. Fetching entries since ${mostRecentEntryUpdatedAt}`)
+    console.log(
+      `Reconnected. Fetching entries since ${mostRecentEntryUpdatedAt}`
+    )
     dispatch(
-      fetchEntries(
-        {
-          reified_leaderboard_id: reifiedLeaderboardId,
-          updated_since: mostRecentEntryUpdatedAt.toJSON(),
-        }
-      )
+      fetchEntries({
+        reified_leaderboard_id: reifiedLeaderboardId,
+        updated_since: mostRecentEntryUpdatedAt.toJSON(),
+      })
     )
   })
 
-  const cableIsConnected = connectionStatus === 'connected'
+  const cableIsConnected = connectionStatus === "connected"
   const styles = cableIsConnected ? "" : "color: silver"
 
   return (
     <table id="rivalry" style={styles}>
-      { cableIsConnected ? (
-          <RivalryUser userId={userId} />
-        ) : (
-          'Connecting to AnkiAchievements.com...'
-        )
-      }
+      {cableIsConnected ? (
+        <Rivalry userId={userId} />
+      ) : (
+        "Connecting to AnkiAchievements.com..."
+      )}
     </table>
   )
 }
 
-const RivalryUser = ({ userId }) => {
-  let entriesArePresent = useSelector(state => Object.keys(state.entries.entities).length > 0)
-  let userEntry = useSelector(
-    state => Object.values(state.entries.entities).find(entry => entry.relationships.user.data.id === userId)
+const Rivalry = ({ userId }) => {
+  let entriesArePresent = useSelector(
+    (state) => Object.keys(state.entries.entities).length > 0
   )
-  let userEntryIndex = useSelector(
-    state => userEntry ? state.entries.ids.findIndex(id => id === userEntry.id) : null
+  let userEntry = useSelector((state) =>
+    Object.values(state.entries.entities).find(
+      (entry) => entry.relationships.user.data.id === userId
+    )
+  )
+  let userEntryIndex = useSelector((state) =>
+    userEntry ? state.entries.ids.findIndex((id) => id === userEntry.id) : null
   )
   let rivalEntry = useSelector((state) => {
     if (userEntryIndex >= 1) {
@@ -67,47 +84,70 @@ const RivalryUser = ({ userId }) => {
       return null
     }
   })
-  let rivalUser = useSelector((state) => (
+  let rivalUser = useSelector((state) =>
     rivalEntry ? state.api.user[rivalEntry.relationships.user.data.id] : null
-  ))
-  let isRequestingEntries = useSelector(state => state.entries.isRequestingEntries)
+  )
+  let isRequestingEntries = useSelector(
+    (state) => state.entries.isRequestingEntries
+  )
 
   if (userEntry && userEntry.attributes.score > 0) {
     return (
       <React.Fragment>
         <td id="rivalry_user">
-          { `Score: ${userEntry.attributes.score}` }
-          <br/>
-          { `Your Rank: ${userEntryIndex + 1} `}
+          <Settings />
+          <br />
+          {`Score: ${userEntry.attributes.score}`}
+          <br />
+          {`Your Rank: ${userEntryIndex + 1} `}
         </td>
-        { rivalEntry && rivalUser && <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} /> }
+        <RightPanel rivalEntry={rivalEntry} rivalUser={rivalUser} />
       </React.Fragment>
     )
   } else if (!isRequestingEntries && entriesArePresent) {
     return (
-      <td id="rivalry_user">
-        Start reviewing to become ranked!
-      </td>
+      <React.Fragment>
+        <Settings />
+        <br />
+        <td id="rivalry_user">Start reviewing to become ranked!</td>
+      </React.Fragment>
     )
   }
 }
 
+const RightPanel = ({ rivalEntry, rivalUser }) => {
+  console.log({ rivalEntry, rivalUser })
+  return (
+    <td id="rivalry_rival">
+      {rivalEntry && rivalUser && (
+        <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} />
+      )}
+    </td>
+  )
+}
 
 const Rival = ({ rivalEntry, rivalUser }) => {
   const rivalDisplayText = `${rivalUser.attributes.username} - ${rivalEntry.attributes.score}`
 
   return (
-    <td id="rivalry_rival">
+    <React.Fragment>
       Rival:&nbsp;
-      { rivalEntry.attributes.online ? (
-          <span title="Online" style="color: #0275d8">
-            { rivalDisplayText }
-          </span>
-        ) : (
-           rivalDisplayText
-        )
-      }
-    </td>
+      {rivalEntry.attributes.online ? (
+        <span title="Online" style="color: #0275d8">
+          {rivalDisplayText}
+        </span>
+      ) : (
+        rivalDisplayText
+      )}
+    </React.Fragment>
+  )
+}
+
+const Settings = ({}) => {
+  return (
+    <a href={`${host}/chase_mode_settings/edit`}>
+      <img src={SettingsIcon} height="12" width="12" alt="Settings" />
+    </a>
   )
 }
 

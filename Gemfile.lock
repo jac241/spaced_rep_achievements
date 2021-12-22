@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/brainopia/sidekiq-limit_fetch.git
+  revision: bf9cee3b81e49ab8002bb9d564c2002d5b8a4b56
+  specs:
+    sidekiq-limit_fetch (3.4.0)
+      sidekiq (>= 4)
+
+GIT
   remote: https://github.com/excid3/administrate.git
   revision: 7c598e1224a7518237978f105db9f3a4f5c2e307
   branch: jumpstart
@@ -323,7 +330,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbtree (0.4.4)
-    redis (4.4.0)
+    redis (4.5.1)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     regexp_parser (2.1.1)
@@ -384,15 +391,13 @@ GEM
       ruby_http_client (~> 3.4)
     set (1.0.1)
     sexp_processor (4.15.3)
-    sidekiq (6.2.2)
+    sidekiq (6.3.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
     sidekiq-cron (1.2.0)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
-    sidekiq-limit_fetch (3.4.0)
-      sidekiq (>= 4)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -495,7 +500,7 @@ DEPENDENCIES
   sendgrid-actionmailer
   sidekiq (~> 6.0, >= 6.0.3)
   sidekiq-cron
-  sidekiq-limit_fetch
+  sidekiq-limit_fetch!
   simple_form
   sitemap_generator (~> 6.0, >= 6.0.1)
   turbolinks (~> 5)
@@ -505,7 +510,7 @@ DEPENDENCIES
   whenever
 
 RUBY VERSION
-   ruby 2.6.6p146
+   ruby 2.7.5p203
 
 BUNDLED WITH
    2.2.28

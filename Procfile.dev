@@ -1,4 +1,4 @@
-web: WEB_CONCURRENCY=1 RAILS_MAX_THREADS=1 bundle exec rails server --binding=0.0.0.0
+web: WEB_CONCURRENCY=1 RAILS_MAX_THREADS=1 bundle exec rails server --binding=0.0.0.0 --port=3000
 worker: bundle exec sidekiq
 webpack: bundle exec bin/webpack-dev-server
 anycable: bundle exec anycable

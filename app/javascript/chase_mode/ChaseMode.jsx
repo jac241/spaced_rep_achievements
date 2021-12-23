@@ -32,7 +32,7 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
     dispatch(
       initializeChaseMode({ reified_leaderboard_id: reifiedLeaderboardId })
     )
-    dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId }))
+    //dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId }))
 
     cableSubscription = createCableSubscription(reifiedLeaderboardId, dispatch)
 

@@ -65,6 +65,7 @@ Rails.application.routes.draw do
 
       resources :entries
       resource :chase_mode_config
+      resources :memberships
 
       mount_devise_token_auth_for 'User', at: 'auth'
     end

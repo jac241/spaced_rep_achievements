@@ -1,8 +1,9 @@
-= form_for chase_mode_config, remote: true, url: chase_mode_config_path, method: :put do |f|
-  .form-group
-    .form-check
-      %label.form-check-label
-        = f.check_box :only_show_active_users
-        Only show active users?
-  .form-group
-    = f.submit "Save Changes", class: 'btn btn-lg btn-block btn-primary', data: { disable_with: "Saving..." }
+= simple_form_for chase_mode_config, remote: true, url: chase_mode_config_path, method: :put, validate: false do |f|
+  = f.input :group_ids, collection: current_user.groups,
+    label_method: :name, value_method: :id,
+    include_hidden: false,
+    as: :check_boxes,
+    label: "Only show rivals from groups:",
+    hint: "Leave all unchecked to show from all groups"
+  = f.input :only_show_active_users, hint: "Makes chase mode only show users whose score has changed recently."
+  = f.button :submit, class: "btn-primary", data: { disable_with: "Saving..." }

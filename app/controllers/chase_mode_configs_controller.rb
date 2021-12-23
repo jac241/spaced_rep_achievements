@@ -11,7 +11,7 @@ class ChaseModeConfigsController < ApplicationController
       if @chase_mode_config.update(update_params)
         format.js do
           redirect_to edit_chase_mode_config_path,
-                      notice: 'Chase mode settings successfully updated!'
+                      notice: 'Chase mode settings successfully updated! New settings will be applied when you back out to decks in Anki and start reviewing again.'
         end
       else
         format.js { render :edit }
@@ -22,6 +22,7 @@ class ChaseModeConfigsController < ApplicationController
   private
 
   def update_params
-    params.require(:chase_mode_config).permit(:only_show_active_users)
+    params.require(:chase_mode_config).permit(:only_show_active_users,
+                                              group_ids: [])
   end
 end

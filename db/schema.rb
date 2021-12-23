@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_22_190922) do
+ActiveRecord::Schema.define(version: 2021_12_23_154615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2021_05_22_190922) do
   create_table "chase_mode_configs", force: :cascade do |t|
     t.boolean "only_show_active_users", default: false, null: false
     t.bigint "user_id"
+    t.integer "group_ids", default: [], array: true
     t.index ["user_id"], name: "index_chase_mode_configs_on_user_id", unique: true
   end
 

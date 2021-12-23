@@ -8,6 +8,7 @@ import {
   getChaseModeConfigFinished,
   getChaseModeConfigStart,
 } from "chase_mode/chaseModeConfigSlice"
+import { getMembershipsFinished, getMembershipsStart } from "./membershipsSlice"
 
 export const fetchEntries = (queryParams) => async (dispatch) => {
   try {
@@ -29,8 +30,11 @@ const queryString = (params) =>
     .join("&")
 
 export const initializeChaseMode =
-  (queryParams) => async (dispatch, getState) => {
+  ({ reified_leaderboard_id }) =>
+  async (dispatch, getState) => {
+    dispatch(fetchEntries({ reified_leaderboard_id }))
     dispatch(fetchChaseModeConfig())
+    //dispatch(fetchMemberships({ reified_leaderboard_id }))
   }
 
 export const fetchChaseModeConfig = () => async (dispatch) => {
@@ -42,4 +46,18 @@ export const fetchChaseModeConfig = () => async (dispatch) => {
   })
   dispatch(receiveJsonApiData(response.data))
   dispatch(getChaseModeConfigFinished())
+}
+
+const fetchMemberships = (queryParams) => async (dispatch) => {
+  dispatch(getMembershipsStart())
+  let response = await client.get(
+    `/api/v1/memberships?${queryString(queryParams)}`,
+    {
+      headers: {
+        Accept: "application/vnd.api+json",
+      },
+    }
+  )
+  dispatch(receiveJsonApiData(response.data))
+  dispatch(getMembershipsFinished())
 }

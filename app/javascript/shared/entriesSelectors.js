@@ -16,17 +16,28 @@ export const findMostRecentEntryUpdatedAt = (state) => {
 export const compareDates = (a, b) => a.getTime() === b.getTime()
 
 const selectEntries = (state) => state.entries
+
 export const selectEntryEntities = (state) =>
   Object.values(state.entries.entities)
+
 export const selectChaseModeConfig = (state) =>
   Object.values(state.api.chaseModeConfig)[0]
 
+export const selectMemberships = (state) => Object.values(state.api.membership)
+
 export const selectFilteredEntries = createSelector(
-  [selectEntries, selectChaseModeConfig],
-  (entries, chaseModeConfig) => {
+  [selectEntries, selectChaseModeConfig, selectMemberships],
+  (entries, chaseModeConfig, memberships) => {
     let resultEntries = entries
     if (chaseModeConfig?.attributes?.onlyShowActiveUsers) {
       resultEntries = inactiveUsersFiltered(resultEntries)
+    }
+    if (chaseModeConfig?.attributes?.groupIds?.length > 0) {
+      resultEntries = excludedGroupsFiltered(
+        chaseModeConfig.attributes.groupIds,
+        memberships,
+        resultEntries
+      )
     }
 
     return resultEntries
@@ -35,12 +46,40 @@ export const selectFilteredEntries = createSelector(
 
 const inactiveUsersFiltered = (entries) => {
   const remainingEntryIds = new Set()
-
   const remainingEntryEntities = Object.fromEntries(
     Object.entries(entries.entities).filter(
       ([id, entry]) => entry.attributes.online
     )
   )
+
+  Object.keys(remainingEntryEntities).forEach((id) => remainingEntryIds.add(id))
+  const remainingSortedIds = entries.ids.filter((id) =>
+    remainingEntryIds.has(id)
+  )
+
+  return {
+    ids: remainingSortedIds,
+    entities: remainingEntryEntities,
+  }
+}
+
+const excludedGroupsFiltered = (groupIds, memberships, entries) => {
+  const remainingMemberIds = new Set()
+  memberships.forEach((membership) => {
+    if (groupIds.includes(membership.relationships.group.data.id)) {
+      remainingMemberIds.add(membership.relationships.member.data.id)
+    }
+  })
+  console.log({ remainingMemberIds })
+
+  const remainingEntryIds = new Set()
+
+  const remainingEntryEntities = Object.fromEntries(
+    Object.entries(entries.entities).filter(([id, entry]) =>
+      remainingMemberIds.has(entry.relationships.user.data.id)
+    )
+  )
+  console.log({ remainingEntryEntities })
 
   Object.keys(remainingEntryEntities).forEach((id) => remainingEntryIds.add(id))
   const remainingSortedIds = entries.ids.filter((id) =>

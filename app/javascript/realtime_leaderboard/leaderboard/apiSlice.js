@@ -11,6 +11,7 @@ const initialState = {
   user: {},
   medal: {},
   chaseModeConfig: {},
+  membership: {},
 }
 
 const hasOwnSliceBlacklist = ["entry", "medalStatistic"]

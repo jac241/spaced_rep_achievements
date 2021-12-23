@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import normalize from 'json-api-normalizer'
-import merge from 'lodash.merge'
+import { createSlice } from "@reduxjs/toolkit"
+import normalize from "json-api-normalizer"
+import merge from "lodash.merge"
 
 const initialState = {
   entry: {},
@@ -13,10 +13,10 @@ const initialState = {
   chaseModeConfig: {},
 }
 
-const hasOwnSliceBlacklist = ['entry', 'medalStatistic']
+const hasOwnSliceBlacklist = ["entry", "medalStatistic"]
 
 const apiSlice = createSlice({
-  name: 'leaderboard',
+  name: "leaderboard",
   initialState: initialState,
   reducers: {
     receiveData(state, { payload }) {
@@ -29,14 +29,17 @@ const apiSlice = createSlice({
         for (const entityId in payloadEntities) {
           const existingEntity = state[entityType][entityId]
           if (existingEntity) {
-            state[entityType][entityId] = merge(existingEntity, payloadEntities[entityId])
+            state[entityType][entityId] = merge(
+              existingEntity,
+              payloadEntities[entityId]
+            )
           } else {
             state[entityType][entityId] = payloadEntities[entityId]
           }
         }
       })
-    }
-  }
+    },
+  },
 })
 
 export const { receiveData } = apiSlice.actions

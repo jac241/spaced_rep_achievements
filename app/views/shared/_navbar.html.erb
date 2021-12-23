@@ -27,9 +27,9 @@
                 <%= link_to "Admin Area", admin_root_path, class: "dropdown-item", data: { turbolinks: false } %>
                 <%= link_to "Rails Performance", "/rails/performance", class: "dropdown-item", data: { turbolinks: false } %>
                 <%= link_to "Sidekiq", "/sidekiq", class: "dropdown-item", data: { turbolinks: false } %>
+                <%= link_to "Chase Mode Settings", edit_chase_mode_config_path, class: "dropdown-item" %>
               <% end %>
               <%= link_to "Connect to Killstreaks Add-On", connect_path, class: "dropdown-item" %>
-              <%= link_to "Chase Mode Settings", edit_chase_mode_config_path, class: "dropdown-item" %>
               <%= link_to "Account Settings", edit_user_registration_path, class: "dropdown-item" %>
               <div class="dropdown-divider"></div>
               <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item" %>

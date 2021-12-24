@@ -7,8 +7,8 @@ class Achievement < ApplicationRecord
 
   scope :in_order_earned, -> { order(client_earned_at: :asc) }
 
-  scope :leaders_for, -> (family:, since:) do
-    Achievement.select(
+  scope :leaders_for, lambda { |family:, since:|
+    self.select(
       %{
         family_name,
         user_id,
@@ -17,7 +17,7 @@ class Achievement < ApplicationRecord
         rank() OVER (PARTITION BY family_name ORDER BY total_score DESC) as family_rank
       }
     ).from(
-      Achievement.select(
+      self.select(
         %{
           achievements.user_id as user_id,
           families.name as family_name,
@@ -25,16 +25,16 @@ class Achievement < ApplicationRecord
           COUNT(*) as achievements_count
          }
       ).joins(medal: :family)
-        .where("achievements.client_earned_at > ?", since)
-        .group("user_id, family_name")
-        .where("families.id = ?", family.id)
-    ).order("total_score DESC")
-     .includes(:user)
-  end
+        .where('achievements.client_earned_at > ?', since)
+        .group('user_id, family_name')
+        .where('families.id = ?', family.id)
+    ).order('total_score DESC')
+        .includes(:user)
+  }
 
-  scope :top_medals_for, -> (family:, since:) do
-    Achievement.select("*").from(
-      Achievement.select(
+  scope :top_medals_for, lambda { |family:, since:|
+    self.select('*').from(
+      self.select(
         %{
           user_id,
           total_score,
@@ -45,7 +45,7 @@ class Achievement < ApplicationRecord
           ) as medal_rank
         }
       ).from(
-        Achievement.select(
+        self.select(
           %{
             achievements.user_id as user_id,
             SUM(medals.score) as total_score,
@@ -54,12 +54,12 @@ class Achievement < ApplicationRecord
             medals.id as medal_id
            }
         ).joins(medal: :family)
-          .where("achievements.client_earned_at > ?", since)
-          .group("user_id, medals.id")
-          .where("families.id = ?", family.id)
-      ).order("total_score DESC")
-    ).includes(medal: { image_attachment: :blob }).where("medal_rank <= 5")
-  end
+          .where('achievements.client_earned_at > ?', since)
+          .group('user_id, medals.id')
+          .where('families.id = ?', family.id)
+      ).order('total_score DESC')
+    ).includes(medal: { image_attachment: :blob }).where('medal_rank <= 5')
+  }
 
   def family
     medal.family

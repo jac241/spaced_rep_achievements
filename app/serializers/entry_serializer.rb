@@ -11,8 +11,8 @@ class EntrySerializer < ApplicationSerializer
   has_many :top_medals, serializer: MedalStatisticSerializer
 
   TYPICAL_OPTIONS_FOR_BROADCAST = {
-    include: [ :user ],
-    fields: { user: [:username, :updated_at] },
+    include: [:user],
+    fields: { user: [:username, :updated_at] }
   }
 
   cache_options store: MemoryCache

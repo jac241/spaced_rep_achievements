@@ -34,7 +34,6 @@ export const initializeChaseMode =
   async (dispatch, getState) => {
     dispatch(fetchEntries({ reified_leaderboard_id }))
     dispatch(fetchChaseModeConfig())
-    //dispatch(fetchMemberships({ reified_leaderboard_id }))
   }
 
 export const fetchChaseModeConfig = () => async (dispatch) => {

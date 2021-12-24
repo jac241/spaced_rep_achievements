@@ -70,7 +70,6 @@ const excludedGroupsFiltered = (groupIds, memberships, entries) => {
       remainingMemberIds.add(membership.relationships.member.data.id)
     }
   })
-  console.log({ remainingMemberIds })
 
   const remainingEntryIds = new Set()
 
@@ -79,7 +78,6 @@ const excludedGroupsFiltered = (groupIds, memberships, entries) => {
       remainingMemberIds.has(entry.relationships.user.data.id)
     )
   )
-  console.log({ remainingEntryEntities })
 
   Object.keys(remainingEntryEntities).forEach((id) => remainingEntryIds.add(id))
   const remainingSortedIds = entries.ids.filter((id) =>

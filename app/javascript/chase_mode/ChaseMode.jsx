@@ -32,7 +32,6 @@ const ChaseMode = ({ userId, reifiedLeaderboardId }) => {
     dispatch(
       initializeChaseMode({ reified_leaderboard_id: reifiedLeaderboardId })
     )
-    //dispatch(fetchEntries({ reified_leaderboard_id: reifiedLeaderboardId }))
 
     cableSubscription = createCableSubscription(reifiedLeaderboardId, dispatch)
 
@@ -87,10 +86,10 @@ const Rivalry = ({ userId }) => {
   )
 
   if (userEntry && userEntry.attributes.score > 0) {
-    //<Settings />
     return (
       <React.Fragment>
         <td id="rivalry_user">
+          <Settings />
           <br />
           {`Score: ${userEntry.attributes.score}`}
           <br />
@@ -100,9 +99,9 @@ const Rivalry = ({ userId }) => {
       </React.Fragment>
     )
   } else if (!isRequestingEntries && !userEntry) {
-    //<Settings />
     return (
       <React.Fragment>
+        <Settings />
         <br />
         <td id="rivalry_user">Start reviewing to become ranked!</td>
       </React.Fragment>

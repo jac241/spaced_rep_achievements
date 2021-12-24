@@ -1,7 +1,6 @@
 = simple_form_for chase_mode_config, remote: true, url: chase_mode_config_path, method: :put, validate: false do |f|
   = f.input :group_ids, collection: current_user.groups,
     label_method: :name, value_method: :id,
-    include_hidden: false,
     as: :check_boxes,
     label: "Only show rivals from groups:",
     hint: "Leave all unchecked to show from all groups"

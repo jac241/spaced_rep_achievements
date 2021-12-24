@@ -10,16 +10,16 @@
     %p.card-text= group.description
     .group-action-buttons
       - if group.public?
-        - unless @groups_current_user_belongs_to.include?(group.id)
+        - unless @ids_of_groups_current_user_belongs_to.include?(group.id)
           = link_to "Join group!", group_memberships_path(group_id: group.id),
             method: :post, remote: true,
             class: "mt-auto btn btn-primary"
         = link_to "View", group_path(group), class: "mt-auto btn btn-success"
       - else
-        - if @groups_current_user_belongs_to.include?(group.id)
+        - if @ids_of_groups_current_user_belongs_to.include?(group.id)
           = link_to "View", group_path(group),
             class: "mt-auto btn btn-success"
-        - elsif @groups_current_user_requesting_to_join.include?(group.id)
+        - elsif @ids_of_groups_current_user_requesting_to_join.include?(group.id)
           %p.font-italic.font-weight-light Requested to join
         - else
           = link_to "Request to join group", new_group_membership_request_path(group_id: group.id),

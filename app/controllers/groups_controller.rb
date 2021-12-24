@@ -4,8 +4,9 @@ class GroupsController < ApplicationController
 
   def index
     @groups = Group.order(:name)
-    @groups_current_user_belongs_to = current_user.groups.pluck(:id).to_set
-    @groups_current_user_requesting_to_join = current_user.requested_groups.pluck(:id).to_set
+    @my_groups = current_user.groups.load
+    @ids_of_groups_current_user_belongs_to = current_user.groups.pluck(:id).to_set
+    @ids_of_groups_current_user_requesting_to_join = current_user.requested_groups.pluck(:id).to_set
   end
 
   def new
@@ -18,7 +19,7 @@ class GroupsController < ApplicationController
     leaderboard_results = FindLeaderboardService.call(
       user: current_user,
       maybe_family_slug: params[:family_id],
-      maybe_timeframe: params[:timeframe],
+      maybe_timeframe: params[:timeframe]
     )
 
     leaderboard_results.on(:found) do |leaderboard|
@@ -40,7 +41,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update(update_params)
-        format.js { redirect_to @group, notice: "Group successfully updated!" }
+        format.js { redirect_to @group, notice: 'Group successfully updated!' }
       else
         format.js { render :edit }
       end

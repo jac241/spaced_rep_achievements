@@ -20,6 +20,7 @@
     "json-api-normalizer": "^1.0.1",
     "local-time": "^2.1.0",
     "lodash.merge": "^4.6.2",
+    "pluralize": "^8.0.0",
     "popper.js": "^1.16.1",
     "preact": "^10.5.7",
     "preact-compat": "^3.19.0",

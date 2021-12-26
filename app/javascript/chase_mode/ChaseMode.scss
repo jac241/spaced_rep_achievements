@@ -1,0 +1,11 @@
+#rivalry_rival {
+  .settings_display {
+    display: none;
+    color: gray;
+  }
+}
+#rivalry_rival:hover {
+  .settings_display {
+    display: block;
+  }
+}

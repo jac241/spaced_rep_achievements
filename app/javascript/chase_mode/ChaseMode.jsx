@@ -13,10 +13,14 @@ import {
   selectUserEntryIndex,
   selectRivalEntry,
   selectUserById,
+  selectChaseModeConfig,
+  selectGroupsById,
 } from "../shared/entriesSelectors"
 
 import { host } from "chase_mode/apiClient.js.erb"
 import SettingsIcon from "./icons/settings.svg"
+import pluralize from "pluralize"
+import "./ChaseMode.scss"
 
 let cableSubscription = null
 
@@ -111,10 +115,12 @@ const Rivalry = ({ userId }) => {
 
 const RightPanel = ({ rivalEntry, rivalUser }) => {
   return (
-    <td id="rivalry_rival">
+    <td id="rivalry_rival" className>
+      <br />
       {rivalEntry && rivalUser && (
         <Rival rivalEntry={rivalEntry} rivalUser={rivalUser} />
       )}
+      <SettingsDisplay />
     </td>
   )
 }
@@ -142,6 +148,39 @@ const Settings = ({}) => {
       <img src={SettingsIcon} height="12" width="12" alt="Settings" />
     </a>
   )
+}
+
+const SettingsDisplay = ({}) => {
+  const chaseModeConfig = useSelector(selectChaseModeConfig)
+  const groups = useSelector(selectGroupsById)
+  console.log({ chaseModeConfig })
+  let inner = ""
+  if (
+    chaseModeConfig?.attributes?.onlyShowActiveUsers ||
+    chaseModeConfig?.attributes?.groupIds?.length > 0
+  ) {
+    inner += "Only showing"
+    if (chaseModeConfig.attributes.onlyShowActiveUsers) {
+      inner += " active"
+    }
+    inner += " users"
+    if (
+      chaseModeConfig.attributes.groupIds.length > 0 &&
+      Object.keys(groups).length > 0
+    ) {
+      inner += ` from ${pluralize(
+        "group",
+        chaseModeConfig.attributes.groupIds
+      )}:`
+      chaseModeConfig.attributes.groupIds.forEach((groupId) => {
+        const group = groups[groupId]
+        if (group) {
+          inner += ` ${group.attributes.tag}`
+        }
+      })
+    }
+  }
+  return <div className={"settings_display"}>{inner}</div>
 }
 
 export default ChaseMode

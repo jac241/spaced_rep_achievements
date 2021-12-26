@@ -14,13 +14,13 @@ module FlexibleService
 
   class Success < Result
     def success?
-      return true
+      true
     end
   end
 
   class Failure < Result
     def success?
-      return false
+      false
     end
   end
 
@@ -45,8 +45,8 @@ module FlexibleService
       proc(&method(:call))
     end
 
-    def call(*params)
-      self.new.call(*params)
+    def call(*params, **kwparams)
+      new.call(*params, **kwparams)
     end
   end
 end

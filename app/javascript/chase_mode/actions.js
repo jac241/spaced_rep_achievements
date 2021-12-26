@@ -9,7 +9,6 @@ import {
   getChaseModeConfigStart,
 } from "chase_mode/chaseModeConfigSlice"
 import { getMembershipsFinished, getMembershipsStart } from "./membershipsSlice"
-import { selectChaseModeConfig } from "../shared/entriesSelectors"
 
 export const fetchEntries = (queryParams) => async (dispatch) => {
   try {
@@ -34,8 +33,7 @@ export const initializeChaseMode =
   ({ reified_leaderboard_id }) =>
   async (dispatch, getState) => {
     dispatch(fetchEntries({ reified_leaderboard_id }))
-    await dispatch(fetchChaseModeConfig())
-    dispatch(fetchGroupsFromConfig(getState))
+    dispatch(fetchChaseModeConfig())
   }
 
 export const fetchChaseModeConfig = () => async (dispatch) => {
@@ -61,25 +59,4 @@ const fetchMemberships = (queryParams) => async (dispatch) => {
   )
   dispatch(receiveJsonApiData(response.data))
   dispatch(getMembershipsFinished())
-}
-
-const fetchGroupsFromConfig = (getState) => async (dispatch) => {
-  const groupIds = selectChaseModeConfig(getState()).attributes.groupIds
-  if (groupIds.length > 0) {
-    let response = await client.get(
-      `/api/v1/groups?${arrayQueryParams({ id: groupIds })}`,
-      {
-        headers: {
-          Accept: "application/vnd.api+json",
-        },
-      }
-    )
-    dispatch(receiveJsonApiData(response.data))
-  }
-}
-
-const arrayQueryParams = (params) => {
-  return Object.entries(params)
-    .flatMap(([key, values]) => values.map((v) => `${key}[]=${v}`))
-    .join("&")
 }

@@ -128,3 +128,5 @@ export const selectUserById = createSelector(
   [(state) => state.api.user, (state, userId) => userId],
   (users, userId) => (userId ? users[userId] : null)
 )
+
+export const selectGroupsById = (state) => state.api.group

@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux'
-import apiReducer from 'realtime_leaderboard/leaderboard/apiSlice'
-import entriesReducer from 'realtime_leaderboard/leaderboard/entriesSlice'
-import topMedalsReducer from 'realtime_leaderboard/leaderboard/topMedalsSlice'
-import cableReducer from 'chase_mode/cableSlice'
+import { combineReducers } from "redux"
+import apiReducer from "../leaderboard/apiSlice"
+import entriesReducer from "../leaderboard/entriesSlice"
+import topMedalsReducer from "../leaderboard/topMedalsSlice"
+import cableReducer from "../../chase_mode/cableSlice"
 
 export default combineReducers({
   api: apiReducer,

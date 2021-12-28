@@ -1,9 +1,8 @@
 import { Controller } from "stimulus"
-import consumer from "channels/consumer"
-import $ from "jquery"
+import consumer from "../channels/consumer"
 
 export default class extends Controller {
-  static targets = [ "status" ]
+  static targets = ["status"]
 
   statuses = {
     connecting: {
@@ -17,7 +16,7 @@ export default class extends Controller {
     disconnected: {
       class: "badge-dark",
       text: "Disconnected",
-    }
+    },
   }
 
   connect() {
@@ -29,18 +28,18 @@ export default class extends Controller {
   subscribeToLeaderboard() {
     this.leaderboard = this.data.get("leaderboard")
 
-    if (this.leaderboard === localStorage.getItem('lastLeaderboard')) {
+    if (this.leaderboard === localStorage.getItem("lastLeaderboard")) {
       // Previous subscription is getting cancelled, need to wait so it doesn't
       // cancel ours. Brittle race condition but I don't see another way right
       // now...
-      console.log('Waiting to connect!')
+      console.log("Waiting to connect!")
       setTimeout(() => {
         this.subscription = this.createSubscription(this.leaderboard)
-        localStorage.setItem('lastLeaderboard', this.leaderboard)
+        localStorage.setItem("lastLeaderboard", this.leaderboard)
       }, 1500)
     } else {
       this.subscription = this.createSubscription(this.leaderboard)
-      localStorage.setItem('lastLeaderboard', this.leaderboard)
+      localStorage.setItem("lastLeaderboard", this.leaderboard)
     }
   }
 
@@ -54,20 +53,20 @@ export default class extends Controller {
         connected: () => {
           // Called when the subscription is ready for use on the server
           console.log("live leaderboard connected: " + leaderboard)
-          this.showStatus('live')
+          this.showStatus("live")
         },
 
         disconnected: () => {
           // Called when the subscription has been terminated by the server
-          this.showStatus('disconnected')
+          this.showStatus("disconnected")
         },
 
         received: (data) => {
-          console.log('new leaderboard data')
+          console.log("new leaderboard data")
 
           this.replaceLeaderboardHtml(data.html)
-          this.showStatus('live')
-        }
+          this.showStatus("live")
+        },
       }
     )
   }
@@ -78,7 +77,7 @@ export default class extends Controller {
       this.subscription.unsubscribe()
     }
 
-    this.showStatus('disconnected')
+    this.showStatus("disconnected")
   }
 
   replaceLeaderboardHtml(html) {
@@ -86,7 +85,7 @@ export default class extends Controller {
   }
 
   showStatus(status_name) {
-    this.statusTarget.textContent = this.statuses[status_name].text;
+    this.statusTarget.textContent = this.statuses[status_name].text
 
     for (let [status, properties] of Object.entries(this.statuses)) {
       if (this.statusTarget.classList.contains(properties.class)) {
@@ -94,10 +93,10 @@ export default class extends Controller {
       }
     }
 
-    this.statusTarget.classList.add(this.statuses[status_name].class);
+    this.statusTarget.classList.add(this.statuses[status_name].class)
   }
 
   get isTurbolinksPreview() {
-    return document.documentElement.hasAttribute("data-turbolinks-preview");
+    return document.documentElement.hasAttribute("data-turbolinks-preview")
   }
 }

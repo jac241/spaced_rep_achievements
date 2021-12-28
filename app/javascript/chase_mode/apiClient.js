@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const host = "<%= Rails.application.config.action_controller.asset_host %>"
+const host = process.env.ASSET_HOST
 const element = document.querySelector("#chase_mode_root")
 
 const getHeaders = () => {

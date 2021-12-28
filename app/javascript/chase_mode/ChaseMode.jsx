@@ -17,7 +17,7 @@ import {
   selectGroupsById,
 } from "../shared/entriesSelectors"
 
-import { host } from "chase_mode/apiClient.js.erb"
+import { host } from "./apiClient.js"
 import SettingsIcon from "./icons/settings.svg"
 import pluralize from "pluralize"
 import "./ChaseMode.scss"
@@ -145,7 +145,7 @@ const Rival = ({ rivalEntry, rivalUser }) => {
 const Settings = ({}) => {
   return (
     <a href={`${host}/chase_mode_settings/edit`}>
-      <img src={SettingsIcon} height="12" width="12" alt="Settings" />
+      <SettingsIcon height="12" width="12" alt="Settings" />
     </a>
   )
 }

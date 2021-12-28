@@ -1,13 +1,13 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit'
-import { upsertIfUpdated } from 'realtime_leaderboard/reducerUtil'
-import { receiveData, receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit"
+import { upsertIfUpdated } from "../reducerUtil"
+import { receiveData, receiveJsonApiData } from "./apiSlice"
 
 const entriesAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.attributes.score - a.attributes.score
+  sortComparer: (a, b) => b.attributes.score - a.attributes.score,
 })
 
 const entriesSlice = createSlice({
-  name: 'entries',
+  name: "entries",
   initialState: entriesAdapter.getInitialState({
     isRequestingCachedEntries: false,
     isRequestingEntries: false,

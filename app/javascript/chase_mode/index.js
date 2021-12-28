@@ -1,10 +1,10 @@
-import React from "react"
+import React from "@preact/compat"
 import { render, unmountComponentAtNode } from "react-dom"
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit"
 import { Provider } from "react-redux"
-import ChaseMode from './ChaseMode'
+import ChaseMode from "./ChaseMode"
 
-import rootReducers from './reducers'
+import rootReducers from "./reducers"
 
 const renderChaseMode = () => {
   let dataElement = document.querySelector("#chase_mode_root")
@@ -23,16 +23,15 @@ const renderChaseMode = () => {
 
   const middlewares = []
   if (process.env.NODE_ENV === `development`) {
-    const { logger } = require(`redux-logger`);
+    const { logger } = require(`redux-logger`)
 
-    middlewares.push(logger);
+    middlewares.push(logger)
   }
 
   const store = configureStore({
     reducer: rootReducers,
-    middleware: (getDefaultMiddleware) => (
-      getDefaultMiddleware({serializableCheck: false}).concat(middlewares)
-    )
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({ serializableCheck: false }).concat(middlewares),
   })
 
   render(
@@ -47,7 +46,7 @@ const renderChaseMode = () => {
 }
 
 const createChaseModeDOMNode = () => {
-  let element = document.createElement("div");
+  let element = document.createElement("div")
   element.setAttribute("id", "chase_mode_react_node")
   return element
 }

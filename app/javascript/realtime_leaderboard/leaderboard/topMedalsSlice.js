@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { receiveData } from 'realtime_leaderboard/leaderboard/apiSlice'
-import merge from 'lodash.merge'
+import { createSlice } from "@reduxjs/toolkit"
+import { receiveData } from "./apiSlice"
+import merge from "lodash.merge"
 
 const initialState = {
   topMedalsbyEntryId: {},
-  entities: {}
+  entities: {},
 }
 
 const topMedalsSlice = createSlice({
-  name: 'topMedals',
+  name: "topMedals",
   initialState: initialState,
   extraReducers: (builder) => {
     builder.addCase(receiveData, (state, { payload }) => {
@@ -19,7 +19,7 @@ const topMedalsSlice = createSlice({
         ensureValuesForEntries(state, payload.entry)
       }
     })
-  }
+  },
 })
 
 const addMedalStatistics = (state, medalStatisticsById) => {
@@ -58,33 +58,35 @@ const ensureValueForEntryId = (state, entryId) => {
 }
 
 const insertInOrder = (state, array, newMedalStatistic) => {
-  const getScore = medalStatisticId => state.entities[medalStatisticId].attributes.score
-  const comparator = (a, b) =>  b - a
+  const getScore = (medalStatisticId) =>
+    state.entities[medalStatisticId].attributes.score
+  const comparator = (a, b) => b - a
   const findInsertionIndex = (array, newItem, getAttr, comparator) => {
     var low = 0,
-      high = array.length;
+      high = array.length
 
     const newValue = getAttr(newItem.id)
 
     while (low < high) {
-      var mid = low + high >>> 1;
+      var mid = (low + high) >>> 1
       if (comparator(getAttr(array[mid]), newValue) < 0) {
         low = mid + 1
       } else {
-        high = mid;
+        high = mid
       }
     }
-    return low;
+    return low
   }
 
-
-  let medalsOldIndex = array.findIndex(id => id === newMedalStatistic.id);
+  let medalsOldIndex = array.findIndex((id) => id === newMedalStatistic.id)
   //console.log(`medals old index: ${medalsOldIndex}`)
 
   const medalWouldNotMakeTopFive = () => {
-    return medalsOldIndex === -1 // medal not in array
-      && array.length == 5
-      && getScore(array[4]) >= getScore(newMedalStatistic.id)
+    return (
+      medalsOldIndex === -1 && // medal not in array
+      array.length == 5 &&
+      getScore(array[4]) >= getScore(newMedalStatistic.id)
+    )
   }
   //console.log(newMedalStatistic.id, `incoming score ${getScore(newMedalStatistic.id)}`)
   //console.log(array.map(i => i))
@@ -95,7 +97,12 @@ const insertInOrder = (state, array, newMedalStatistic) => {
     return
   }
 
-  const insertionIndex = findInsertionIndex(array, newMedalStatistic, getScore, comparator)
+  const insertionIndex = findInsertionIndex(
+    array,
+    newMedalStatistic,
+    getScore,
+    comparator
+  )
   //console.log('insertionIndex: ', insertionIndex)
 
   if (medalsOldIndex > -1) {
@@ -103,7 +110,8 @@ const insertInOrder = (state, array, newMedalStatistic) => {
       return
     }
 
-    if (insertionIndex < medalsOldIndex) { // gained points, increasing medal rank, will move old down when we insert
+    if (insertionIndex < medalsOldIndex) {
+      // gained points, increasing medal rank, will move old down when we insert
       array.splice(medalsOldIndex, 1)
       array.splice(insertionIndex, 0, newMedalStatistic.id)
     }

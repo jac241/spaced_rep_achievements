@@ -1,5 +1,5 @@
 web: WEB_CONCURRENCY=1 RAILS_MAX_THREADS=1 RUBY_YJIT_ENABLE=1 bundle exec rails server --binding=0.0.0.0 --port=3000
 worker: RUBY_YJIT_ENABLE=1 bundle exec sidekiq
-webpack: bundle exec bin/webpack-dev-server
 anycable: RUBY_YJIT_ENABLE=1 bundle exec anycable
 ws: anycable-go --port=8080
+js: ASSET_HOST="http://localhost:3000" CABLE_URL="ws://localhost:8080/cable" yarn build --watch

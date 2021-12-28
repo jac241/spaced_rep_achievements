@@ -1,13 +1,13 @@
-import client from "chase_mode/apiClient.js.erb"
-import { receiveJsonApiData } from "realtime_leaderboard/leaderboard/apiSlice"
+import client from "./apiClient.js"
+import { receiveJsonApiData } from "../realtime_leaderboard/leaderboard/apiSlice"
 import {
   getEntriesStart,
   getEntriesFinished,
-} from "realtime_leaderboard/leaderboard/entriesSlice"
+} from "../realtime_leaderboard/leaderboard/entriesSlice"
 import {
   getChaseModeConfigFinished,
   getChaseModeConfigStart,
-} from "chase_mode/chaseModeConfigSlice"
+} from "./chaseModeConfigSlice"
 import { getMembershipsFinished, getMembershipsStart } from "./membershipsSlice"
 import { selectChaseModeConfig } from "../shared/entriesSelectors"
 

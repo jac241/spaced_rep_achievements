@@ -2,9 +2,8 @@
 // You can generate new channels where WebSocket features live using the `rails generate channel` command.
 
 import { createConsumer } from "@rails/actioncable"
-import { host } from "chase_mode/apiClient.js.erb"
 
-const actionCableUrl = "<%= Rails.application.config.action_cable.url %>"
+const actionCableUrl = process.env.CABLE_URL
 
 if (!window.consumer) {
   window.consumer = createConsumer(actionCableUrl)

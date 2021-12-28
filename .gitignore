@@ -32,3 +32,6 @@ yarn-debug.log*
 
 .DS_Store
 /.idea
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

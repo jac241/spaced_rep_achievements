@@ -1,21 +1,19 @@
 import { Controller } from "stimulus"
-import consumer from "channels/consumer"
-import $ from "jquery"
-import { renderLeaderboard } from 'realtime_leaderboard'
-import normalize from 'json-api-normalizer'
-import { receiveJsonApiData } from 'realtime_leaderboard/leaderboard/apiSlice'
+import consumer from "../channels/consumer"
+import { renderLeaderboard } from "../realtime_leaderboard"
+import { receiveJsonApiData } from "../realtime_leaderboard/leaderboard/apiSlice"
 import {
   getCachedEntriesStart,
-  getCachedEntriesSuccess
-} from 'realtime_leaderboard/leaderboard/entriesSlice'
-import { unmountComponentAtNode } from 'react-dom'
+  getCachedEntriesSuccess,
+} from "../realtime_leaderboard/leaderboard/entriesSlice"
+import { unmountComponentAtNode } from "react-dom"
 
 export default class extends Controller {
-  static targets = [ "status" ]
+  static targets = ["status"]
 
   _subscriptions = []
 
-  INITIAL_CABLE_STATUS = 'lb_not_yet_requested'
+  INITIAL_CABLE_STATUS = "lb_not_yet_requested"
 
   connect() {
     if (!this.isTurbolinksPreview) {
@@ -34,7 +32,7 @@ export default class extends Controller {
 
   get _mostRecentEntryUpdatedAt() {
     const entries = this.store.getState().entries
-    let max = new Date('1995-12-17T03:24:00')
+    let max = new Date("1995-12-17T03:24:00")
     entries.ids.forEach((id) => {
       const updatedAt = new Date(entries.entities[id].attributes.updatedAt)
       if (updatedAt > max) {
@@ -53,30 +51,28 @@ export default class extends Controller {
         leaderboard_id: leaderboardId,
       },
       {
-
         connected() {
           // Called when the subscription is ready for use on the server
           console.log("realtime lb connected" + leaderboardId)
-          if (controller._cable_status === 'lb_not_yet_requested'){
+          if (controller._cable_status === "lb_not_yet_requested") {
             controller.onCachedEntriesRequested()
             this.requestCachedData()
-          }
-          else {
+          } else {
             this.requestLatestData()
           }
         },
 
-        disconnected() {
-        },
+        disconnected() {},
 
         received(action) {
           if (
-            controller._cable_status === 'cached_lb_requested' &&
-            action.payload.meta && action.payload.meta.from_cache
+            controller._cable_status === "cached_lb_requested" &&
+            action.payload.meta &&
+            action.payload.meta.from_cache
           ) {
             controller.onCachedEntriesReceived(action)
             this.requestLatestData()
-          } else if (controller._cable_status === 'cached_lb_received') {
+          } else if (controller._cable_status === "cached_lb_received") {
             if (action.type === "api/receiveJsonApiData") {
               controller.store.dispatch(receiveJsonApiData(action.payload))
             }
@@ -86,16 +82,16 @@ export default class extends Controller {
         requestLatestData() {
           console.log("requesting", controller._mostRecentEntryUpdatedAt)
           this.perform("request_data_since", {
-            last_updated: controller._mostRecentEntryUpdatedAt
+            last_updated: controller._mostRecentEntryUpdatedAt,
           })
         },
 
         requestCachedData() {
           console.log("requesting", controller._mostRecentEntryUpdatedAt)
           this.perform("request_data_since", {
-            should_use_cache: true
+            should_use_cache: true,
           })
-        }
+        },
       }
     )
   }
@@ -105,7 +101,7 @@ export default class extends Controller {
       console.log("disconnected")
       this._clearStore()
       this._cable_status = this.INITIAL_CABLE_STATUS
-      console.log('unmounted?:', unmountComponentAtNode(this.element))
+      console.log("unmounted?:", unmountComponentAtNode(this.element))
     }
   }
 
@@ -114,17 +110,17 @@ export default class extends Controller {
   }
 
   get isTurbolinksPreview() {
-    return document.documentElement.hasAttribute("data-turbolinks-preview");
+    return document.documentElement.hasAttribute("data-turbolinks-preview")
   }
 
   onCachedEntriesRequested() {
     this.store.dispatch(getCachedEntriesStart())
-    this._cable_status = 'cached_lb_requested'
+    this._cable_status = "cached_lb_requested"
   }
 
   onCachedEntriesReceived(serverAction) {
     this.store.dispatch(receiveJsonApiData(serverAction.payload))
-    this._cable_status = 'cached_lb_received'
+    this._cable_status = "cached_lb_received"
     this.store.dispatch(getCachedEntriesSuccess())
   }
 }

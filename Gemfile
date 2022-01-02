@@ -111,3 +111,5 @@ gem 'rack-attack', '~> 6.5'
 gem 'net-smtp', '~> 0.3.1'
 
 gem 'jsbundling-rails', '~> 1.0'
+
+gem "store_model", "~> 0.12.0"

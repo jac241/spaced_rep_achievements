@@ -24,6 +24,7 @@ class CreateAchievementService
       result.body.medal_statistics
     end
 
+    UpdateChallengesWhenAchievementEarnedJob.perform_later(achievement)
     BroadcastLeaderboardUpdatesJob.perform_later(medal_statistics: stats)
 
     success(:created, achievement)

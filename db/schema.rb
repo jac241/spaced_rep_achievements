@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_26_170050) do
+ActiveRecord::Schema.define(version: 2022_01_01_222517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -71,6 +71,29 @@ ActiveRecord::Schema.define(version: 2021_12_26_170050) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "battle_passes", force: :cascade do |t|
+    t.integer "xp", default: 0, null: false
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_battle_passes_on_user_id"
+  end
+
+  create_table "challenges", force: :cascade do |t|
+    t.string "title", null: false
+    t.jsonb "dataset", default: {}, null: false
+    t.integer "xp", null: false
+    t.boolean "accomplished", default: false
+    t.boolean "active", default: true
+    t.string "type", null: false
+    t.bigint "battle_pass_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["battle_pass_id", "title", "active"], name: "index_challenges_on_battle_pass_id_and_title_and_active", unique: true
+    t.index ["battle_pass_id"], name: "index_challenges_on_battle_pass_id"
+    t.index ["title"], name: "index_challenges_on_title", unique: true
   end
 
   create_table "chase_mode_configs", force: :cascade do |t|
@@ -281,6 +304,8 @@ ActiveRecord::Schema.define(version: 2021_12_26_170050) do
   add_foreign_key "achievements", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "battle_passes", "users"
+  add_foreign_key "challenges", "battle_passes"
   add_foreign_key "chase_mode_configs", "users"
   add_foreign_key "entries", "reified_leaderboards"
   add_foreign_key "entries", "users"

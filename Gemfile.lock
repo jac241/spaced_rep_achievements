@@ -428,6 +428,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    store_model (0.12.0)
+      activerecord (>= 5.2)
     temple (0.8.2)
     thor (1.1.0)
     tilt (2.0.10)
@@ -515,6 +517,7 @@ DEPENDENCIES
   sidekiq-limit_fetch!
   simple_form
   sitemap_generator (~> 6.0, >= 6.0.1)
+  store_model (~> 0.12.0)
   turbolinks (~> 5)
   web-console (>= 3.3.0)
   webdrivers

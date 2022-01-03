@@ -7,11 +7,13 @@
         = link_to "Create new group", new_group_path, class: "btn btn-primary"
     - if @my_groups.exists?
       .row
-        %h2 My Groups
+        .col-12
+          %h2 My Groups
       .row.d-flex.flex-row.justify-content-between.mb-3
         = render @my_groups
     .row
-      %h2 All Groups
+      .col-12
+        %h2 All Groups
     .row.d-flex.flex-row.justify-content-between
       = render @groups
 

@@ -1,0 +1,22 @@
+.container
+  .row
+    .col-6
+      %h3 Battle Pass
+      %p
+        Level
+        = @battle_pass.level
+      %p
+        XP
+        = @battle_pass.xp
+    .col-6
+      %h3 Active Challenges
+
+      #active_challenges
+        - @battle_pass.challenges.active.each do |challenge|
+          .card
+            .card-body
+              %h5.card-title= challenge.title
+              .card-text
+                .progress
+                  .progress-bar{role: "progressbar", style: "width: #{challenge.progress_percent}%"}
+                    = challenge.dataset.count

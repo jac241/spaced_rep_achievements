@@ -9,7 +9,8 @@ describe ChallengeTypes::MedalTracker do
         create(
           :medal_tracker_challenge,
           dataset: described_class::MedalCounter.new(
-            client_medal_id: (medal.client_medal_id)
+            client_medal_id: (medal.client_medal_id),
+            goal: 1,
           )
         )
       end

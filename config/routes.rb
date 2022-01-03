@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   # resources :notifications, only: [:index]
   # resources :announcements, only: [:index]
 
+  resource :battle_pass
+
   devise_for :users, controllers: {
     registrations: 'registrations'
   }

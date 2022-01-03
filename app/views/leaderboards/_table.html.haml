@@ -1,36 +1,92 @@
-%table#leaderboard_table.table.table-responsive-md
-  %thead
-    %tr
-      %th{scope: "col"} Rank
-      %th{scope: "col"} Username
-      %th{scope: "col"} Score
-      %th{scope: "col"}
-        Top Scoring Medals
-        %span.float-right= link_to "Medal values", medals_path
-  %tbody
-    - leaderboard.entries.each do |entry|
-      %tr
-        %th{scope: "row"}= entry.family_rank
-        %td{ style: "max-width: 250px" }
-          - if entry.user_online?
-            %span.text-primary{ data: { toggle: "tooltip", placement: "top" }, title: "Online" }
-              = entry.username
-          - else
+#leaderboard_table
+  .row.pb-3.font-weight-bold
+    .col-md-1.col-2 Rank
+    .col-md-4.col-8 Username
+    .col-md-1.col-2 Score
+    .col-md-6.col-12.text-center.text-sm-left Top Medals
+  - leaderboard.entries.each do |entry|
+    .row.virtual-table-row.p-3
+      .col-md-1.col-2.font-weight-bold= entry.family_rank
+      .col-md-4.col-8.text-center.text-md-left.leaderboard-username
+        - if entry.user_online?
+          %span.leaderboard-username.text-primary{ data: { toggle: "tooltip", placement: "top" }, title: "Online" }
             = entry.username
-          = cache ["users_groups", entry.user_groups_where_tag_present.map(&:id), entry.user_groups_where_tag_present.max { |g| g.updated_at }] do
-            - entry.user_groups_where_tag_present.each do |group|
-              = cache group do
-                %a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
-                  = group.tag
+        - else
+          %span.leaderboard-username
+            = entry.username
+        = cache ["users_groups", entry.user_groups_where_tag_present.map(&:id), entry.user_groups_where_tag_present.max { |g| g.updated_at }] do
+          - entry.user_groups_where_tag_present.each do |group|
+            = cache group do
+              %a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
+                = group.tag
+      .col-md-1.col-2= entry.total_score
+      .col-md-6.col-12.mt-3.mt-md-0
+        = cache entry.top_medals_cache_key do
+          %div.top-medals
+            - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
+              %div.top-medal.text-center.text-lg-left
+                = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
+                x
+                = top_medal.achievements_count
 
-        %td= entry.total_score
-        %td
-          = cache entry.top_medals_cache_key do
-            %div.top-medals
-              - entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
-                %div.top-medal
-                  = image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
-                  x
-                  = top_medal.achievements_count
+    -#%tr
+      -#%th{scope: "row"}= entry.family_rank
+      -#%td{ style: "max-width: 250px" }
+        -#- if entry.user_online?
+          -#%span.text-primary{ data: { toggle: "tooltip", placement: "top" }, title: "Online" }
+            -#= entry.username
+        -#- else
+          -#= entry.username
+        -#= cache ["users_groups", entry.user_groups_where_tag_present.map(&:id), entry.user_groups_where_tag_present.max { |g| g.updated_at }] do
+          -#- entry.user_groups_where_tag_present.each do |group|
+            -#= cache group do
+              -#%a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
+                -#= group.tag
+
+      -#%td= entry.total_score
+      -#%td
+        -#= cache entry.top_medals_cache_key do
+          -#%div.top-medals
+            -#- entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
+              -#%div.top-medal
+                -#= image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
+                -#x
+                -#= top_medal.achievements_count
+
+
+-#%table#leaderboard_table.table.table-responsive-md
+  -#%thead
+    -#%tr
+      -#%th{scope: "col"} Rank
+      -#%th{scope: "col"} Username
+      -#%th{scope: "col"} Score
+      -#%th{scope: "col"}
+        -#Top Scoring Medals
+        -#%span.float-right= link_to "Medal values", medals_path
+  -#%tbody
+    -#- leaderboard.entries.each do |entry|
+      -#%tr
+        -#%th{scope: "row"}= entry.family_rank
+        -#%td{ style: "max-width: 250px" }
+          -#- if entry.user_online?
+            -#%span.text-primary{ data: { toggle: "tooltip", placement: "top" }, title: "Online" }
+              -#= entry.username
+          -#- else
+            -#= entry.username
+          -#= cache ["users_groups", entry.user_groups_where_tag_present.map(&:id), entry.user_groups_where_tag_present.max { |g| g.updated_at }] do
+            -#- entry.user_groups_where_tag_present.each do |group|
+              -#= cache group do
+                -#%a.badge.badge-pill{ href: group_path(group), style: "background-color: #{group.color}", class: group.light? ? "text-light" : "text-dark" }
+                  -#= group.tag
+
+        -#%td= entry.total_score
+        -#%td
+          -#= cache entry.top_medals_cache_key do
+            -#%div.top-medals
+              -#- entry.top_medals_for_user.map { |tm| TopMedalDecorator.new(tm) }.first(5).each do |top_medal|
+                -#%div.top-medal
+                  -#= image_tag medal_image_path(top_medal.medal), title: top_medal.image_title, size: 28
+                  -#x
+                  -#= top_medal.achievements_count
 
 

@@ -24,6 +24,14 @@ module Challenges
           client_medal_id: 'Perfection',
           goal: 1
         }
+      ),
+      ChallengeTypes::MedalTracker.new(
+        title: 'Earn 5 Tactical Nukes in Call of Duty: Modern Warfare 2',
+        xp: 500,
+        dataset: {
+          client_medal_id: 'mw2_tactical_nuke',
+          goal: 5
+        }
       )
     ]
 

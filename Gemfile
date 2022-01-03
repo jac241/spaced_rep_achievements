@@ -39,7 +39,6 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'pry-byebug'
-  gem 'pry-rails'
   gem 'rspec-rails', '~> 5.0.2'
 end
 
@@ -112,4 +111,6 @@ gem 'net-smtp', '~> 0.3.1'
 
 gem 'jsbundling-rails', '~> 1.0'
 
-gem "store_model", "~> 0.12.0"
+gem 'store_model', '~> 0.12.0'
+
+gem "local_time", "~> 2.1"

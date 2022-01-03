@@ -52,7 +52,8 @@ describe 'Creating achievements' do
               :medal_tracker_challenge,
               battle_pass: user.battle_passes.last,
               dataset: ChallengeTypes::MedalTracker::MedalCounter.new(
-                client_medal_id: medal.client_medal_id
+                client_medal_id: medal.client_medal_id,
+                goal: 3
               )
             )
           end

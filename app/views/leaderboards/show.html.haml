@@ -1,10 +1,11 @@
 - no_cache
 .main
-  %h1 Leaderboards
+  %h2.text-center Leaderboards
 
   = render partial: "nav", locals: { families: @families, leaderboard: @leaderboard, timeframes: @timeframes }
 
-  - if current_user.admin? && @reified_leaderboard&.timeframe == "daily"
+  -#- if current_user.admin? && @reified_leaderboard&.timeframe == "daily"
+  - if false
     #realtime_leaderboard{ data: { controller: "realtime-leaderboards", realtime_leaderboards_leaderboard_id: @reified_leaderboard.id } }
   - else
     #live_leaderboard{ data: { controller: "live-leaderboards", live_leaderboards_leaderboard: @leaderboard.channel } }

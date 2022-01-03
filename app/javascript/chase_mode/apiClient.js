@@ -1,14 +1,14 @@
-import axios from 'axios'
+import axios from "axios"
 
-const host = process.env.ASSET_HOST
+const host = "https://ankiachievements.com"
 const element = document.querySelector("#chase_mode_root")
 
 const getHeaders = () => {
   if (element) {
     return {
-      'access-token': element.dataset.accessToken,
-      'client': element.dataset.client,
-      'uid': element.dataset.uid,
+      "access-token": element.dataset.accessToken,
+      client: element.dataset.client,
+      uid: element.dataset.uid,
     }
   } else {
     return {}
@@ -17,8 +17,8 @@ const getHeaders = () => {
 
 const client = axios.create({
   baseURL: host,
-  headers: getHeaders()
-});
+  headers: getHeaders(),
+})
 
 export { host }
 

@@ -2,8 +2,7 @@
 //$light-orange: #ff8c00;
 //$navbar-default-color: $light-orange;
 
-@import "font-awesome-sprockets";
-@import "font-awesome";
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
 
 //@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 //@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
@@ -13,9 +12,7 @@
 //"Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
 //"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $spacer: 0.7rem;
-@import "bootstrap";
-
-// Add SASS theme customizations here..
+@import "bootstrap/scss/bootstrap";
 @import "bootstrap-colorpicker";
 
 //$h1-font-size: $font-size-base * 2.25 !default;

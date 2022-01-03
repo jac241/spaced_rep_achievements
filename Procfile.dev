@@ -3,3 +3,4 @@ worker: RUBY_YJIT_ENABLE=1 bundle exec sidekiq
 anycable: RUBY_YJIT_ENABLE=1 bundle exec anycable
 ws: anycable-go --port=8080
 js: ASSET_HOST="http://localhost:3000" CABLE_URL="ws://localhost:8080/cable" yarn build --watch
+css: yarn build:css --watch

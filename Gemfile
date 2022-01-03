@@ -11,7 +11,6 @@ gem 'pg', '>= 1.2.3', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '>= 5.5.2'
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 6'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -67,7 +66,6 @@ gem 'administrate', github: 'excid3/administrate', branch: 'jumpstart'
 gem 'administrate-field-active_storage'
 
 gem 'activerecord-import'
-gem 'bootstrap', '~> 4.3', '>= 4.3.1'
 gem 'data_migrate'
 gem 'devise', '~> 4.8.1', '>= 4.7.0'
 gem 'devise-bootstrapped', github: 'excid3/devise-bootstrapped',
@@ -113,4 +111,6 @@ gem 'jsbundling-rails', '~> 1.0'
 
 gem 'store_model', '~> 0.12.0'
 
-gem "local_time", "~> 2.1"
+gem 'local_time', '~> 2.1'
+
+gem "cssbundling-rails", "~> 1.0"

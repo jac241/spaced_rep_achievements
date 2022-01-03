@@ -54,3 +54,4 @@ document.addEventListener("turbolinks:render", () => {
 
   Turbolinks.scroll = {}
 })
+import * as bootstrap from "bootstrap"

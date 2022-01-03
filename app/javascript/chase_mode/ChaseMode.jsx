@@ -144,7 +144,7 @@ const Rival = ({ rivalEntry, rivalUser }) => {
 
 const Settings = ({}) => {
   return (
-    <a href={`${host}/chase_mode_settings/edit`}>
+    <a href={`https://ankiachievements.com/chase_mode_settings/edit`}>
       <SettingsIcon height="12" width="12" alt="Settings" />
     </a>
   )

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.0'
+ruby '2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', github: 'rails/rails'
@@ -113,4 +113,4 @@ gem 'store_model', '~> 0.12.0'
 
 gem 'local_time', '~> 2.1'
 
-gem "cssbundling-rails", "~> 1.0"
+gem 'cssbundling-rails', '~> 1.0'

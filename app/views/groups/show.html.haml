@@ -1,9 +1,10 @@
 .main
   .group-header
     .group-header-name
-      %h1= @group.name
+      %h3= @group.name
       - if @group.tag.present?
         = render "tag", group: @group
+      .text-muted= @group.public? ? "Public" : "Private"
     .group-header-buttons
       - if policy(@group).edit?
         = link_to "Edit", edit_group_path(@group), class: "action-btn btn btn-primary btn-sm"
@@ -11,7 +12,6 @@
         = link_to "Leave group", group_membership_path(@group, @membership_for_current_user),
           method: :delete, remote: true, class: "action-btn btn btn-danger btn-sm",
           data: { confirm: "Are you sure you want to leave the group?" }
-  %p.text-muted= @group.public? ? "Public" : "Private"
   %p.lead= @group.description
 
   %p

@@ -6,11 +6,13 @@
   @extend .row;
 
   .group-header-name {
-    @extend .col-8;
+    @extend .col-md-8;
+    @extend .col-12;
   }
 
   .group-header-buttons {
-    @extend .col-4;
+    @extend .col-md-4;
+    @extend .col-12;
     @extend .d-flex;
     @extend .align-items-center;
     @extend .justify-content-end;

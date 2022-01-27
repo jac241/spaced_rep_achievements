@@ -397,7 +397,7 @@ GEM
       ruby_http_client (~> 3.4)
     set (1.0.2)
     sexp_processor (4.16.0)
-    sidekiq (6.3.1)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -502,7 +502,7 @@ DEPENDENCIES
   scenic
   selenium-webdriver (~> 4.1.0)
   sendgrid-actionmailer
-  sidekiq (~> 6.3.1, >= 6.0.3)
+  sidekiq (~> 6.4.0)
   sidekiq-cron
   sidekiq-limit_fetch!
   simple_form

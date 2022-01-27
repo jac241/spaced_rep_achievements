@@ -81,7 +81,7 @@ gem 'mini_magick'
 gem 'name_of_person', '~> 1.1'
 gem 'scenic'
 gem 'sendgrid-actionmailer'
-gem 'sidekiq', '~> 6.3.1', '>= 6.0.3'
+gem 'sidekiq', '~> 6.4.0'
 gem 'sidekiq-limit_fetch', github: 'brainopia/sidekiq-limit_fetch'
 gem 'sitemap_generator', '~> 6.0', '>= 6.0.1'
 gem 'whenever', require: false
